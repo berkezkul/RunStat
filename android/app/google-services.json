@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "566995700842",
+    "project_id": "runstat-57f99",
+    "storage_bucket": "runstat-57f99.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:566995700842:android:0d17b4c018c38d342b0e13",
+        "android_client_info": {
+          "package_name": "com.berkeozkul.run_stat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEf0P48xVZACrJLYIYcqj-hc0NNo3pB80"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
