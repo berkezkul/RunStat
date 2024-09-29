@@ -22,7 +22,7 @@ class LoginViewModel extends ChangeNotifier {
   }
 
   // Kullanıcı giriş yapma fonksiyonu
-  Future<void> login(UserModel user, BuildContext context) async {
+  Future<bool> login(UserModel user, BuildContext context) async {
     _isLoading = true;
     notifyListeners();
 
@@ -33,16 +33,20 @@ class LoginViewModel extends ChangeNotifier {
         user.password,
       );
 
+
       if (loggedInUser != null) {
         // Giriş başarılı, ana sayfaya yönlendirme yapılabilir.
-        Navigator.pushNamed(context, '/home');
+        //Navigator.pushNamed(context, '/WelcomePage');
+        return true;
       } else {
         // Eğer kullanıcı null ise bir hata oluşmuş demektir.
         _showErrorSnackbar(context, 'An unknown error occurred.');
+        return false;
       }
     } on FirebaseAuthException catch (e) {
       // FirebaseAuthException yakalandığında ilgili hata mesajını göster
       _showErrorSnackbar(context, _getErrorMessage(e.code));
+      return false;
     } finally {
       _isLoading = false;
       notifyListeners();

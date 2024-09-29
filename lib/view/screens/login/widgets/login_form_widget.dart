@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:runstat/view/screens/bottom_navigation_bar.dart';
 import 'package:runstat/viewmodels/login_viewmodel.dart';
 import 'package:runstat/data/models/user_model.dart';
+
+import '../../welcome_screen.dart';
 
 class LoginFormWidget extends StatelessWidget {
   const LoginFormWidget({super.key});
@@ -66,12 +69,19 @@ class LoginFormWidget extends StatelessWidget {
               : SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 final user = UserModel(
                   email: emailController.text,
                   password: passwordController.text,
                 );
-                viewModel.login(user, context);
+                bool success = await viewModel.login(user, context);
+                if (success) {
+                  // Başarılı giriş yapıldıktan sonra WelcomePage'e yönlendirme
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const BottomNavigationPage()),
+                  );
+                }
               },
               child: const Text("Login"),
             ),
