@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   // Login
   Future<User?> signInWithEmailAndPassword(String email, String password) async {
@@ -37,6 +39,36 @@ class AuthService {
       await _auth.signOut();
     } catch (e) {
       print('Sign Out Error: $e');
+    }
+  }
+
+  //Google sign in
+  Future<User?> signInWithGoogle() async {
+    try {
+      // Kullanıcıyı Google ile kimlik doğrulama penceresine yönlendirme
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        // Kullanıcı giriş işlemini iptal etti
+        return null;
+      }
+
+      // Google'dan doğrulama bilgilerini alma
+      final GoogleSignInAuthentication googleAuth =
+      await googleUser.authentication;
+
+      // Google kimlik bilgilerini Firebase'e gönderip oturum açma
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Firebase'de oturum aç ve kullanıcıyı döndür
+      UserCredential userCredential =
+      await _auth.signInWithCredential(credential);
+      return userCredential.user;
+    } catch (e) {
+      print('Google Sign-In Error: $e');
+      return null;
     }
   }
 

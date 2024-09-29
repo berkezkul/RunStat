@@ -17,6 +17,7 @@ class SignupViewModel extends ChangeNotifier {
   Future<void> registerUser(String email, String password, String fullName, String phoneNo) async {
     try {
       _setLoading(true);
+
       // Create user with email and password
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
