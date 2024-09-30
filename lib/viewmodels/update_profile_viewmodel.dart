@@ -21,7 +21,7 @@ class UpdateProfileViewModel extends ChangeNotifier {
 
       fullNameController.text = userData?['fullName'] ?? '';
       emailController.text = userData?['email'] ?? '';
-      phoneController.text = userData?['phone'] ?? '';
+      phoneController.text = userData?['phoneNo'] ?? '';
     }
   }
 
@@ -32,7 +32,7 @@ class UpdateProfileViewModel extends ChangeNotifier {
         await FirebaseFirestore.instance.collection('users').doc(userId).update({
           'fullName': fullNameController.text,
           'email': emailController.text,
-          'phone': phoneController.text,
+          'phoneNo': phoneController.text,
           // Şifre güncelleme işlemi eklenebilir
         });
         // Başarılı güncelleme sonrası bir mesaj gösterebiliriz

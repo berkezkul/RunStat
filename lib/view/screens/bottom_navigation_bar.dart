@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:runstat/view/screens/profile_screen.dart';
 import 'package:runstat/view/screens/welcome_screen.dart';
 
+import 'activity_history_screen.dart';
 import 'dashboard_screen.dart';
+import 'map_screen.dart';
 
 class BottomNavigationPage extends StatefulWidget {
   const BottomNavigationPage({super.key});
@@ -17,8 +19,8 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
     const WelcomePage(),
     const DashboardPage(),
     //const WeatherPage(),
-    //const MapPage(),
-    //ActivityHistoryPage(),
+    MapPage(),
+    ActivityHistoryPage(),
     const ProfilePage()
   ];
 
@@ -37,9 +39,9 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
           BottomNavigationBarItem(
               icon: Icon(Icons.analytics), label: "Dashboard"),
           //BottomNavigationBarItem(icon: Icon(Icons.sunny_snowing), label: "Weather"),
-          //BottomNavigationBarItem(icon: Icon(Icons.map), label: "Map"),
-          //BottomNavigationBarItem(
-              //icon: Icon(Icons.directions_run), label: "Statistics"),
+          BottomNavigationBarItem(icon: Icon(Icons.map), label: "Map"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.directions_run), label: "Statistics"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
         currentIndex: selectedIndex,

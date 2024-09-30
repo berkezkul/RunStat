@@ -6,6 +6,11 @@ import 'package:flutter/material.dart';
 //import 'package:runstat_app/src/utils/theme/theme.dart';
 //import 'package:flutter_deneme/src/screens/login/login_page.dart';
 import 'package:runstat/view/screens/home_screen.dart';
+import 'package:runstat/view/screens/update_profile_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:runstat/viewmodels/map_viewmodel.dart';
+import 'package:runstat/viewmodels/update_profile_viewmodel.dart';
+
 
 /*
 void main() async {
@@ -19,7 +24,14 @@ void main() async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => UpdateProfileViewModel()),
+      ChangeNotifierProvider(create: (_) => MapViewModel()),
+      // Diğer ViewModel'ler burada sağlanabilir
+    ],
+    child: MyApp(),
+  ),);
 }
 
 class MyApp extends StatelessWidget {
@@ -27,7 +39,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Run Stat',
       debugShowCheckedModeBanner: false,
       //theme: RSAppTheme.lightTheme,
@@ -38,7 +50,13 @@ class MyApp extends StatelessWidget {
       ),*/
       //darkTheme: RSAppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      home: HomePage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => HomePage(), // Ana sayfanızın rotası
+        '/UpdateProfilePage': (context) => UpdateProfilePage(),
+
+      },
+      //home: const HomePage(),
     );
   }
 }

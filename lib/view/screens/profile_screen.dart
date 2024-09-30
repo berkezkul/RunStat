@@ -161,7 +161,7 @@ class ProfilePage extends StatelessWidget {
                 Navigator.pop(context); // Dialog'u kapatmadan önce
                 bool success = await viewModel.logout(context);
                 if (success) {
-                  Navigator.pushReplacementNamed(context, '/HomePage'); // Yönlendirme
+                  Navigator.pushReplacementNamed(context, '/'); // Yönlendirme
                 } else {
                   // Hata mesajı gösterebilirsiniz
                   ScaffoldMessenger.of(context).showSnackBar(
