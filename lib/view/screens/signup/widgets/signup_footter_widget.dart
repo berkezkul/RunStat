@@ -5,6 +5,7 @@ import 'package:runstat/core/constants/text.dart';
 
 import '../../../../core/constants/images.dart';
 import '../../../../data/services/auth_service.dart';
+import '../../bottom_navigation_bar.dart';
 
 class SignupFootterWidget extends StatelessWidget {
   const SignupFootterWidget({
@@ -31,6 +32,10 @@ class SignupFootterWidget extends StatelessWidget {
               if (user != null) {
                 // Google ile başarılı bir şekilde giriş yaptıktan sonra yapılacaklar
                 print('Google Sign-In Successful: ${user.email}');
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => BottomNavigationPage()),
+                );
               } else {
                 print('Google Sign-In Failed');
               }

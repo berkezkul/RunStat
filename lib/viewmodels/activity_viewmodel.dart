@@ -1,4 +1,3 @@
-// activity_view_model.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../data/models/activity_model.dart';
@@ -17,6 +16,7 @@ class ActivityViewModel extends ChangeNotifier {
       activities = snapshot.docs.map((doc) => Activity.fromFirestore(doc.data())).toList();
     } catch (e) {
       // Hata yönetimi
+      print('Error fetching activities: $e');
     } finally {
       isLoading = false;
       notifyListeners();

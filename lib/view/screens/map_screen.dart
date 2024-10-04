@@ -108,7 +108,7 @@ class _MapPageState extends State<MapPage> {
                   mapViewModel.currentPosition!.latitude,
                   mapViewModel.currentPosition!.longitude,
                 )
-                    : LatLng(41.0082, 28.9784), // Varsayılan konum: İstanbul
+                    : LatLng(37.216, 28.3636), // Varsayılan konum: Muğla
                 initialZoom: 15.0,
               ),
               children: [

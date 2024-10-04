@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:runstat/view/screens/profile_screen.dart';
+import 'package:runstat/view/screens/weather/weather_screen.dart';
 import 'package:runstat/view/screens/welcome_screen.dart';
 
 import 'activity_history_screen.dart';
@@ -18,7 +19,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
   var pages = [
     const WelcomePage(),
     const DashboardPage(),
-    //const WeatherPage(),
+    WeatherPage(),
     MapPage(),
     ActivityHistoryPage(),
     const ProfilePage()
@@ -38,7 +39,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(
               icon: Icon(Icons.analytics), label: "Dashboard"),
-          //BottomNavigationBarItem(icon: Icon(Icons.sunny_snowing), label: "Weather"),
+          BottomNavigationBarItem(icon: Icon(Icons.sunny_snowing), label: "Weather"),
           BottomNavigationBarItem(icon: Icon(Icons.map), label: "Map"),
           BottomNavigationBarItem(
               icon: Icon(Icons.directions_run), label: "Statistics"),

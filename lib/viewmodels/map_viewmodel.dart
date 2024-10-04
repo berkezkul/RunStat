@@ -3,6 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
+import 'package:runstat/core/constants/api_keys.dart';
 import 'dart:convert';
 import '../data/models/run_datas_model.dart';
 
@@ -33,7 +34,7 @@ class MapViewModel extends ChangeNotifier {
   }
 
   Future<void> getWeather(double lat, double lon) async {
-    const apikey = 'f3bc26da031d6490342c727d7cd75c1e';
+    const apikey = weatherApiKey;
     final url =
         'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$apikey&units=metric';
 
@@ -85,6 +86,12 @@ class MapViewModel extends ChangeNotifier {
 
     await saveRun(runData);
     print("Rota kaydedildi: $_route");
+    // Veriler kaydedildikten sonra rotayı ve diğer bilgileri sıfırlama
+    _route = [];
+    _distance = 0.0;
+    _startTime = null;
+    _currentPosition = null;
+
     notifyListeners();
   }
 

@@ -23,3 +23,4 @@ const String rsPasswordImage6 = "assets/images/password_screen6.png";
 
 //Profile Images
 const String rsProfilePic = "assets/images/profil_pic.jpeg";
+const String rsDefaultUserPic = "assets/images/default_user.png";

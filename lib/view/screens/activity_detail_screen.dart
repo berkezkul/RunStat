@@ -9,16 +9,19 @@ import '../widgets/activity_app_bar.dart';
 
 class ActivityDetailPage extends StatelessWidget {
   final Activity activityData;
-  final LatLng defaultPosition = const LatLng(40.193298, 29.074202); // Bursa'nın koordinatları
+  final LatLng defaultPosition = const LatLng(37.216, 28.3636); // Muğla'nın koordinatları
 
   ActivityDetailPage({super.key, required this.activityData});
 
   @override
   Widget build(BuildContext context) {
     final dateTime = DateTime.parse(activityData.date);
-    final formattedDate = DateFormat('HH:mm yyyy-MM-dd').format(dateTime);
+    final formattedDate = DateFormat('yyyy-MM-dd').format(dateTime); // Yalnızca tarihi al
+    final formattedTime = DateFormat('HH:mm').format(dateTime); // Sadece saati al
 
-    final initialPosition = LatLng(activityData.latitude.latitude, activityData.longitude.longitude);
+    final initialPosition = activityData.route.isNotEmpty
+        ? LatLng(activityData.route.first.latitude, activityData.route.first.longitude)
+        : defaultPosition;
 
     return Scaffold(
       appBar: ActivityAppBar("Details"),
@@ -59,8 +62,11 @@ class ActivityDetailPage extends StatelessWidget {
                         const SizedBox(height: 8),
                         Text('Date', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: darkBlue)),
                         Text(formattedDate, style: const TextStyle(fontSize: 16)),
+                        Text(formattedTime, style: const TextStyle(fontSize: 16)), // Sadece saat
+
                       ],
                     ),
+
                     Column(
                       children: [
                         Icon(Icons.timer, size: 40, color: blue2),
@@ -74,7 +80,7 @@ class ActivityDetailPage extends StatelessWidget {
                         Icon(Icons.directions_run, size: 40, color: blue2),
                         const SizedBox(height: 8),
                         Text('Distance', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: darkBlue)),
-                        Text('${activityData.distance} m', style: const TextStyle(fontSize: 16)),
+                        Text('${activityData.distance.toStringAsFixed(1)} m', style: const TextStyle(fontSize: 16)),
                       ],
                     ),
                   ],
