@@ -1,4 +1,3 @@
-// activity_history_page.dart
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,12 +7,9 @@ import '../widgets/activity_app_bar.dart';
 import 'activity_detail_screen.dart';
 import 'package:intl/intl.dart';
 
-
 class ActivityHistoryPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-
     final user = FirebaseAuth.instance.currentUser;
     final userId = user?.uid ?? '';
 
@@ -35,31 +31,40 @@ class ActivityHistoryPage extends StatelessWidget {
 
                 final formattedDate = DateFormat('HH:mm yyyy-MM-dd').format(dateTime);
 
-                return ListTile(
-                  leading: Icon(Icons.directions_run, color: darkBlue, size: 40),
-                  title: Text(formattedDate),
-                  subtitle: Text('Distance: ${activity.distance} meters'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ActivityDetailPage(activityData: activity),
-                      ),
-                    );
-                  },
-                  trailing: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ActivityDetailPage(activityData: activity),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0), // Köşeleri yuvarlat
                     ),
-                    child: Text('Detail', style: TextStyle(color: darkBlue)),
+                    elevation: 4.0, // Gölgelendirme
+                    child: ListTile(
+                      leading: Icon(Icons.directions_run, color: darkBlue, size: 40),
+                      title: Text(formattedDate),
+                      subtitle: Text('Distance: ${activity.distance.toStringAsFixed(1)} meters'), // Distance formatlandı
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ActivityDetailPage(activityData: activity),
+                          ),
+                        );
+                      },
+                      trailing: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ActivityDetailPage(activityData: activity),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        ),
+                        child: Text('Detail', style: TextStyle(color: darkBlue)),
+                      ),
+                    ),
                   ),
                 );
               },

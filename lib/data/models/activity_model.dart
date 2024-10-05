@@ -32,6 +32,9 @@ class Activity {
       dateString = data['date'] as String;
     }
 
+    String weatherInfo = data['weatherInfo'] ?? "Unknown Weather";
+    print('Weather Info: $weatherInfo'); // Debug için
+
     return Activity(
       averageSpeed: (data['averageSpeed'] is int)
           ? (data['averageSpeed'] as int).toDouble()
@@ -42,7 +45,7 @@ class Activity {
           : (data['distance'] as double),
       duration: (data['duration'] as num).toInt(),  // Güvenli dönüşüm
       route: parsedRoute,
-      weatherInfo: data['weatherInfo'] ?? "Unknown Weather"
+      weatherInfo: weatherInfo//data['weatherInfo'] ?? "Unknown Weather"
     );
   }
 }

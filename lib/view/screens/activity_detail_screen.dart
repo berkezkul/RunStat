@@ -1,8 +1,8 @@
-// activity_detail_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:intl/intl.dart';
+import 'package:runstat/data/models/run_datas_model.dart';
 import '../../core/constants/colors.dart';
 import '../../data/models/activity_model.dart';
 import '../widgets/activity_app_bar.dart';
@@ -16,8 +16,9 @@ class ActivityDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dateTime = DateTime.parse(activityData.date);
-    final formattedDate = DateFormat('yyyy-MM-dd').format(dateTime); // Yalnızca tarihi al
-    final formattedTime = DateFormat('HH:mm').format(dateTime); // Sadece saati al
+    final formattedDate = DateFormat('dd MMM yyyy').format(dateTime); // Gün, Ay, Yıl formatı
+    final formattedTime = DateFormat('HH:mm').format(dateTime); // Saat ve dakika
+
 
     final initialPosition = activityData.route.isNotEmpty
         ? LatLng(activityData.route.first.latitude, activityData.route.first.longitude)
@@ -30,6 +31,21 @@ class ActivityDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Haritanın üst kısmına Date ve Time bilgisi sol kenardan başlayarak eklendi
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                children: [
+                  Icon(Icons.calendar_today, size: 24, color: blue2),
+                  const SizedBox(width: 8),
+                  Text(
+                    '$formattedDate, $formattedTime',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: darkBlue),
+                  ),
+                ],
+              ),
+            ),
+
             Expanded(
               flex: 2,
               child: FlutterMap(
@@ -58,15 +74,12 @@ class ActivityDetailPage extends StatelessWidget {
                   children: [
                     Column(
                       children: [
-                        Icon(Icons.calendar_today, size: 40, color: blue2),
+                        Icon(Icons.speed, size: 40, color: blue2), // Average Speed için ikon
                         const SizedBox(height: 8),
-                        Text('Date', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: darkBlue)),
-                        Text(formattedDate, style: const TextStyle(fontSize: 16)),
-                        Text(formattedTime, style: const TextStyle(fontSize: 16)), // Sadece saat
-
+                        Text('Avg Speed', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: darkBlue)),
+                        Text('${activityData.averageSpeed.toStringAsFixed(1)} m/s', style: const TextStyle(fontSize: 16)),
                       ],
                     ),
-
                     Column(
                       children: [
                         Icon(Icons.timer, size: 40, color: blue2),

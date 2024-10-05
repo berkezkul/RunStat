@@ -87,7 +87,7 @@ class MapViewModel extends ChangeNotifier {
       duration: duration,
       averageSpeed: averageSpeed,
       route: _route,
-      weather: _weatherInfo,
+      weatherInfo: _weatherInfo,
     );
 
     await savedRun(runData);
@@ -169,7 +169,7 @@ class MapViewModel extends ChangeNotifier {
           'latitude': latLng.latitude,
           'longitude': latLng.longitude,
         }).toList(),
-        'weather': runData.weather,
+        'weather': runData.weatherInfo,
       });
       print("Koşu verileri Firestore'a kaydedildi.");
     } catch (e) {
