@@ -1,12 +1,13 @@
 // activity_model.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:latlong2/latlong.dart';
 
 class Activity {
   final String date;
   final double distance;
   final int duration;
   final double averageSpeed;
-  final List<GeoPoint> route;
+  final List<LatLng> route;
   final String weatherInfo;
 
   Activity({
@@ -19,6 +20,11 @@ class Activity {
   });
 
   factory Activity.fromFirestore(Map<String, dynamic> data) {
+    // Route listesini LatLng formatına dönüştürme
+    List<LatLng> parsedRoute = (data['route'] as List<dynamic>).map((point) {
+      return LatLng(point['latitude'], point['longitude']);
+    }).toList();
+
     String dateString;
     if (data['date'] is Timestamp) {
       dateString = (data['date'] as Timestamp).toDate().toIso8601String();
@@ -35,8 +41,8 @@ class Activity {
           ? (data['distance'] as int).toDouble()
           : (data['distance'] as double),
       duration: (data['duration'] as num).toInt(),  // Güvenli dönüşüm
-      route: List<GeoPoint>.from(data['route'].map((point) => GeoPoint(point.latitude, point.longitude))),
-      weatherInfo: data['weatherInfo']
+      route: parsedRoute,
+      weatherInfo: data['weatherInfo'] ?? "Unknown Weather"
     );
   }
 }
