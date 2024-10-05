@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
@@ -12,6 +13,7 @@ class MapViewModel extends ChangeNotifier {
   bool _isRunning = false;
   double _distance = 0.0;
   DateTime? _startTime;
+  DateTime? _endTime;
   Position? _currentPosition;
   String _weatherInfo = "Loading...";
 
@@ -53,19 +55,23 @@ class MapViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Koşuyu başlatma
   void startRun() {
     _isRunning = true;
     _startTime = DateTime.now();
     _distance = 0.0;
-    _route = []; // Rota temizleniyor
+    _route.clear(); // Rota temizleniyor
     notifyListeners();
 
     trackPosition(); // Pozisyon takibini başlat
     print("Koşuya başlandı.");
   }
 
-  void stopRun() async {
+  // Koşuyu durdurma
+  Future<void> stopRun() async {
     _isRunning = false;
+    _endTime = DateTime.now(); // Koşunun bitiş zamanını kaydet
+
     print("Koşu durduruldu.");
 
     if (_route.isEmpty) {
@@ -73,10 +79,10 @@ class MapViewModel extends ChangeNotifier {
       return;
     }
 
-    final duration = DateTime.now().difference(_startTime!).inSeconds;
-    final averageSpeed = _distance / duration;
+    final duration = _endTime!.difference(_startTime!).inSeconds; // Koşu süresini hesapla
+    final averageSpeed = duration > 0 ? _distance / duration : 0.0;
     final runData = RunData(
-      date: DateTime.now(),
+      date: _endTime!,
       distance: _distance,
       duration: duration,
       averageSpeed: averageSpeed,
@@ -84,17 +90,20 @@ class MapViewModel extends ChangeNotifier {
       weather: _weatherInfo,
     );
 
-    await saveRun(runData);
+    await savedRun(runData);
     print("Rota kaydedildi: $_route");
+
     // Veriler kaydedildikten sonra rotayı ve diğer bilgileri sıfırlama
-    _route = [];
+    _route.clear();
     _distance = 0.0;
     _startTime = null;
+    _endTime = null;
     _currentPosition = null;
 
     notifyListeners();
   }
 
+  // Konum takibi
   Future<void> trackPosition() async {
     Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
@@ -102,12 +111,11 @@ class MapViewModel extends ChangeNotifier {
         distanceFilter: 10,
       ),
     ).listen((Position position) {
-      print("Konum güncelleniyor: $position"); // Eklenen log
+      print("Konum güncelleniyor: $position");
 
       if (_isRunning) {
         _currentPosition = position;
 
-        print("Güncel konum: $_currentPosition");
         if (_route.isNotEmpty) {
           _distance += Geolocator.distanceBetween(
             _route.last.latitude,
@@ -118,25 +126,62 @@ class MapViewModel extends ChangeNotifier {
         }
 
         _route.add(LatLng(position.latitude, position.longitude));
-        getWeather(position.latitude, position.longitude);
+        getWeather(position.latitude, position.longitude); // Hava durumunu al
+        notifyListeners();
+      }
+    });
+  }
+
+  // Koşu verilerini Firebase'e kaydet
+  // Koşu verilerini Firebase'e kaydet
+  // Koşu verilerini Firebase'e kaydet
+  Future<void> savedRun(RunData runData) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    // Kullanıcı dokümanını referans al
+    final userDoc = FirebaseFirestore.instance.collection('users').doc(user.uid);
+
+    try {
+      // Kullanıcı dokümanı mevcut değilse, dokümanı oluştur
+      final userDocSnapshot = await userDoc.get();
+      if (!userDocSnapshot.exists) {
+        await userDoc.set({
+          'createdAt': Timestamp.now(),
+          // Diğer kullanıcı bilgilerini burada kaydedebilirsiniz
+        });
+        print("Kullanıcı dokümanı oluşturuldu.");
       }
 
-      notifyListeners();
-    });
+      // Kullanıcının runs koleksiyonunu referans al
+      final runCollection = userDoc.collection('runs');
+
+      // Eğer runs koleksiyonu yoksa, oluşturma işlemi yapılır
+      // Firestore'da koleksiyonlar otomatik olarak oluşturulduğundan, bu kısmı atlayabiliriz
+
+      // Koşu verilerini kaydet
+      await runCollection.add({
+        'averageSpeed': runData.averageSpeed,
+        'date': runData.date,
+        'distance': runData.distance,
+        'duration': runData.duration,
+        'route': runData.route.map((latLng) => {
+          'latitude': latLng.latitude,
+          'longitude': latLng.longitude,
+        }).toList(),
+        'weather': runData.weather,
+      });
+      print("Koşu verileri Firestore'a kaydedildi.");
+    } catch (e) {
+      print("Firestore kaydetme hatası: $e");
+    }
   }
 
 
 
-  Future<void> saveRun(RunData runData) async {
-    await FirebaseFirestore.instance.collection('runs').add({
-      'date': runData.date.toString(),
-      'distance': runData.distance,
-      'duration': runData.duration,
-      'averageSpeed': runData.averageSpeed,
-      'route': runData.route
-          .map((point) => GeoPoint(point.latitude, point.longitude))
-          .toList(),
-      'weather': runData.weather,
-    });
+  String getFormattedDuration() {
+    if (startTime == null) return "0 s";
+    final elapsed = DateTime.now().difference(startTime!);
+    return "${elapsed.inMinutes}:${(elapsed.inSeconds % 60).toString().padLeft(2, '0')}";
   }
 }

@@ -24,6 +24,8 @@ class SignupViewModel extends ChangeNotifier {
         password: password,
       );
 
+      //String userId = userCredential.user!.uid;
+
       if (userCredential.user != null) {
         // Save additional user info to Firestore
         await _firestore.collection('users').doc(userCredential.user!.uid).set({
@@ -33,6 +35,8 @@ class SignupViewModel extends ChangeNotifier {
           'signupDate': DateTime.now().toIso8601String(), // Store signup date
         });
       }
+
+
     } catch (e) {
       // Handle sign-up error
       print("Signup error: $e");

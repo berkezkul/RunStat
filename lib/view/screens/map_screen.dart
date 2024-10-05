@@ -4,6 +4,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants/colors.dart';
+import '../../data/services/run_service.dart';
 import '../../viewmodels/map_viewmodel.dart';
 import '../widgets/activity_app_bar.dart';
 
@@ -13,6 +14,8 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+  final RunService runService = RunService();
+
   @override
   void initState() {
     super.initState();
@@ -20,6 +23,11 @@ class _MapPageState extends State<MapPage> {
     mapViewModel.checkPermissions().then((_) {
       mapViewModel.trackPosition();
     });
+  }
+
+  void completeRun() async {
+    final mapViewModel = Provider.of<MapViewModel>(context, listen: false);
+    await mapViewModel.stopRun(); // Koşuyu durdurup verileri kaydet
   }
 
   @override
@@ -115,19 +123,19 @@ class _MapPageState extends State<MapPage> {
                 TileLayer(
                   urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                 ),
-                if (mapViewModel.route.isNotEmpty)
-                  PolylineLayer(
-                    polylines: [
+                PolylineLayer(
+                  polylines: [
+                    if (mapViewModel.route.isNotEmpty)
                       Polyline(
                         points: mapViewModel.route,
                         strokeWidth: 4.0,
                         color: Colors.blue,
                       ),
-                    ],
-                  ),
-                if (mapViewModel.currentPosition != null)
-                  MarkerLayer(
-                    markers: [
+                  ],
+                ),
+                MarkerLayer(
+                  markers: [
+                    if (mapViewModel.currentPosition != null)
                       Marker(
                         point: LatLng(
                           mapViewModel.currentPosition!.latitude,
@@ -143,8 +151,8 @@ class _MapPageState extends State<MapPage> {
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -166,7 +174,7 @@ class _MapPageState extends State<MapPage> {
                 ),
               ),
               ElevatedButton(
-                onPressed: mapViewModel.isRunning ? mapViewModel.stopRun : null,
+                onPressed: mapViewModel.isRunning ? completeRun : null,
                 style: ElevatedButton.styleFrom(
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.zero,
@@ -182,6 +190,26 @@ class _MapPageState extends State<MapPage> {
           ),
         ],
       ),
+    );
+  }
+
+  Column _buildInfoColumn(IconData icon, String title, String value) {
+    return Column(
+      children: [
+        Icon(icon, size: 20, color: blue2),
+        const SizedBox(height: 6),
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          value,
+          style: const TextStyle(fontSize: 16),
+        ),
+      ],
     );
   }
 }

@@ -1,4 +1,5 @@
 // activity_history_page.dart
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/constants/colors.dart';
@@ -9,10 +10,15 @@ import 'package:intl/intl.dart';
 
 
 class ActivityHistoryPage extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+
+    final user = FirebaseAuth.instance.currentUser;
+    final userId = user?.uid ?? '';
+
     return ChangeNotifierProvider(
-      create: (context) => ActivityViewModel(),
+      create: (context) => ActivityViewModel(userId: userId),
       child: Scaffold(
         appBar: ActivityAppBar("My Activity History"),
         body: Consumer<ActivityViewModel>(
