@@ -1,6 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:runstat/core/utils/helpers.dart';
 
 import '../../core/constants/colors.dart';
 import '../../core/constants/images.dart';
@@ -8,8 +12,26 @@ import '../../viewmodels/profile_viewmodel.dart';
 import '../widgets/activity_app_bar.dart';
 import '../widgets/profile_menu_widget.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+class _ProfilePageState extends State<ProfilePage> {
+  Uint8List? _image; // Seçilen resim burada tutulacak
+
+  void selectImage() async {
+    Uint8List? img = await pickImage(ImageSource.gallery);
+    if (img != null) {
+      setState(() {
+        _image = img; // Seçilen resmi _image değişkenine atayarak sayfa güncellemesi
+      });
+    } else {
+      print("Error or no image selected");
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +56,8 @@ class ProfilePage extends StatelessWidget {
               ),
             );
           }
-
           var userData = viewModel.userData!;
+          String userId = userData['id']; // Kullanıcı ID'si, userData'dan alınmalı
 
           return Scaffold(
             appBar: ActivityAppBar(
@@ -57,7 +79,12 @@ class ProfilePage extends StatelessWidget {
                         height: 120,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(150),
-                          child: const Image(
+                          child: _image != null
+                              ? Image.memory(
+                            _image!,
+                            fit: BoxFit.cover,
+                          )
+                              : const Image(
                             image: AssetImage(rsDefaultUserPic),
                           ),
                         ),
@@ -65,22 +92,26 @@ class ProfilePage extends StatelessWidget {
                       Positioned(
                         bottom: 0,
                         right: 0,
-                        child: Container(
-                          width: 35,
-                          height: 35,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: blue.withOpacity(0.1),
-                          ),
-                          child: Icon(
-                            LineAwesomeIcons.edit_solid,
-                            size: 18.0,
-                            color: darkBlue,
+                        child: GestureDetector(
+                          onTap: selectImage,
+                          child: Container(
+                            width: 35,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100),
+                              color: blue.withOpacity(0.1),
+                            ),
+                            child: Icon(
+                              Icons.add_a_photo,
+                              size: 18.0,
+                              color: darkBlue,
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
+
                   const SizedBox(height: 10),
                   Text(
                     userData['fullName'] ?? 'No Information',
@@ -105,6 +136,21 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 20),
+                  // Yeni eklenen Save Profile Picture butonu
+                  if (_image != null)
+                    ElevatedButton(
+                      onPressed: () {
+                        viewModel.saveProfileImage(_image!, userId); // Resmi kaydet
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: darkBlue,
+                      ),
+                      child: const Text(
+                        "Save Profile Picture",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
                   const SizedBox(height: 30),
                   const Divider(),
                   const SizedBox(height: 10),

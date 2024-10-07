@@ -58,7 +58,7 @@ class LoginFormWidget extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: TextButton(
               onPressed: () {
-                // Şifre unuttum işlemi buraya gelebilir.
+                // Şifre unuttum işlemi
               },
               child: const Text("Forget Password"),
             ),

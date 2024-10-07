@@ -97,7 +97,7 @@ class _MapPageState extends State<MapPage> {
                         ),
                       ),
                       Text(
-                        "(${mapViewModel.distance.toStringAsFixed(2)} km )",
+                        "${mapViewModel.distance.toStringAsFixed(2)} m",
                         style: const TextStyle(fontSize: 16),
                       ),
                     ],

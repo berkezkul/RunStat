@@ -35,13 +35,14 @@ class ActivityHistoryPage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                   child: Card(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0), // Köşeleri yuvarlat
+                      borderRadius: BorderRadius.circular(12.0),
+                      side: BorderSide(color: darkBlue, width: 2.0), // Lacivert kenarlık
                     ),
                     elevation: 4.0, // Gölgelendirme
                     child: ListTile(
                       leading: Icon(Icons.directions_run, color: darkBlue, size: 40),
                       title: Text(formattedDate),
-                      subtitle: Text('Distance: ${activity.distance.toStringAsFixed(1)} meters'), // Distance formatlandı
+                      subtitle: Text('${activity.distance.toStringAsFixed(1)} meters'), // Distance formatlandı
                       onTap: () {
                         Navigator.push(
                           context,
@@ -60,12 +61,14 @@ class ActivityHistoryPage extends StatelessWidget {
                           );
                         },
                         style: ElevatedButton.styleFrom(
+                          backgroundColor: blue2,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                         ),
-                        child: Text('Detail', style: TextStyle(color: darkBlue)),
+                        child: Text('Detail', style: TextStyle(color: Colors.white)),
                       ),
                     ),
                   ),
+
                 );
               },
             );

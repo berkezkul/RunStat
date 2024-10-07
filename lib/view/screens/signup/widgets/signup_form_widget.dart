@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:runstat/view/screens/bottom_navigation_bar.dart';
+import 'package:runstat/view/screens/login/login_screen.dart';
 import 'package:runstat/viewmodels/signup_viewmodel.dart';
+
+import '../../../../core/constants/colors.dart';
 
 class SignupFormWidget extends StatelessWidget {
   const SignupFormWidget({super.key});
@@ -118,8 +122,22 @@ class SignupFormWidget extends StatelessWidget {
                       phoneNoController.text.trim(),
                     );
                   }
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const BottomNavigationPage()),
+                  );
                 },
-                child: const Text("Signup"),
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                        (Set<WidgetState> states) {
+                      if (states.contains(WidgetState.pressed) || states.contains(WidgetState.focused)) {
+                        return blue2;  // Buton basılıyken veya odaktayken 'blue'
+                      }
+                      return darkBlue;  // Buton normal durumda 'darkBlue'
+                    },
+                  ),
+                ),
+                child: const Text("Signup", style: TextStyle(color: Colors.white),),
               ),
             ),
           ],

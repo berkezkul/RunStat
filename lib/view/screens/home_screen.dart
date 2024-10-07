@@ -43,10 +43,10 @@ class HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Text(
-              rsOnBoardingTitle1,
+              rsAppTagLine,
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: screenWidth / 12,
+                  fontSize: screenWidth / 14,
                   color: textDarkColor,
                   fontWeight: FontWeight.bold),
             ),
@@ -69,11 +69,11 @@ class HomePageState extends State<HomePage> {
                           MaterialPageRoute(
                               builder: (context) => const LoginPage()));
                     },
-                    style: ElevatedButton.styleFrom(backgroundColor: blue2),
+                    style: ElevatedButton.styleFrom(backgroundColor: darkBlue),
                     child: Text(
                       rsLogin,
                       style:
-                      TextStyle(color: white, fontWeight: FontWeight.bold),
+                      TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                   ),
                 ),
@@ -86,11 +86,11 @@ class HomePageState extends State<HomePage> {
                           MaterialPageRoute(
                               builder: (context) => const SignupPage()));
                     },
-                    style: TextButton.styleFrom(backgroundColor: blue2),
+                    style: TextButton.styleFrom(backgroundColor: darkBlue),
                     child: Text(
                       rsSignup,
                       style:
-                      TextStyle(color: white, fontWeight: FontWeight.bold),
+                      TextStyle(color: white, fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                   ),
                 ),

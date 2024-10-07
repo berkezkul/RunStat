@@ -6,6 +6,7 @@ import 'package:runstat/core/constants/text.dart';
 import '../../../../core/constants/images.dart';
 import '../../../../data/services/auth_service.dart';
 import '../../bottom_navigation_bar.dart';
+import '../../login/login_screen.dart';
 
 class SignupFootterWidget extends StatelessWidget {
   const SignupFootterWidget({
@@ -54,7 +55,12 @@ class SignupFootterWidget extends StatelessWidget {
           ),
         ),
         TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+              );
+            },
             child: Text.rich(TextSpan(children: [
               TextSpan(
                   text: "Already have an account?",

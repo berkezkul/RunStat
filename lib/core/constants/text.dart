@@ -14,7 +14,7 @@ const String rsSignInWithGoogle = "Sign-In with Google";
 
 // -- Splash Screen Text
 const String rsAppName = ".appable/";
-const String rsAppTagLine = "Run, Measure, Improve. \nReach Your Goals!";
+const String rsAppTagLine = "Run, Measure, Improve \nReach Your Goals!";
 
 
 // -- On Boarding rsext
@@ -42,8 +42,8 @@ const String rsDontHaveAnAccount = "Don't have an account? ";
 
 
 // -- Sign Up Screen Text
-const String rsSignUpTitle = "Get On Board!";
-const String rsSignUpSubTitle = "Create your profile to start your Journey.";
+const String rsSignUpTitle = "Join the world of Run Stat!";
+const String rsSignUpSubTitle = "Track your runs, reach your goals!";
 const String rsAlreadyHaveAnAccount = "Already have an account? ";
 
 
