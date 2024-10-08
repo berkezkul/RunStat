@@ -57,7 +57,7 @@ class _ProfilePageState extends State<ProfilePage> {
             );
           }
           var userData = viewModel.userData!;
-          String userId = userData['id']; // Kullanıcı ID'si, userData'dan alınmalı
+          String userId = userData['id'] ?? ''; // Kullanıcı ID'si, userData'dan alınmalı
 
           return Scaffold(
             appBar: ActivityAppBar(

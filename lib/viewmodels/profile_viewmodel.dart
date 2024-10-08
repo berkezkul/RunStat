@@ -1,11 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'dart:typed_data';
-
+import '../data/services/firebase_service.dart';
 
 class ProfileViewModel extends ChangeNotifier {
+  final FirebaseService _firebaseService = FirebaseService();
+
   Map<String, dynamic>? _userData;
   List<Map<String, dynamic>> _runsData = [];
   bool _isLoading = true;
@@ -20,24 +19,23 @@ class ProfileViewModel extends ChangeNotifier {
 
   Future<void> _fetchUserDataAndRuns() async {
     try {
-      // Kullanıcı bilgilerini users koleksiyonundan al
-      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(FirebaseAuth.instance.currentUser?.uid)
-          .get();
-      _userData = userSnapshot.data() as Map<String, dynamic>?;
+      _isLoading = true;
+      notifyListeners();
 
-      // Kullanıcının aktivitelerini runs koleksiyonundan al
-      QuerySnapshot runsSnapshot = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(FirebaseAuth.instance.currentUser?.uid)
-          .collection('runs')
-          .get();
+      _userData = await _firebaseService.getUserData();
 
-      // runs verilerini bir listeye dönüştür
-      _runsData = runsSnapshot.docs
-          .map((doc) => doc.data() as Map<String, dynamic>)
-          .toList();
+      // Kullanıcı verisi null değilse ve profil resmi yoksa, varsayılan resim atanıyor
+      if (_userData != null) {
+        if (_userData!['profilePicture'] == null || _userData!['profilePicture'] is! String || _userData!['profilePicture'].isEmpty) {
+          String defaultProfilePictureUrl = await _firebaseService.getDefaultProfilePictureUrl();
+          _userData!['profilePicture'] = defaultProfilePictureUrl;
+        }
+      } else {
+        print("User data is null.");
+      }
+
+      print("User Data: $_userData");
+      _runsData = await _firebaseService.getUserRuns();
     } catch (e) {
       print("Error fetching user data or runs: $e");
     } finally {
@@ -47,40 +45,32 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   Future<bool> logout(BuildContext context) async {
-    try {
-      await FirebaseAuth.instance.signOut();
-      return true; // Çıkış işlemi başarılı
-    } catch (e) {
-      print("Error during logout: $e");
-      return false; // Çıkış işlemi başarısız
-    }
+    bool success = await _firebaseService.logout();
+    return success;
   }
-
 
   Future<void> saveProfileImage(Uint8List imageBytes, String userId) async {
     try {
+      if (_userData == null) {
+        print("User data is not available to update profile picture.");
+        return;
+      }
+
       _isLoading = true;
       notifyListeners();
 
-      // Firebase Storage'a yükleme
-      Reference storageRef = FirebaseStorage.instance
-          .ref()
-          .child('profile_pictures')
-          .child('$userId.jpg');
 
-      UploadTask uploadTask = storageRef.putData(imageBytes);
-      TaskSnapshot snapshot = await uploadTask;
 
-      // Yüklenen resmin URL'sini alıyoruz
-      String downloadUrl = await snapshot.ref.getDownloadURL();
+      // Resmi Firebase Storage'a yükle
+      String downloadUrl = await _firebaseService.uploadProfileImage(imageBytes, userId);
 
-      // Firestore'da kullanıcı verilerini güncelleme
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .update({'profilePicture': downloadUrl});
+      // Kullanıcı profil resmini Firestore'da güncelle
+      if (downloadUrl.isNotEmpty) {
+        await _firebaseService.updateUserProfilePicture(userId, downloadUrl);
 
-      userData!['profilePicture'] = downloadUrl; // local olarak güncelle
+        // Güncellenen URL'i local olarak güncelle
+        _userData!['profilePicture'] = downloadUrl;
+      }
     } catch (e) {
       print("Error saving profile picture: $e");
     } finally {
