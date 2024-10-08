@@ -8,22 +8,26 @@ class FirebaseService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  Future<Map<String, dynamic>?> getUserData() async {
-    try {
-      String? userId = _auth.currentUser?.uid;
-      if (userId == null) {
-        print("User ID is null");
-        return null;
-      }
+  Future<String?> _getCurrentUserId() async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      return user.uid;
+    } else {
+      print("User is not logged in");
+      return null;
+    }
+  }
 
+
+  Future<Map<String, dynamic>?> getUserData() async {
+    String? userId = await _getCurrentUserId(); // Kullanıcı ID'sini güvenli bir şekilde alıyoruz
+    if (userId == null) {
+      return null;
+    }
+
+    try {
       DocumentSnapshot userSnapshot = await _firestore.collection('users').doc(userId).get();
-      if (userSnapshot.exists && userSnapshot.data() != null) {
-        print("User data fetched successfully: ${userSnapshot.data()}");
-        return userSnapshot.data() as Map<String, dynamic>?;
-      } else {
-        print("User data does not exist or is null.");
-        return null;
-      }
+      return userSnapshot.data() as Map<String, dynamic>?;
     } catch (e) {
       print("Error fetching user data: $e");
       return null;
@@ -31,13 +35,13 @@ class FirebaseService {
   }
 
   Future<List<Map<String, dynamic>>> getUserRuns() async {
-    try {
-      String? userId = _auth.currentUser?.uid;
-      if (userId == null) {
-        print("User ID is null");
-        return [];
-      }
+    String? userId = _auth.currentUser?.uid;
+    if (userId == null) {
+      print("User ID is null");
+      return [];
+    }
 
+    try {
       QuerySnapshot runsSnapshot = await _firestore.collection('users').doc(userId).collection('runs').get();
       return runsSnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
     } catch (e) {
@@ -56,42 +60,57 @@ class FirebaseService {
     }
   }
 
-  // Default profil resminin URL'sini alma
   Future<String> getDefaultProfilePictureUrl() async {
     try {
-      String defaultImageUrl = await _storage
-          .ref('profile_pictures/default_user.png') // Depolama yolunu belirtiyoruz
-          .getDownloadURL(); // Download URL'sini alıyoruz
-
-      return defaultImageUrl; // URL'yi geri döndürüyoruz
+      return await _storage.ref('profile_pictures/default_user.png').getDownloadURL();
     } catch (e) {
       print("Error fetching default profile picture URL: $e");
-      return ''; // Hata durumunda boş string döndürüyoruz
+      return '';
     }
   }
 
-  Future<void> updateUserProfilePicture(String userId, String downloadUrl) async {
-    if (userId.isEmpty || downloadUrl.isEmpty) {
+  Future<void> updateUserProfilePicture(String? userId, String? downloadUrl) async {
+    // Kullanıcı ID'sini yine güvenli bir şekilde alıyoruz
+    //userId = userId ?? await _getCurrentUserId();
+
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    String? userId = currentUser?.uid;
+
+
+
+    if (userId == null || userId.isEmpty || downloadUrl == null || downloadUrl.isEmpty) {
       print("Invalid user ID or download URL");
       return;
     }
+
     try {
+      // Firestore'da kullanıcının profil fotoğrafı alanını güncelliyoruz
       await _firestore.collection('users').doc(userId).update({'profilePicture': downloadUrl});
+      print("Profile picture updated successfully for user: $userId");
     } catch (e) {
       print("Error updating profile picture: $e");
     }
   }
 
-  Future<String> uploadProfileImage(Uint8List imageBytes, String userId) async {
+  Future<String> uploadProfileImage(Uint8List imageBytes, String? userId) async {
+    // Eğer userId null ise, oturum açan kullanıcı ID'sini alıyoruz
+    //userId = userId ?? await _getCurrentUserId();
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    String? userId = currentUser?.uid;
 
-    if (userId.isEmpty || imageBytes.isEmpty) {
+
+    // Eğer userId ya da imageBytes boşsa işlemi durduruyoruz
+    if (userId == null || imageBytes.isEmpty) {
       print("Invalid user ID or image bytes");
       return '';
     }
+
     try {
+      // Firebase Storage'a resmi yüklüyoruz
       Reference storageRef = _storage.ref().child('profile_pictures/$userId.jpg');
-      UploadTask uploadTask = storageRef.putData(imageBytes);
-      TaskSnapshot snapshot = await uploadTask;
+      TaskSnapshot snapshot = await storageRef.putData(imageBytes);
+
+      // Yükleme başarılıysa indirme URL'sini döndürüyoruz
       return await snapshot.ref.getDownloadURL();
     } catch (e) {
       print("Error uploading profile image: $e");

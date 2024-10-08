@@ -124,7 +124,7 @@ class SignupFormWidget extends StatelessWidget {
                   }
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const BottomNavigationPage()),
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
                   );
                 },
                 style: ButtonStyle(

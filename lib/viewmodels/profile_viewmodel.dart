@@ -18,64 +18,52 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   Future<void> _fetchUserDataAndRuns() async {
+    _setLoading(true);
     try {
-      _isLoading = true;
-      notifyListeners();
-
       _userData = await _firebaseService.getUserData();
 
-      // Kullanıcı verisi null değilse ve profil resmi yoksa, varsayılan resim atanıyor
-      if (_userData != null) {
-        if (_userData!['profilePicture'] == null || _userData!['profilePicture'] is! String || _userData!['profilePicture'].isEmpty) {
-          String defaultProfilePictureUrl = await _firebaseService.getDefaultProfilePictureUrl();
-          _userData!['profilePicture'] = defaultProfilePictureUrl;
-        }
-      } else {
-        print("User data is null.");
+      if (_userData != null && !_hasValidProfilePicture(_userData!['profilePicture'])) {
+        String defaultProfilePictureUrl = await _firebaseService.getDefaultProfilePictureUrl();
+        _userData!['profilePicture'] = defaultProfilePictureUrl;
       }
-
-      print("User Data: $_userData");
       _runsData = await _firebaseService.getUserRuns();
     } catch (e) {
       print("Error fetching user data or runs: $e");
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _setLoading(false);
     }
   }
 
+  bool _hasValidProfilePicture(String? profilePicture) {
+    return profilePicture != null && profilePicture is String && profilePicture.isNotEmpty;
+  }
+
+  void _setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
   Future<bool> logout(BuildContext context) async {
-    bool success = await _firebaseService.logout();
-    return success;
+    return await _firebaseService.logout();
   }
 
   Future<void> saveProfileImage(Uint8List imageBytes, String userId) async {
+    if (_userData == null) {
+      print("User data is not available to update profile picture.");
+      return;
+    }
+
+    _setLoading(true);
     try {
-      if (_userData == null) {
-        print("User data is not available to update profile picture.");
-        return;
-      }
-
-      _isLoading = true;
-      notifyListeners();
-
-
-
-      // Resmi Firebase Storage'a yükle
       String downloadUrl = await _firebaseService.uploadProfileImage(imageBytes, userId);
-
-      // Kullanıcı profil resmini Firestore'da güncelle
       if (downloadUrl.isNotEmpty) {
         await _firebaseService.updateUserProfilePicture(userId, downloadUrl);
-
-        // Güncellenen URL'i local olarak güncelle
         _userData!['profilePicture'] = downloadUrl;
       }
     } catch (e) {
       print("Error saving profile picture: $e");
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _setLoading(false);
     }
   }
 }
