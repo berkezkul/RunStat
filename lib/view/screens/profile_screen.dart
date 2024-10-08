@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:runstat/core/utils/helpers.dart';
+import 'package:runstat/core/utils/helpers/image_helper.dart';
 
 import '../../core/constants/colors.dart';
 import '../../core/constants/images.dart';
@@ -25,13 +25,12 @@ class _ProfilePageState extends State<ProfilePage> {
     Uint8List? img = await pickImage(ImageSource.gallery);
     if (img != null) {
       setState(() {
-        _image = img; // Seçilen resmi _image değişkenine atayarak sayfa güncellemesi
+        _image = img;
       });
     } else {
       print("Error or no image selected");
     }
   }
-
 
   @override
   Widget build(BuildContext context) {

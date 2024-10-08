@@ -1,5 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:runstat/data/repositories/auth_repo/login_with_email_and_password_failure.dart';
+import 'package:runstat/data/repositories/auth_repo/login_with_email_and_password_failure.dart';
+import 'package:runstat/data/repositories/auth_repo/signup_google_failure.dart';
+
+import '../repositories/auth_repo/signup_with_email_and_password_failure.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -13,9 +18,12 @@ class AuthService {
         password: password,
       );
       return result.user;
+    } on FirebaseAuthException catch (e) {
+      print('Login Error: $e');
+      throw LoginWithEmailAndPasswordFailure.code(e.code);
     } catch (e) {
       print('Login Error: $e');
-      return null;
+      throw const LoginWithEmailAndPasswordFailure();
     }
   }
 
@@ -27,9 +35,12 @@ class AuthService {
         password: password,
       );
       return result.user;
+    } on FirebaseAuthException catch (e) {
+      print('Login Error: $e');
+      throw SignUpWithEmailAndPasswordFailure.code(e.code);
     } catch (e) {
-      print('Registration Error: $e');
-      return null;
+      print('Login Error: $e');
+      throw const SignUpWithEmailAndPasswordFailure();
     }
   }
 
@@ -68,7 +79,7 @@ class AuthService {
       return userCredential.user;
     } catch (e) {
       print('Google Sign-In Error: $e');
-      return null;
+      throw const SignupGoogleFailure();
     }
   }
 

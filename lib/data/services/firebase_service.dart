@@ -96,7 +96,7 @@ class FirebaseService {
     // Eğer userId null ise, oturum açan kullanıcı ID'sini alıyoruz
     //userId = userId ?? await _getCurrentUserId();
     User? currentUser = FirebaseAuth.instance.currentUser;
-    String? userId = currentUser?.uid;
+    String? userId = currentUser?.uid; // Eğer currentUser null ise, parametreyi kullan
 
 
     // Eğer userId ya da imageBytes boşsa işlemi durduruyoruz

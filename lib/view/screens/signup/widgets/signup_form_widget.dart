@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:runstat/view/screens/bottom_navigation_bar.dart';
 import 'package:runstat/view/screens/login/login_screen.dart';
 import 'package:runstat/viewmodels/signup_viewmodel.dart';
-
 import '../../../../core/constants/colors.dart';
+import '../../../../core/utils/helpers/snackbar_helper.dart'; // Helper sınıfını içe aktarın
 
 class SignupFormWidget extends StatelessWidget {
   const SignupFormWidget({super.key});
@@ -59,10 +59,7 @@ class SignupFormWidget extends StatelessWidget {
                 prefixIcon: const Icon(Icons.email_outlined),
               ),
               validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Please enter your email";
-                }
-                return null;
+                return SnackbarHelper.validateEmail(value); // Email doğrulama
               },
             ),
             const SizedBox(height: 10.0),
@@ -90,6 +87,7 @@ class SignupFormWidget extends StatelessWidget {
             // Password Field
             TextFormField(
               controller: passwordController,
+              obscureText: true, // Parolayı gizle
               decoration: InputDecoration(
                 label: const Text("Password"),
                 hintText: "Create password (min 6 characters)",
@@ -120,12 +118,22 @@ class SignupFormWidget extends StatelessWidget {
                       passwordController.text.trim(),
                       fullNameController.text.trim(),
                       phoneNoController.text.trim(),
-                    );
+                    ).then((result) {
+                      if (result == true) {
+                        SnackbarHelper.successSnackBar(context,
+                            title: "Başarılı",
+                            message: "Kayıt işlemi başarılı!");
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const LoginPage()),
+                        );
+                      } else {
+                        SnackbarHelper.errorSnackBar(context,
+                            title: "Hata",
+                            message: "Kayıt işlemi başarısız.");
+                      }
+                    });
                   }
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
-                  );
                 },
                 style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.resolveWith<Color>(
@@ -137,7 +145,7 @@ class SignupFormWidget extends StatelessWidget {
                     },
                   ),
                 ),
-                child: const Text("Signup", style: TextStyle(color: Colors.white),),
+                child: const Text("Signup", style: TextStyle(color: Colors.white)),
               ),
             ),
           ],

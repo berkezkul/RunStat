@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:typed_data';
 import '../data/services/firebase_service.dart';
@@ -48,17 +50,16 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   Future<void> saveProfileImage(Uint8List imageBytes, String userId) async {
-    if (_userData == null) {
-      print("User data is not available to update profile picture.");
-      return;
-    }
-
     _setLoading(true);
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    String? userId = currentUser?.uid;
+
     try {
       String downloadUrl = await _firebaseService.uploadProfileImage(imageBytes, userId);
       if (downloadUrl.isNotEmpty) {
         await _firebaseService.updateUserProfilePicture(userId, downloadUrl);
-        _userData!['profilePicture'] = downloadUrl;
+        _userData!['profilePicture'] = downloadUrl; // Profil resmini güncelleme
+        notifyListeners(); // Güncellemeleri dinleyicilere bildirme
       }
     } catch (e) {
       print("Error saving profile picture: $e");
@@ -66,4 +67,6 @@ class ProfileViewModel extends ChangeNotifier {
       _setLoading(false);
     }
   }
+
 }
+

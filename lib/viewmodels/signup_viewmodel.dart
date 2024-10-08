@@ -14,17 +14,16 @@ class SignupViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> registerUser(String email, String password, String fullName, String phoneNo) async {
+  Future<bool> registerUser(String email, String password, String fullName, String phoneNo) async {
     try {
       _setLoading(true);
 
       // Create user with email and password
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      UserCredential userCredential = await _auth
+          .createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-
-      //String userId = userCredential.user!.uid;
 
       if (userCredential.user != null) {
         // Save additional user info to Firestore
@@ -34,12 +33,14 @@ class SignupViewModel extends ChangeNotifier {
           'phoneNo': phoneNo,
           'signupDate': DateTime.now().toIso8601String(), // Store signup date
         });
+        return true;
       }
 
-
+      return false;
     } catch (e) {
       // Handle sign-up error
       print("Signup error: $e");
+      return false;
     } finally {
       _setLoading(false);
     }
