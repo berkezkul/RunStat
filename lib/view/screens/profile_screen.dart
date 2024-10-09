@@ -19,18 +19,9 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 class _ProfilePageState extends State<ProfilePage> {
-  Uint8List? _image; // Seçilen resim burada tutulacak
 
-  void selectImage() async {
-    Uint8List? img = await pickImage(ImageSource.gallery);
-    if (img != null) {
-      setState(() {
-        _image = img;
-      });
-    } else {
-      print("Error or no image selected");
-    }
-  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -78,9 +69,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         height: 120,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(150),
-                          child: _image != null
-                              ? Image.memory(
-                            _image!,
+                          child: viewModel.userData!['profilePicture'] != null
+                              ? Image.network(
+                            viewModel.userData!['profilePicture'], // Güncellenmiş profil resmi
                             fit: BoxFit.cover,
                           )
                               : const Image(
@@ -88,6 +79,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                       ),
+                      /*
                       Positioned(
                         bottom: 0,
                         right: 0,
@@ -108,6 +100,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                       ),
+                      */
                     ],
                   ),
 
@@ -136,20 +129,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  // Yeni eklenen Save Profile Picture butonu
-                  if (_image != null)
-                    ElevatedButton(
-                      onPressed: () {
-                        viewModel.saveProfileImage(_image!, userId); // Resmi kaydet
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: darkBlue,
-                      ),
-                      child: const Text(
-                        "Save Profile Picture",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
+
                   const SizedBox(height: 30),
                   const Divider(),
                   const SizedBox(height: 10),

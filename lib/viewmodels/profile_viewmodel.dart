@@ -49,24 +49,7 @@ class ProfileViewModel extends ChangeNotifier {
     return await _firebaseService.logout();
   }
 
-  Future<void> saveProfileImage(Uint8List imageBytes, String userId) async {
-    _setLoading(true);
-    User? currentUser = FirebaseAuth.instance.currentUser;
-    String? userId = currentUser?.uid;
 
-    try {
-      String downloadUrl = await _firebaseService.uploadProfileImage(imageBytes, userId);
-      if (downloadUrl.isNotEmpty) {
-        await _firebaseService.updateUserProfilePicture(userId, downloadUrl);
-        _userData!['profilePicture'] = downloadUrl; // Profil resmini güncelleme
-        notifyListeners(); // Güncellemeleri dinleyicilere bildirme
-      }
-    } catch (e) {
-      print("Error saving profile picture: $e");
-    } finally {
-      _setLoading(false);
-    }
-  }
 
 }
 
