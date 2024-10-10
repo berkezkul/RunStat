@@ -44,15 +44,28 @@ class DashboardPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      ElevatedButton(
-                        onPressed: () {
-                          viewModel.saveGoal();
+                      // InkWell ile buton sarmalama
+                      InkWell(
+                        onTap: () {
+                          viewModel.saveGoal(); // Butona tıklanıldığında kaydet
                         },
-                        style: ElevatedButton.styleFrom(backgroundColor: darkBlue, shape: const RoundedRectangleBorder()),
-                        child: Text("Save", style: TextStyle(color: whiteBlue)),
+                        child: Container(
+                          height: 50,
+                          width: 80,
+                          decoration: BoxDecoration(
+                            color: darkBlue, // Buton rengi
+                            borderRadius: BorderRadius.circular(8), // Kenarları yuvarlatma
+                          ),
+                          alignment: Alignment.center, // Buton içeriğini ortalama
+                          child: Text(
+                            "Save",
+                            style: TextStyle(color: whiteBlue, fontSize: 16, fontWeight: FontWeight.bold), // Metin rengi
+                          ),
+                        ),
                       ),
                     ],
                   ),
+
                   const SizedBox(height: 40),
                   Center(
                     child: CircularPercentIndicator(
