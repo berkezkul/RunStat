@@ -5,6 +5,7 @@ import 'package:runstat/core/constants/text.dart';
 import 'package:runstat/view/screens/signup/signup_screen.dart';
 
 import 'login/login_screen.dart';
+import 'onboarding/app_onboarding.dart';
 //import 'package:runstat/core/features/authentication/screens/login/login_page.dart';
 //import 'package:runstat/core/features/authentication/screens/signup/signup_page.dart';
 
@@ -47,6 +48,7 @@ class HomePageState extends State<HomePage> {
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
                   fontFamily: "Montserrat",
                   fontSize: screenWidth / 14,
                   color: darkBlue),
@@ -85,7 +87,7 @@ class HomePageState extends State<HomePage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const SignupPage()));
+                              builder: (context) => AppOnBoarding()));
                     },
                     style: TextButton.styleFrom(backgroundColor: darkBlue),
                     child: Text(

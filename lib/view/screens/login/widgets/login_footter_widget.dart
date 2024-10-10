@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/constants/images.dart';
+
 class LoginFootterWidget extends StatelessWidget {
   const LoginFootterWidget({super.key});
 
@@ -13,7 +15,10 @@ class LoginFootterWidget extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           child: OutlinedButton.icon(
-            icon: const Icon(Icons.account_circle),
+            icon: const Image(
+              image: AssetImage(rsGoogleLogoImage),
+              width: 20.0,
+            ),
             onPressed: () {
               // Google ile giriş işlemi buraya gelebilir.
             },
@@ -23,7 +28,7 @@ class LoginFootterWidget extends StatelessWidget {
         const SizedBox(height: 10),
         TextButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/signup');
+            Navigator.pushNamed(context, '/SignupPage');
           },
           child: const Text.rich(
             TextSpan(

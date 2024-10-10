@@ -24,3 +24,11 @@ const String rsPasswordImage6 = "assets/images/password_screen6.png";
 //Profile Images
 const String rsProfilePic = "assets/images/profil_pic.jpeg";
 const String rsDefaultUserPic = "assets/images/default_user.png";
+
+//OnBoarding Images
+
+const String rsOnBoarding2 = "assets/images/onboarding2.png";
+const String rsOnBoarding3 = "assets/images/onboarding3.png";
+const String rsOnBoarding_2 = "assets/images/onBoarding_2.png";
+
+

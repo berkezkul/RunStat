@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:runstat/viewmodels/login_viewmodel.dart';
+import '../../../core/constants/colors.dart';
 import 'widgets/login_header_widget.dart';
 import 'widgets/login_form_widget.dart';
 import 'widgets/login_footter_widget.dart';
@@ -10,11 +11,20 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var screenInformation = MediaQuery.of(context).size;
+
     return ChangeNotifierProvider(
       create: (context) => LoginViewModel(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("RunStat"),
+          title: Text(
+            "RunStat",
+            style: TextStyle(
+                color: darkBlue,
+                fontFamily: "Roboto Bold",
+                fontSize: screenInformation.width / 16),
+          ),
+          backgroundColor: blue,
           centerTitle: true,
         ),
         body: const SingleChildScrollView(

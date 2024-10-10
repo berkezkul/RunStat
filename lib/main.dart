@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 //import 'package:runstat_app/src/utils/theme/theme.dart';
 //import 'package:flutter_deneme/src/screens/login/login_page.dart';
 import 'package:runstat/view/screens/home_screen.dart';
+import 'package:runstat/view/screens/onboarding/app_onboarding.dart';
+import 'package:runstat/view/screens/signup/signup_screen.dart';
 import 'package:runstat/view/screens/update_profile_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:runstat/viewmodels/map_viewmodel.dart';
@@ -54,6 +56,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => HomePage(), // Ana sayfanızın rotası
         '/UpdateProfilePage': (context) => UpdateProfilePage(),
+        '/SignupPage': (context) => SignupPage(),
 
       },
       //home: const HomePage(),
