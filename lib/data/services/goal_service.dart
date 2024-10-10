@@ -55,4 +55,20 @@ class GoalService {
 
     return totalDistance;
   }
+
+  Future<double> getGoalDistance() async {
+    User? user = _auth.currentUser;
+    DocumentSnapshot doc = await _firestore
+        .collection('users')
+        .doc(user?.uid)
+        .collection('goals')
+        .doc('today')
+        .get();
+
+    if (doc.exists) {
+      return doc['goalDistance']?.toDouble() ?? 0.0; // Eğer yoksa 0.0 döner
+    }
+    return 0.0; // Eğer hiç kaydedilmemişse 0.0 döner
+  }
+
 }

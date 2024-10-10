@@ -17,6 +17,7 @@ class DashboardViewModel extends ChangeNotifier {
   // Günlük tamamlanan mesafeyi getirir
   Future<void> fetchDailyDistance() async {
     _completedDistance = await _goalService.getDailyDistance();
+    _goalDistance = await _goalService.getGoalDistance(); // Burada hedef mesafeyi alıyoruz
     _updatePercentage();
     notifyListeners();
   }

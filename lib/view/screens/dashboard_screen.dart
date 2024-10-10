@@ -48,8 +48,8 @@ class DashboardPage extends StatelessWidget {
                         onPressed: () {
                           viewModel.saveGoal();
                         },
-                        style: ElevatedButton.styleFrom(backgroundColor: blue, shape: const RoundedRectangleBorder()),
-                        child: Text("Create", style: TextStyle(color: darkBlue)),
+                        style: ElevatedButton.styleFrom(backgroundColor: darkBlue, shape: const RoundedRectangleBorder()),
+                        child: Text("Save", style: TextStyle(color: whiteBlue)),
                       ),
                     ],
                   ),
