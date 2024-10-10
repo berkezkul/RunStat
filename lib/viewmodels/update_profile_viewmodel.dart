@@ -5,8 +5,6 @@ import 'package:image_picker/image_picker.dart';
 import '../data/services/firebase_service.dart';
 import 'dart:typed_data';
 
-
-
 class UpdateProfileViewModel extends ChangeNotifier {
   final FirebaseService _firebaseService = FirebaseService();
 
@@ -35,7 +33,6 @@ class UpdateProfileViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-
   void selectImage() async {
     Uint8List? img = await ImagePicker().pickImage(source: ImageSource.gallery).then((xfile) => xfile?.readAsBytes());
     if (img != null) {
@@ -43,22 +40,6 @@ class UpdateProfileViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
-
-
-  Future<void> saveProfileImage() async {
-    if (profileImage != null) {
-      String? userId = FirebaseAuth.instance.currentUser?.uid;
-      if (userId != null) {
-        String downloadUrl = await _firebaseService.uploadProfileImage(profileImage!, userId);
-        await _firebaseService.updateUserProfilePicture(userId, downloadUrl);
-        notifyListeners();
-      }
-    }
-  }
-
-
-
-
 
   Future<void> _loadUserData() async {
     var userId = FirebaseAuth.instance.currentUser?.uid;
@@ -72,45 +53,28 @@ class UpdateProfileViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> updateProfile() async {
+  Future<void> updateProfile(BuildContext context) async {
     if (formKey.currentState?.validate() ?? false) {
       var userId = FirebaseAuth.instance.currentUser?.uid;
       try {
+        // Profil bilgilerini güncelleme
         await FirebaseFirestore.instance.collection('users').doc(userId).update({
           'fullName': fullNameController.text,
           'email': emailController.text,
           'phoneNo': phoneController.text,
-          // Şifre güncelleme işlemi eklenebilir
         });
-        // Başarılı güncelleme sonrası bir mesaj gösterebiliriz
+
+        // Eğer yeni bir profil resmi seçildiyse güncelle
+        if (profileImage != null) {
+          String downloadUrl = await _firebaseService.uploadProfileImage(profileImage!, userId!);
+          await _firebaseService.updateUserProfilePicture(userId, downloadUrl);
+        }
+        Navigator.of(context).pop(); // Önceki sayfaya dön
         notifyListeners();
       } catch (e) {
-        // Hata durumunda bir hata mesajı gösterebilirsiniz
+        // Hata durumunda bir mesaj gösterebiliriz
+        print("Error updating profile: $e");
       }
     }
   }
-
-
-/*
-  Future<void> saveProfileImage(Uint8List imageBytes, String userId) async {
-    _setLoading(true);
-    User? currentUser = FirebaseAuth.instance.currentUser;
-    String? userId = currentUser?.uid;
-
-    try {
-      String downloadUrl = await _firebaseService.uploadProfileImage(
-          imageBytes, userId);
-      if (downloadUrl.isNotEmpty) {
-        await _firebaseService.updateUserProfilePicture(userId, downloadUrl);
-        _userData!['profilePicture'] = downloadUrl; // Profil resmini güncelleme
-        notifyListeners(); // Güncellemeleri dinleyicilere bildirme
-      }
-    } catch (e) {
-      print("Error saving profile picture: $e");
-    } finally {
-      _setLoading(false);
-    }
-  }
-
- */
 }

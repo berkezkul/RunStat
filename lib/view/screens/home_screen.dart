@@ -46,9 +46,10 @@ class HomePageState extends State<HomePage> {
               rsAppTagLine,
               textAlign: TextAlign.center,
               style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "Montserrat",
                   fontSize: screenWidth / 14,
-                  color: textDarkColor,
-                  fontWeight: FontWeight.bold),
+                  color: darkBlue),
             ),
           ),
           Padding(

@@ -117,21 +117,12 @@ class UpdateProfilePage extends StatelessWidget {
                       ),
                       const SizedBox(height: 50),
                       ElevatedButton(
-                        onPressed: () => viewModel.updateProfile(),
+                        onPressed: () => viewModel.updateProfile(context),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: blue,
                         ),
                         child: const Text("Save Changes", style: TextStyle(color: Colors.white)),
                       ),
-                      const SizedBox(height: 20),
-                      if (viewModel.profileImage != null)
-                        ElevatedButton(
-                          onPressed: () => viewModel.saveProfileImage(),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: darkBlue,
-                          ),
-                          child: const Text("Save Profile Picture", style: TextStyle(color: Colors.white)),
-                        ),
                     ],
                   ),
                 ),
