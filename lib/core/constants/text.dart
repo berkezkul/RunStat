@@ -48,13 +48,22 @@ const String rsAlreadyHaveAnAccount = "Already have an account? ";
 
 
 // -- Forget Password Text
-const String rsForgetPasswordTitle = "Make Selection!";
+const String rsForgetPasswordSelection = "Make Selection!";
+const String rsForgetPasswordTitle = "Forget Password!";
 const String rsForgetPasswordSubTitle = "Select one of the options given below to reset your password.";
 const String rsResetViaEMail = "Reset via Mail Verification";
 const String rsResetViaPhone = "Reset via Phone Verification";
 
 // -- Forget Password Via Phone - Text
-const String rsForgetPhoneSubTitle = "Enter your registered Phone No to receive OTP";
+const String rsForgetPhoneSubTitle = "Don't worry! Enter your phone number to "
+    "create a new password, and we'll help you recover your account.";
 
 // -- Forget Password Via E-Mail - Text
-const String rsForgetMailSubTitle = "Enter your registered E-Mail to receive OTP";
+const String rsForgetMailSubTitle = "Don't worry! Enter your email address to "
+    "create a new password, and we'll help you recover your account.";
+
+//  -- OTP Screen
+const String rsOtpTitle = "CO\nDE";
+const String rsOtpSubtitle = "Verification";
+const String rsOtpMessage = "Enter the verification code sent at";
+

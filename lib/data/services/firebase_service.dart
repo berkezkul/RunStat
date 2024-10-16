@@ -117,4 +117,18 @@ class FirebaseService {
       return '';
     }
   }
+
+
+
+  Future<Uint8List?> downloadProfileImage(String imageUrl) async {
+    try {
+      Reference ref = FirebaseStorage.instance.refFromURL(imageUrl);
+      final data = await ref.getData();
+      return data;
+    } catch (e) {
+      print("Error downloading profile image: $e");
+      return null;
+    }
+  }
+
 }

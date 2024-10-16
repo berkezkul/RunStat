@@ -9,8 +9,9 @@ const String rsWelcomeImage = "assets/images/welcome_screen_image.png";
 const String rsForgetPasswordImage = "assets/images/forget_password.png";
 const String rsGoogleLogoImage = "assets/images/google_logo.png";
 
-// -- Homepage Images
+// -- Welcome Images
 const String rsHomepageImage = "assets/images/app_homepage.png";
+const String rsHomepageImage2 = "assets/images/runstat_welcome.jpg";
 
 // --Password Images
 

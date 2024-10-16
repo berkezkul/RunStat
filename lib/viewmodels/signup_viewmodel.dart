@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:runstat/data/repositories/auth_repo/signup_with_email_and_password_failure.dart';
 
 class SignupViewModel extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -8,6 +9,8 @@ class SignupViewModel extends ChangeNotifier {
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
+  String? errorMessage;
+
 
   void _setLoading(bool value) {
     _isLoading = value;
@@ -37,9 +40,11 @@ class SignupViewModel extends ChangeNotifier {
       }
 
       return false;
+    }  on FirebaseAuthException catch (e) {
+      errorMessage = SignUpWithEmailAndPasswordFailure.code(e.code).message;
+      return false;
     } catch (e) {
-      // Handle sign-up error
-      print("Signup error: $e");
+      errorMessage = "An unknown error occurred.";
       return false;
     } finally {
       _setLoading(false);

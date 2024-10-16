@@ -4,14 +4,19 @@ import 'package:provider/provider.dart';
 import '../../core/constants/colors.dart';
 import '../../viewmodels/dashboard_viewmodel.dart';
 import '../widgets/activity_app_bar.dart';
+import '../widgets/info_cart.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var screenInformation = MediaQuery.of(context);
+    final double screenHeight = screenInformation.size.height;
+    final double screenWidth = screenInformation.size.width;
+
     return ChangeNotifierProvider(
-      create: (context) => DashboardViewModel()..fetchDailyDistance(), // fetchDailyDistance burada çağrıldı
+      create: (context) => DashboardViewModel()..fetchDailyDistance(),
       child: Consumer<DashboardViewModel>(
         builder: (context, viewModel, child) {
           double completedPercent = viewModel.goalDistance > 0
@@ -20,75 +25,142 @@ class DashboardPage extends StatelessWidget {
 
           return Scaffold(
             appBar: ActivityAppBar("Dashboard"),
-            body: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Set a daily goal!", style: TextStyle(color: darkBlue, fontSize: 20, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 4),
-                  Text("Create a daily step goal.", style: TextStyle(color: darkBlue, fontSize: 12, fontStyle: FontStyle.italic)),
-                  const SizedBox(height: 16),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 200,
-                        height: 50,
-                        child: TextField(
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(hintText: 'metre', border: OutlineInputBorder()),
-                          onChanged: (value) {
-                            viewModel.setGoalDistance(double.tryParse(value) ?? 0.0);
-                          },
-                        ),
+            body: Container(
+              width: double.infinity,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white,
+                    Colors.blue.shade100,
+                    Colors.blue.shade200,
+                  ],
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Set a daily goal!",
+                      style: TextStyle(
+                        color: darkBlue,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
                       ),
-                      const SizedBox(width: 8),
-                      // InkWell ile buton sarmalama
-                      InkWell(
-                        onTap: () {
-                          viewModel.saveGoal(); // Butona tıklanıldığında kaydet
-                        },
-                        child: Container(
-                          height: 50,
-                          width: 80,
-                          decoration: BoxDecoration(
-                            color: darkBlue, // Buton rengi
-                            borderRadius: BorderRadius.circular(8), // Kenarları yuvarlatma
-                          ),
-                          alignment: Alignment.center, // Buton içeriğini ortalama
-                          child: Text(
-                            "Save",
-                            style: TextStyle(color: whiteBlue, fontSize: 16, fontWeight: FontWeight.bold), // Metin rengi
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 40),
-                  Center(
-                    child: CircularPercentIndicator(
-                      radius: 120.0,
-                      lineWidth: 12.0,
-                      animation: true,
-                      percent: completedPercent,
-                      center: Text("${(viewModel.percentage * 100).toStringAsFixed(1)}%", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: darkBlue)),
-                      circularStrokeCap: CircularStrokeCap.round,
-                      progressColor: darkBlue,
                     ),
-                  ),
-                  Center(
-                    child: Column(
+                    const SizedBox(height: 8),
+                    Text(
+                      "Create a daily step goal.",
+                      style: TextStyle(
+                        color: darkBlue.withOpacity(0.7),
+                        fontSize: 14,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const SizedBox(height: 20),
-                        Text("Goal distance today: ${viewModel.goalDistance.toStringAsFixed(2)} metre", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: darkBlue)),
-                        const SizedBox(height: 8),
-                        Text("Distance completed today: ${viewModel.completedDistance.toStringAsFixed(2)} metre", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: darkBlue)),
+                        SizedBox(
+                          width: screenWidth * 0.6, // Responsive genişlik
+                          height: 50,
+                          child: TextField(
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              hintText: 'Enter distance in meters',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                            onChanged: (value) {
+                              viewModel.setGoalDistance(double.tryParse(value) ?? 0.0);
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        // Save Button
+                        InkWell(
+                          onTap: () {
+                            viewModel.saveGoal();
+                          },
+                          child: Container(
+                            height: 50,
+                            width: screenWidth * 0.25,
+                            decoration: BoxDecoration(
+                              color: darkBlue,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 10,
+                                  offset: Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Save",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 40),
+                    // Circular Percent Indicator
+                    Center(
+                      child: CircularPercentIndicator(
+                        radius: 120.0,
+                        lineWidth: 12.0,
+                        animation: true,
+                        percent: completedPercent,
+                        center: Text(
+                          "${(completedPercent * 100).toStringAsFixed(1)}%",
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: darkBlue,
+                          ),
+                        ),
+                        circularStrokeCap: CircularStrokeCap.round,
+                        progressColor: darkBlue,
+                        backgroundColor: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 60),
+                    // InfoCard Kullanımı
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Goal Distance InfoCard
+                          InfoCard(
+                            icon: Icons.flag,
+                            title: "Goal Distance",
+                            value: "${viewModel.goalDistance.toStringAsFixed(2)} meters",
+                          ),
+                          const SizedBox(width: 20),
+                          // Completed Distance InfoCard
+                          InfoCard(
+                            icon: Icons.directions_walk,
+                            title: "Completed",
+                            value: "${viewModel.completedDistance.toStringAsFixed(2)} meters",
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );

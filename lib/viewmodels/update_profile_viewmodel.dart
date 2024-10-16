@@ -17,6 +17,7 @@ class UpdateProfileViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
 
   Uint8List? profileImage;
+  String? profileImageUrl;
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController fullNameController = TextEditingController();
@@ -50,6 +51,16 @@ class UpdateProfileViewModel extends ChangeNotifier {
       fullNameController.text = userData?['fullName'] ?? '';
       emailController.text = userData?['email'] ?? '';
       phoneController.text = userData?['phoneNo'] ?? '';
+
+      // Mevcut profil resmini al
+      profileImageUrl = userData?['profilePicture'];
+
+      // Eğer bir profil resmi varsa, Storage'dan indirip profileImage değişkenine ata
+      if (profileImageUrl != null && profileImageUrl!.isNotEmpty) {
+        profileImage = await _firebaseService.downloadProfileImage(profileImageUrl!);
+      }
+
+      notifyListeners(); // Güncellemeleri dinleyiciye ilet
     }
   }
 

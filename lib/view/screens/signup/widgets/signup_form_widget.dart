@@ -103,7 +103,7 @@ class SignupFormWidget extends StatelessWidget {
                 return null;
               },
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 30.0),
 
             // Submit Button
             viewModel.isLoading
@@ -121,21 +121,22 @@ class SignupFormWidget extends StatelessWidget {
                     ).then((result) {
                       if (result == true) {
                         SnackbarHelper.successSnackBar(context,
-                            title: "Başarılı",
-                            message: "Kayıt işlemi başarılı!");
+                            title: "Success",
+                            message: "Welcome to RunStat");
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(builder: (context) => const LoginPage()),
                         );
                       } else {
                         SnackbarHelper.errorSnackBar(context,
-                            title: "Hata",
-                            message: "Kayıt işlemi başarısız.");
+                            title: "Error",
+                            message: viewModel.errorMessage ?? "Try again!");
                       }
                     });
                   }
                 },
                 style: ButtonStyle(
+
                   backgroundColor: WidgetStateProperty.resolveWith<Color>(
                         (Set<WidgetState> states) {
                       if (states.contains(WidgetState.pressed) || states.contains(WidgetState.focused)) {
@@ -144,8 +145,9 @@ class SignupFormWidget extends StatelessWidget {
                       return darkBlue;  // Buton normal durumda 'darkBlue'
                     },
                   ),
+
                 ),
-                child: const Text("Signup", style: TextStyle(color: Colors.white)),
+                child: const Text("SIGN UP", style: TextStyle(color: Colors.white)),
               ),
             ),
           ],

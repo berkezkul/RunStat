@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:runstat/data/models/user_model.dart';
-import '../data/services/auth_service.dart';
+import 'package:runstat/data/repositories/auth_repo/login_with_email_and_password_failure.dart';
+import 'package:runstat/data/services/auth_service.dart';
 
 class LoginViewModel extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -11,66 +11,61 @@ class LoginViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
   bool get showPassword => _showPassword;
 
-  // AuthService ile giriş işlemi yönetme
   final AuthService _authService = AuthService();
   String? errorMessage;
 
-  // Şifre görünürlüğünü değiştirme fonksiyonu
+  void _setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
   void togglePasswordVisibility() {
     _showPassword = !_showPassword;
     notifyListeners();
   }
 
-  // Kullanıcı giriş yapma fonksiyonu
-  Future<bool> login(UserModel user, BuildContext context) async {
-    _isLoading = true;
-    notifyListeners();
+  // Kullanıcı giriş fonksiyonu
+  Future<bool> login(String email, String password) async {
+    _setLoading(true);
 
     try {
-      // AuthService ile kullanıcı giriş işlemi
-      User? loggedInUser = await _authService.signInWithEmailAndPassword(
-        user.email,
-        user.password,
-      );
-
+      User? loggedInUser = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      ).then((userCredential) => userCredential.user);
 
       if (loggedInUser != null) {
-        // Giriş başarılı, ana sayfaya yönlendirme yapılabilir.
-        //Navigator.pushNamed(context, '/WelcomePage');
         return true;
       } else {
-        // Eğer kullanıcı null ise bir hata oluşmuş demektir.
-        _showErrorSnackbar(context, 'An unknown error occurred.');
         return false;
       }
     } on FirebaseAuthException catch (e) {
-      // FirebaseAuthException yakalandığında ilgili hata mesajını göster
-      _showErrorSnackbar(context, _getErrorMessage(e.code));
+      errorMessage = LoginWithEmailAndPasswordFailure.code(e.code).message;
+      return false;
+    } catch (e) {
+      errorMessage = "An unknown error occurred.";
       return false;
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      _setLoading(false);
     }
   }
 
-  // Hata mesajını SnackBar ile gösterme fonksiyonu
-  void _showErrorSnackbar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
-  }
 
-  // Hata kodlarına göre kullanıcıya gösterilecek mesajları hazırlayan fonksiyon
-  String _getErrorMessage(String errorCode) {
-    switch (errorCode) {
-      case 'user-not-found':
-        return 'User not found. Please sign up first.';
-      case 'wrong-password':
-        return 'Incorrect password. Try again.';
-      case 'invalid-email':
-        return 'Invalid email format. Please check your email.';
-      default:
-        return 'An unknown error occurred. Please try again.';
+  Future<bool> loginWithGoogle() async {
+    _setLoading(true);
+
+    try {
+      final user = await _authService.signInWithGoogle();
+      if (user != null) {
+        return true;
+      }
+      _setLoading(false);
+      return false;
+    } catch (e) {
+      errorMessage = e.toString();
+      _setLoading(false);
+      notifyListeners();
+      return false;
     }
   }
 }

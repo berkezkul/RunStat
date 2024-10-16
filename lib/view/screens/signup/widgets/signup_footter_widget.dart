@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:runstat/core/constants/images.dart';
 import 'package:runstat/core/constants/text.dart';
 
+import '../../../../core/constants/colors.dart';
 import '../../../../core/constants/images.dart';
 import '../../../../data/services/auth_service.dart';
 import '../../bottom_navigation_bar.dart';
@@ -22,38 +23,7 @@ class SignupFootterWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const SizedBox(height: 5),
-        const Text("OR"),
-        const SizedBox(height: 5),
-        SizedBox(
-          width: double.infinity,
-          child: OutlinedButton.icon(
-            onPressed: () async {
-              User? user = await _authService.signInWithGoogle();
-              if (user != null) {
-                // Google ile başarılı bir şekilde giriş yaptıktan sonra yapılacaklar
-                print('Google Sign-In Successful: ${user.email}');
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => BottomNavigationPage()),
-                );
-              } else {
-                print('Google Sign-In Failed');
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              shape: const RoundedRectangleBorder(
-                borderRadius:
-                BorderRadius.zero,
-              ),
-            ),
-            icon: const Image(
-              image: AssetImage(rsGoogleLogoImage),
-              width: 20.0,
-            ),
-            label: const Text("Sign in with Google"),
-          ),
-        ),
+        const SizedBox(height: 10),
         TextButton(
             onPressed: () {
               Navigator.pushReplacement(
@@ -63,9 +33,9 @@ class SignupFootterWidget extends StatelessWidget {
             },
             child: Text.rich(TextSpan(children: [
               TextSpan(
-                  text: "Already have an account?",
+                  text: "Already have an account? ",
                   style: Theme.of(context).textTheme.bodyLarge),
-              TextSpan(text: rsLogin.toUpperCase()),
+              TextSpan(text: rsLogin.toUpperCase(), style: TextStyle(color: darkBlue)),
             ])))
       ],
     );

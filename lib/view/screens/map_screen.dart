@@ -7,6 +7,7 @@ import '../../core/constants/colors.dart';
 import '../../data/services/run_service.dart';
 import '../../viewmodels/map_viewmodel.dart';
 import '../widgets/activity_app_bar.dart';
+import '../widgets/custom_button.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -35,173 +36,138 @@ class _MapPageState extends State<MapPage> {
     final mapViewModel = Provider.of<MapViewModel>(context);
 
     return Scaffold(
-      appBar: ActivityAppBar("Running Activity"),
-      body: Column(
-        children: [
-          // Date, Time, Distance bilgileri
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
-                    children: [
-                      Icon(Icons.cloud, size: 20, color: blue2),
-                      const SizedBox(height: 6),
-                      const Text(
-                        'Weather',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        "${mapViewModel.weatherInfo}",
-                        style: const TextStyle(fontSize: 16),
-                      )
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Icon(Icons.timer, size: 20, color: blue2),
-                      const SizedBox(height: 6),
-                      const Text(
-                        'Time',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        mapViewModel.startTime != null
-                            ? DateTime.now()
-                            .difference(mapViewModel.startTime!)
-                            .inSeconds
-                            .toString() + ' s'
-                            : '0 s',
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Icon(Icons.directions_run, size: 18, color: blue2),
-                      const SizedBox(height: 6),
-                      const Text(
-                        'Distance',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        "${mapViewModel.distance.toStringAsFixed(2)} m",
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          // Harita kısmı
-          Expanded(
-            flex: 6,
-            child: FlutterMap(
-              options: MapOptions(
-                initialCenter: mapViewModel.currentPosition != null
-                    ? LatLng(
-                  mapViewModel.currentPosition!.latitude,
-                  mapViewModel.currentPosition!.longitude,
-                )
-                    : LatLng(37.216, 28.3636), // Varsayılan konum: Muğla
-                initialZoom: 15.0,
-              ),
-              children: [
-                TileLayer(
-                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                ),
-                PolylineLayer(
-                  polylines: [
-                    if (mapViewModel.route.isNotEmpty)
-                      Polyline(
-                        points: mapViewModel.route,
-                        strokeWidth: 4.0,
-                        color: Colors.blue,
-                      ),
-                  ],
-                ),
-                MarkerLayer(
-                  markers: [
-                    if (mapViewModel.currentPosition != null)
-                      Marker(
-                        point: LatLng(
-                          mapViewModel.currentPosition!.latitude,
-                          mapViewModel.currentPosition!.longitude,
-                        ),
-                        width: 80,
-                        height: 80,
-                        child: Container(
-                          child: Icon(
-                            Icons.location_pin,
-                            size: 40,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
+        appBar: ActivityAppBar("Running Activity"),
+        backgroundColor: Colors.transparent,
+        body: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.white,
+                Colors.blue.shade50,
               ],
             ),
           ),
-          // Start & Stop düğmeleri
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          child: Column(
             children: [
-              ElevatedButton(
-                onPressed: mapViewModel.isRunning ? null : mapViewModel.startRun,
-                style: ElevatedButton.styleFrom(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero,
+              // Date, Time, Distance bilgileri
+              Expanded(
+                flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildInfoColumn(
+                          Icons.cloud, 'Weather', mapViewModel.weatherInfo),
+                      _buildInfoColumn(
+                        Icons.timer,
+                        'Time',
+                        mapViewModel.startTime != null
+                            ? '${DateTime.now().difference(mapViewModel.startTime!).inSeconds} s'
+                            : '0 s',
+                      ),
+                      _buildInfoColumn(
+                        Icons.directions_run,
+                        'Distance',
+                        "${mapViewModel.distance.toStringAsFixed(2)} m",
+                      ),
+                    ],
                   ),
-                  elevation: 0,
-                ),
-                child: Text(
-                  'Start',
-                  style: TextStyle(color: darkBlue),
                 ),
               ),
-              ElevatedButton(
-                onPressed: mapViewModel.isRunning ? completeRun : null,
-                style: ElevatedButton.styleFrom(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero,
+              // Harita kısmı
+              Expanded(
+                flex: 6,
+                child: FlutterMap(
+                  options: MapOptions(
+                    initialCenter: mapViewModel.currentPosition != null
+                        ? LatLng(
+                      mapViewModel.currentPosition!.latitude,
+                      mapViewModel.currentPosition!.longitude,
+                    )
+                        : LatLng(37.216, 28.3636), // Varsayılan konum: Muğla
+                    initialZoom: 15.0,
                   ),
-                  elevation: 0,
+                  children: [
+                    TileLayer(
+                      urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    ),
+                    PolylineLayer(
+                      polylines: [
+                        if (mapViewModel.route.isNotEmpty)
+                          Polyline(
+                            points: mapViewModel.route,
+                            strokeWidth: 4.0,
+                            color: Colors.blue,
+                          ),
+                      ],
+                    ),
+                    MarkerLayer(
+                      markers: [
+                        if (mapViewModel.currentPosition != null)
+                          Marker(
+                            point: LatLng(
+                              mapViewModel.currentPosition!.latitude,
+                              mapViewModel.currentPosition!.longitude,
+                            ),
+                            width: 80,
+                            height: 80,
+                            child: Container(
+                              child: Icon(
+                                Icons.location_pin,
+                                size: 40,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ],
                 ),
-                child: Text(
-                  'Stop',
-                  style: TextStyle(color: darkBlue),
+              ),
+              // Start & Stop düğmeleri
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CustomButton(
+                      onPressed: mapViewModel.isRunning ? null : mapViewModel.startRun,
+                      text: 'Start',
+                      color: Colors.green,
+                      icon: Icons.play_arrow,
+                    ),
+                    CustomButton(
+                      onPressed: mapViewModel.isRunning ? completeRun : null,
+                      text: 'Stop',
+                      color: Colors.red,
+                      icon: Icons.stop,
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
-        ],
-      ),
-    );
+        ));
   }
+
+
+
+
 
   Column _buildInfoColumn(IconData icon, String title, String value) {
     return Column(
       children: [
-        Icon(icon, size: 20, color: blue2),
-        const SizedBox(height: 6),
+        Icon(icon, size: 24, color: Colors.blue.shade600),
+        const SizedBox(height: 5),
         Text(
           title,
           style: const TextStyle(
-            fontSize: 14,
+            fontSize: 12,
             fontWeight: FontWeight.bold,
           ),
         ),

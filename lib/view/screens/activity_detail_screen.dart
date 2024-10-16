@@ -31,7 +31,6 @@ class ActivityDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Haritanın üst kısmına Date ve Time bilgisi sol kenardan başlayarak eklendi
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Row(

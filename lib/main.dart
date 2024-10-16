@@ -12,6 +12,7 @@ import 'package:runstat/view/screens/update_profile_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:runstat/viewmodels/map_viewmodel.dart';
 import 'package:runstat/viewmodels/update_profile_viewmodel.dart';
+import 'package:runstat/core/utils/theme/theme_provider.dart'; // ThemeProvider dosyasını dahil edin
 
 
 /*
@@ -30,6 +31,10 @@ void main() async {
     providers: [
       ChangeNotifierProvider(create: (_) => UpdateProfileViewModel()),
       ChangeNotifierProvider(create: (_) => MapViewModel()),
+      ChangeNotifierProvider(
+        create: (context) => ThemeProvider(),
+        child: MyApp(),
+      ),
       // Diğer ViewModel'ler burada sağlanabilir
     ],
     child: MyApp(),
@@ -41,8 +46,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return MaterialApp(
       title: 'Run Stat',
+      themeMode: themeProvider.themeMode,
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
       //theme: RSAppTheme.lightTheme,
       /*ThemeData(
@@ -51,7 +61,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),*/
       //darkTheme: RSAppTheme.darkTheme,
-      themeMode: ThemeMode.system,
+      //themeMode: ThemeMode.system,
       initialRoute: '/',
       routes: {
         '/': (context) => HomePage(), // Ana sayfanızın rotası
