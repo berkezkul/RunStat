@@ -34,146 +34,149 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     final mapViewModel = Provider.of<MapViewModel>(context);
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark; // Karanlık mod kontrolü
 
     return Scaffold(
-        appBar: ActivityAppBar("Running Activity"),
-        backgroundColor: Colors.transparent,
-        body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.white,
-                Colors.blue.shade50,
-              ],
-            ),
+      appBar: ActivityAppBar(context, "Running Activity"),
+      backgroundColor: Colors.transparent,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: isDarkMode
+                ? [Colors.black87, Colors.blueGrey.shade800] // Karanlık modda renkler
+                : [Colors.white, Colors.blue.shade100, Colors.blue.shade200],// Aydınlık modda renkler
           ),
-          child: Column(
-            children: [
-              // Date, Time, Distance bilgileri
-              Expanded(
-                flex: 1,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _buildInfoColumn(
-                          Icons.cloud, 'Weather', mapViewModel.weatherInfo),
-                      _buildInfoColumn(
-                        Icons.timer,
-                        'Time',
-                        mapViewModel.startTime != null
-                            ? '${DateTime.now().difference(mapViewModel.startTime!).inSeconds} s'
-                            : '0 s',
-                      ),
-                      _buildInfoColumn(
-                        Icons.directions_run,
-                        'Distance',
-                        "${mapViewModel.distance.toStringAsFixed(2)} m",
-                      ),
+        ),
+        child: Column(
+          children: [
+            // Date, Time, Distance bilgileri
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildInfoColumn(
+                        Icons.cloud, 'Weather', mapViewModel.weatherInfo, isDarkMode),
+                    _buildInfoColumn(
+                      Icons.timer,
+                      'Time',
+                      mapViewModel.startTime != null
+                          ? '${DateTime.now().difference(mapViewModel.startTime!).inSeconds} s'
+                          : '0 s',
+                      isDarkMode,
+                    ),
+                    _buildInfoColumn(
+                      Icons.directions_run,
+                      'Distance',
+                      "${mapViewModel.distance.toStringAsFixed(2)} m",
+                      isDarkMode,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            // Harita kısmı
+            Expanded(
+              flex: 6,
+              child: FlutterMap(
+                options: MapOptions(
+                  initialCenter: mapViewModel.currentPosition != null
+                      ? LatLng(
+                    mapViewModel.currentPosition!.latitude,
+                    mapViewModel.currentPosition!.longitude,
+                  )
+                      : LatLng(37.216, 28.3636), // Varsayılan konum: Muğla
+                  initialZoom: 15.0,
+                ),
+                children: [
+                  TileLayer(
+                    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  ),
+                  PolylineLayer(
+                    polylines: [
+                      if (mapViewModel.route.isNotEmpty)
+                        Polyline(
+                          points: mapViewModel.route,
+                          strokeWidth: 4.0,
+                          color: isDarkMode ? Colors.tealAccent : Colors.blue, // Karanlık mod ve aydınlık mod farkı
+                        ),
                     ],
                   ),
-                ),
-              ),
-              // Harita kısmı
-              Expanded(
-                flex: 6,
-                child: FlutterMap(
-                  options: MapOptions(
-                    initialCenter: mapViewModel.currentPosition != null
-                        ? LatLng(
-                      mapViewModel.currentPosition!.latitude,
-                      mapViewModel.currentPosition!.longitude,
-                    )
-                        : LatLng(37.216, 28.3636), // Varsayılan konum: Muğla
-                    initialZoom: 15.0,
+                  MarkerLayer(
+                    markers: [
+                      if (mapViewModel.currentPosition != null)
+                        Marker(
+                          point: LatLng(
+                            mapViewModel.currentPosition!.latitude,
+                            mapViewModel.currentPosition!.longitude,
+                          ),
+                          width: 80,
+                          height: 80,
+                          child: Container(
+                            child: Icon(
+                              Icons.location_pin,
+                              size: 40,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
-                  children: [
-                    TileLayer(
-                      urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    ),
-                    PolylineLayer(
-                      polylines: [
-                        if (mapViewModel.route.isNotEmpty)
-                          Polyline(
-                            points: mapViewModel.route,
-                            strokeWidth: 4.0,
-                            color: Colors.blue,
-                          ),
-                      ],
-                    ),
-                    MarkerLayer(
-                      markers: [
-                        if (mapViewModel.currentPosition != null)
-                          Marker(
-                            point: LatLng(
-                              mapViewModel.currentPosition!.latitude,
-                              mapViewModel.currentPosition!.longitude,
-                            ),
-                            width: 80,
-                            height: 80,
-                            child: Container(
-                              child: Icon(
-                                Icons.location_pin,
-                                size: 40,
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
+                ],
               ),
-              // Start & Stop düğmeleri
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    CustomButton(
-                      onPressed: mapViewModel.isRunning ? null : mapViewModel.startRun,
-                      text: 'Start',
-                      color: Colors.green,
-                      icon: Icons.play_arrow,
-                    ),
-                    CustomButton(
-                      onPressed: mapViewModel.isRunning ? completeRun : null,
-                      text: 'Stop',
-                      color: Colors.red,
-                      icon: Icons.stop,
-                    ),
-                  ],
-                ),
+            ),
+            // Start & Stop düğmeleri
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CustomButton(
+                    onPressed: mapViewModel.isRunning ? null : mapViewModel.startRun,
+                    text: 'Start',
+                    color: Colors.green, // Vurgu rengi
+                    icon: Icons.play_arrow,
+                  ),
+                  CustomButton(
+                    onPressed: mapViewModel.isRunning ? completeRun : null,
+                    text: 'Stop',
+                    color: Colors.red, // Vurgu rengi
+                    icon: Icons.stop,
+                  ),
+                ],
               ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
-
-
-
-
-  Column _buildInfoColumn(IconData icon, String title, String value) {
+  Column _buildInfoColumn(IconData icon, String title, String value, bool isDarkMode) {
     return Column(
       children: [
-        Icon(icon, size: 24, color: Colors.blue.shade600),
+        Icon(icon, size: 24, color: isDarkMode ? Colors.blue.shade400 : Colors.blue.shade600), // İkincil renk
         const SizedBox(height: 5),
         Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.bold,
+            color: isDarkMode ? Colors.white : darkBlue, // Karanlık modda beyaz, aydınlık modda koyu mavi
           ),
         ),
         Text(
           value,
-          style: const TextStyle(fontSize: 16),
+          style: TextStyle(
+            fontSize: 16,
+            color: isDarkMode ? Colors.white : darkBlue, // Karanlık modda beyaz, aydınlık modda koyu mavi
+          ),
         ),
       ],
     );

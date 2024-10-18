@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../viewmodels/info_viewmodel.dart';
+import '../../core/constants/colors.dart'; // Renk dosyasını dahil ediyorum
 
 class InformationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark; // Karanlık mod kontrolü
+
     return ChangeNotifierProvider(
       create: (_) => InformationViewModel(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Information", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue.shade900),),
+          title: Text(
+            "Information",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: isDarkMode ? Colors.white : Colors.blue.shade900, // Karanlık/Açık mod için renk
+            ),
+          ),
           backgroundColor: Colors.transparent,
           elevation: 0,
           centerTitle: true,
@@ -22,12 +31,9 @@ class InformationPage extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Colors.white,
-                Colors.blue.shade100,
-                Colors.blue.shade200,
-
-              ],
+              colors: isDarkMode
+                  ? [Colors.black87, darkBlue] // Karanlık modda ana renkler
+                  : [Colors.white, Colors.blue.shade100, Colors.blue.shade200], // Açık modda renkler
             ),
           ),
           child: Consumer<InformationViewModel>(
@@ -37,7 +43,14 @@ class InformationPage extends StatelessWidget {
               }
 
               if (viewModel.informationData == null) {
-                return Center(child: Text("No information available"));
+                return Center(
+                  child: Text(
+                    "No information available",
+                    style: TextStyle(
+                      color: isDarkMode ? Colors.white : Colors.blue.shade900, // Karanlık/Açık mod
+                    ),
+                  ),
+                );
               }
 
               final info = viewModel.informationData;
@@ -46,12 +59,11 @@ class InformationPage extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: ListView(
                   children: [
-                    _buildInfoCard("App Version", info!['version']!),
-                    _buildInfoCard("Developer", info!['developer']!),
-                    _buildInfoCard("Contact Email", info!['contact']!),
-                    _buildInfoCard("Privacy Policy", info!['privacyPolicy']!),
-                    _buildInfoCard("Terms of Service", info!['termsOfService']!),
-
+                    _buildInfoCard("App Version", info!['version']!, isDarkMode),
+                    _buildInfoCard("Developer", info!['developer']!, isDarkMode),
+                    _buildInfoCard("Contact Email", info!['contact']!, isDarkMode),
+                    _buildInfoCard("Privacy Policy", info!['privacyPolicy']!, isDarkMode),
+                    _buildInfoCard("Terms of Service", info!['termsOfService']!, isDarkMode),
                   ],
                 ),
               );
@@ -62,17 +74,32 @@ class InformationPage extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoCard(String title, String value) {
+  Widget _buildInfoCard(String title, String value, bool isDarkMode) {
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: Colors.blue.shade700, width: 2),
+        side: BorderSide(
+          color: isDarkMode ? Colors.blue.shade200 : Colors.blue.shade900, // Karanlık/Açık mod
+          width: 2,
+        ),
       ),
       elevation: 4,
+      color: isDarkMode ? Colors.blueGrey.shade900 : Colors.white, // Arka plan rengi modlara göre
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: ListTile(
-        title: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text(value),
+        title: Text(
+          title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: isDarkMode ? Colors.blue.shade200 : Colors.blue.shade900, // Modlara göre başlık rengi
+          ),
+        ),
+        subtitle: Text(
+          value,
+          style: TextStyle(
+            color: isDarkMode ? Colors.white70 : Colors.black87, // Modlara göre içerik rengi
+          ),
+        ),
       ),
     );
   }

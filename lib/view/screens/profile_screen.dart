@@ -1,6 +1,4 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:runstat/view/screens/dashboard_screen.dart';
@@ -51,16 +49,13 @@ class _ProfilePageState extends State<ProfilePage> {
 
           return Scaffold(
             appBar: ActivityAppBar(
-              "Profile",
+              context, "Profile",
               actions: [
                 IconButton(
+                  icon: Icon(isDarkMode ? Icons.sunny : Icons.nights_stay),
                   onPressed: () {
                     themeProvider.toggleTheme(!isDarkMode);
                   },
-                  icon: Icon(
-                    isDarkMode ? LineAwesomeIcons.sun : LineAwesomeIcons.moon,
-                    color: isDarkMode ? Colors.yellow.shade600 : Colors.black,
-                  ),
                 ),
               ],
             ),

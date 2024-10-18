@@ -15,6 +15,7 @@ class _WelcomePageState extends State<WelcomePage> {
     var screenInformation = MediaQuery.of(context);
     final double screenWidth = screenInformation.size.width;
     final double screenHeight = screenInformation.size.height;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     debugPrint(
         "Screen Height : ${screenInformation.size.height} /n Screen Weight: $screenWidth");
@@ -38,7 +39,9 @@ class _WelcomePageState extends State<WelcomePage> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Colors.blue.shade900, Colors.blue.shade500],
+              colors: isDarkMode
+                  ? [Colors.black87, darkBlue] // Karanlık mod için ana renkler
+                  : [Colors.blue.shade900, Colors.blue.shade500], // Aydınlık mod için ana renkler
             ),
           ),
         ),
@@ -50,7 +53,9 @@ class _WelcomePageState extends State<WelcomePage> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Colors.blue.shade500, Colors.blue.shade200],
+            colors: isDarkMode
+                ? [Colors.black87, darkBlue] // Karanlık mod için arka plan renkleri
+                : [Colors.blue.shade500, Colors.blue.shade200], // Aydınlık mod için arka plan renkleri
           ),
         ),
         child: Center(
@@ -67,11 +72,11 @@ class _WelcomePageState extends State<WelcomePage> {
                     fontWeight: FontWeight.bold,
                     fontFamily: "Montserrat",
                     fontSize: screenWidth / 16,
-                    color: Colors.white,
+                    color: Colors.white, // Ana renk
                     shadows: [
                       Shadow(
                         blurRadius: 5.0,
-                        color: Colors.black38,
+                        color: Colors.black38, // İkincil gölge rengi
                         offset: Offset(2.0, 2.0),
                       ),
                     ],
@@ -99,11 +104,14 @@ class _WelcomePageState extends State<WelcomePage> {
                       width: screenWidth * 0.9,
                       height: screenHeight * 0.4,
                       fit: BoxFit.cover,
+                      color: isDarkMode
+                          ? Colors.white.withOpacity(0.8) // Karanlık modda hafif bir beyaz katman
+                          : null, // Aydınlık modda normal gösterim
+                      colorBlendMode: isDarkMode ? BlendMode.modulate : BlendMode.srcOver,
                     ),
                   ),
                 ),
               ),
-
             ],
           ),
         ),

@@ -22,10 +22,16 @@ class _WeatherPageState extends State<WeatherPage> {
   Future<Map<String, dynamic>> getCurrentWeather() async {
     try {
       String cityName = 'Ankara';
-      final res = await http.get(
+      final res = await http
+          .get(
         Uri.parse(
-          'https://api.openweathermap.org/data/2.5/forecast?q=$cityName&appid=$weatherApiKey',
-        ),
+            'https://api.openweathermap.org/data/2.5/forecast?q=$cityName&appid=$weatherApiKey'),
+      )
+          .timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          throw 'Request timed out. Please check your internet connection.';
+        },
       );
 
       final data = jsonDecode(res.body);
@@ -48,19 +54,23 @@ class _WeatherPageState extends State<WeatherPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: ActivityAppBar("Weather", actions: [
-        IconButton(
-          onPressed: () {
-            setState(() {
-              weather = getCurrentWeather();
-            });
-          },
-          icon: const Icon(Icons.refresh),
-        ),
-      ],),
-
+      appBar: ActivityAppBar(
+        context,
+        "Weather",
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                weather = getCurrentWeather();
+              });
+            },
+            icon: const Icon(Icons.refresh),
+          ),
+        ],
+      ),
       body: FutureBuilder(
         future: weather,
         builder: (context, snapshot) {
@@ -72,13 +82,19 @@ class _WeatherPageState extends State<WeatherPage> {
 
           if (snapshot.hasError) {
             return Center(
-              child: Text(snapshot.error.toString(), style: TextStyle(color: darkBlue),),
+              child: Text(
+                snapshot.error.toString(),
+                style: TextStyle(
+                  color: isDarkMode ? Colors.white : darkBlue,
+                ),
+              ),
             );
           }
 
           final data = snapshot.data!;
           final currentWeatherData = data['list'][0];
-          final currentTemp = (currentWeatherData['main']['temp'] - 273.15).toStringAsFixed(1);  // Kelvin'i Celsius'a çevirme
+          final currentTemp =
+          (currentWeatherData['main']['temp'] - 273.15).toStringAsFixed(1);
           final currentSky = currentWeatherData['weather'][0]['main'];
           final currentPressure = currentWeatherData['main']['pressure'];
           final currentWindSpeed = currentWeatherData['wind']['speed'];
@@ -91,11 +107,9 @@ class _WeatherPageState extends State<WeatherPage> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Colors.white, // Ana renk (60%)
-                  Colors.blue.shade100, // İkincil renk (30%)
-                  Colors.blue.shade200, // İkincil renk
-                ],
+                colors: isDarkMode
+                    ? [Colors.black87, Colors.blueGrey.shade800]
+                    : [Colors.white, Colors.blue.shade100, Colors.blue.shade200],
               ),
             ),
             child: Padding(
@@ -103,7 +117,7 @@ class _WeatherPageState extends State<WeatherPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Main Card
+                  // Main Weather Card
                   SizedBox(
                     width: double.infinity,
                     child: Card(
@@ -111,14 +125,13 @@ class _WeatherPageState extends State<WeatherPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      color: Colors.white, // Ana renk
+                      color: isDarkMode
+                          ? Colors.blueGrey.shade900
+                          : Colors.white,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: BackdropFilter(
-                          filter: ImageFilter.blur(
-                            sigmaX: 10,
-                            sigmaY: 10,
-                          ),
+                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
@@ -128,21 +141,25 @@ class _WeatherPageState extends State<WeatherPage> {
                                   style: TextStyle(
                                     fontSize: 32,
                                     fontWeight: FontWeight.bold,
-                                    color: darkBlue, // İkincil renk
+                                    color: isDarkMode
+                                        ? Colors.white
+                                        : darkBlue,
                                   ),
                                 ),
                                 const SizedBox(height: 16),
                                 Icon(
                                   getWeatherIcon(currentSky),
                                   size: 64,
-                                  color: getWeatherColor(currentSky), // Vurgu rengi
+                                  color: getWeatherColor(currentSky, isDarkMode),
                                 ),
                                 const SizedBox(height: 16),
                                 Text(
                                   currentSky,
                                   style: TextStyle(
                                     fontSize: 20,
-                                    color: darkBlue, // İkincil renk
+                                    color: isDarkMode
+                                        ? Colors.white
+                                        : darkBlue,
                                   ),
                                 ),
                               ],
@@ -158,7 +175,7 @@ class _WeatherPageState extends State<WeatherPage> {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: darkBlue, // İkincil renk
+                      color: isDarkMode ? Colors.white : darkBlue,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -170,12 +187,14 @@ class _WeatherPageState extends State<WeatherPage> {
                       itemBuilder: (context, index) {
                         final hourlyForecast = data['list'][index + 1];
                         final hourlySky = hourlyForecast['weather'][0]['main'];
-                        final hourlyTemp = hourlyForecast['main']['temp'].toString();
+                        final hourlyTemp =
+                        hourlyForecast['main']['temp'].toString();
                         final time = DateTime.parse(hourlyForecast['dt_txt']);
                         return HourlyForecastItem(
                           time: DateFormat.j().format(time),
                           temperature: hourlyTemp,
                           weatherCondition: hourlySky,
+                          isDarkMode: isDarkMode,
                         );
                       },
                     ),
@@ -186,7 +205,7 @@ class _WeatherPageState extends State<WeatherPage> {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: darkBlue, // İkincil renk
+                      color: isDarkMode ? Colors.white : darkBlue,
                     ),
                   ),
                   const SizedBox(height: 8),

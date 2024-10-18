@@ -14,6 +14,7 @@ class DashboardPage extends StatelessWidget {
     var screenInformation = MediaQuery.of(context);
     final double screenHeight = screenInformation.size.height;
     final double screenWidth = screenInformation.size.width;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return ChangeNotifierProvider(
       create: (context) => DashboardViewModel()..fetchDailyDistance(),
@@ -24,7 +25,7 @@ class DashboardPage extends StatelessWidget {
               : 0.0;
 
           return Scaffold(
-            appBar: ActivityAppBar("Dashboard"),
+            appBar: ActivityAppBar(context, "Dashboard"),
             body: Container(
               width: double.infinity,
               height: double.infinity,
@@ -32,11 +33,9 @@ class DashboardPage extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.white, // Ana renk
-                    Colors.blue.shade100, // İkincil renk
-                    Colors.blue.shade200,
-                  ],
+                  colors: isDarkMode
+                      ? [Colors.black87, darkBlue] // Karanlık modda renkler
+                      : [Colors.white, Colors.blue.shade100, Colors.blue.shade200], // Aydınlık modda renkler
                 ),
               ),
               child: Padding(
@@ -47,7 +46,7 @@ class DashboardPage extends StatelessWidget {
                     Text(
                       "Set a daily goal!",
                       style: TextStyle(
-                        color: darkBlue,
+                        color: isDarkMode ? Colors.white : darkBlue, // İkincil renk
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
@@ -56,7 +55,7 @@ class DashboardPage extends StatelessWidget {
                     Text(
                       "Create a daily step goal.",
                       style: TextStyle(
-                        color: darkBlue.withOpacity(0.7),
+                        color: isDarkMode ? Colors.grey.shade400 : darkBlue.withOpacity(0.7), // İkincil renk
                         fontSize: 14,
                         fontStyle: FontStyle.italic,
                       ),
@@ -76,7 +75,7 @@ class DashboardPage extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               filled: true,
-                              fillColor: Colors.white, // Ana renk
+                              fillColor: isDarkMode ? Colors.grey.shade800 : Colors.white, // Ana renk
                             ),
                             onChanged: (value) {
                               viewModel.setGoalDistance(double.tryParse(value) ?? 0.0);
@@ -93,7 +92,7 @@ class DashboardPage extends StatelessWidget {
                             height: 50,
                             width: screenWidth * 0.25,
                             decoration: BoxDecoration(
-                              color: darkBlue, // İkincil renk
+                              color: isDarkMode ? Colors.blueGrey.shade700 : darkBlue, // İkincil renk
                               borderRadius: BorderRadius.circular(12),
                               boxShadow: [
                                 BoxShadow(
@@ -129,12 +128,12 @@ class DashboardPage extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
-                            color: darkBlue, // İkincil renk
+                            color: isDarkMode ? Colors.white : darkBlue, // İkincil renk
                           ),
                         ),
                         circularStrokeCap: CircularStrokeCap.round,
-                        progressColor: darkBlue, // İkincil renk
-                        backgroundColor: Colors.white, // Ana renk
+                        progressColor: isDarkMode ? Colors.blueGrey.shade500 : darkBlue, // İkincil renk
+                        backgroundColor: isDarkMode ? Colors.grey.shade300 : Colors.white, // Ana renk
                       ),
                     ),
                     const SizedBox(height: 60),

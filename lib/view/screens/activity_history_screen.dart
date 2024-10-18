@@ -12,6 +12,7 @@ class ActivityHistoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
     final userId = user?.uid ?? '';
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark; // Karanlık mod kontrolü
 
     return Container(
       width: double.infinity,
@@ -20,17 +21,16 @@ class ActivityHistoryPage extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            Colors.white, // Ana renk
-            Colors.blue.shade100, // İkincil renk
-          ],
+          colors: isDarkMode
+              ? [Colors.black87, darkBlue] // Karanlık modda renkler
+              : [Colors.white, Colors.blue.shade100], // Aydınlık modda renkler
         ),
       ),
       child: ChangeNotifierProvider(
         create: (context) => ActivityViewModel(userId: userId),
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: ActivityAppBar("My Activity History"),
+          appBar: ActivityAppBar(context, "My Activity History"),
           body: Consumer<ActivityViewModel>(
             builder: (context, viewModel, child) {
               if (viewModel.isLoading) {
@@ -47,7 +47,7 @@ class ActivityHistoryPage extends StatelessWidget {
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                     child: Card(
-                      color: Colors.white, // İkincil renk
+                      color: isDarkMode ? Colors.blueGrey.shade900 : Colors.white, // Ana renk
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16.0), // Daha yumuşak köşeler
                         side: BorderSide(color: darkBlue, width: 2.0), // Kenarlık rengi koyu mavi
@@ -70,7 +70,7 @@ class ActivityHistoryPage extends StatelessWidget {
                             children: [
                               // Icon with Circle Avatar
                               CircleAvatar(
-                                backgroundColor: Colors.blue.shade300, // Vurgu rengi
+                                backgroundColor: isDarkMode ? Colors.blueGrey : Colors.blue.shade300, // Vurgu rengi
                                 radius: 30,
                                 child: Icon(
                                   Icons.directions_run,
@@ -90,7 +90,7 @@ class ActivityHistoryPage extends StatelessWidget {
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
-                                        color: darkBlue, // Koyu mavi yazı rengi
+                                        color: isDarkMode ? Colors.white : darkBlue, // Karanlık modda beyaz, aydınlık modda koyu mavi
                                       ),
                                     ),
                                     const SizedBox(height: 4),
@@ -98,7 +98,7 @@ class ActivityHistoryPage extends StatelessWidget {
                                       '${activity.distance.toStringAsFixed(1)} meters',
                                       style: TextStyle(
                                         fontSize: 14,
-                                        color: Colors.grey.shade600,
+                                        color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
                                       ),
                                     ),
                                   ],
@@ -111,8 +111,7 @@ class ActivityHistoryPage extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) =>
-                                          ActivityDetailPage(activityData: activity),
+                                      builder: (context) => ActivityDetailPage(activityData: activity),
                                     ),
                                   );
                                 },
@@ -121,7 +120,7 @@ class ActivityHistoryPage extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
-                                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                                 ),
                                 child: Text(
                                   'Details',

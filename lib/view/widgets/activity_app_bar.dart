@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/constants/colors.dart';
 
-AppBar ActivityAppBar(String activityTitle, {List<Widget>? actions, Widget? leading}) {
+AppBar ActivityAppBar(BuildContext context, String activityTitle, {List<Widget>? actions, Widget? leading}) {
   return AppBar(
     automaticallyImplyLeading: false,
     backgroundColor: Colors.transparent, // Şeffaf arka plan
@@ -13,7 +13,9 @@ AppBar ActivityAppBar(String activityTitle, {List<Widget>? actions, Widget? lead
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [darkBlue, Colors.blue.shade800, Colors.blue.shade600, Colors.blue.shade200],
+          colors: Theme.of(context).brightness == Brightness.dark
+              ? [Colors.black87, darkBlue, Colors.blue.shade800] // Karanlık mod için renkler
+              : [darkBlue, Colors.blue.shade800, Colors.blue.shade600, Colors.blue.shade200], // Aydınlık mod renkler
         ),
       ),
     ),

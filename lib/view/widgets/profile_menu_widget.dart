@@ -32,11 +32,13 @@ class ProfileMenuWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 8.0),
         padding: const EdgeInsets.all(12.0),
         decoration: BoxDecoration(
-          color: isDarkMode ? Colors.blueGrey.shade800 : Colors.white, // Arka plan için ana renk
+          color: isDarkMode ? Colors.blueGrey.shade900 : Colors.white, // Arka plan için ana renk
           borderRadius: BorderRadius.circular(12.0),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: isDarkMode
+                  ? Colors.black.withOpacity(0.7) // Karanlık modda daha belirgin gölge
+                  : Colors.black.withOpacity(0.05), // Açık modda hafif gölge
               blurRadius: 10,
               offset: const Offset(0, 5),
             ),
@@ -50,10 +52,12 @@ class ProfileMenuWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(100),
                 color: isDarkMode
-                    ? Colors.blue.shade300.withOpacity(0.1)
-                    : Colors.blue.shade500.withOpacity(0.1),
+                    ? Colors.blue.shade800.withOpacity(0.2) // Karanlık modda ikon arka planı
+                    : Colors.blue.shade600.withOpacity(0.1), // Açık modda ikon arka planı
               ),
-              child: Icon(icon, color: isDarkMode ? Colors.blue.shade900 : darkBlue, // İkincil renk
+              child: Icon(
+                icon,
+                color: isDarkMode ? Colors.blue.shade200 : darkBlue, // İkincil renk
               ),
             ),
             const SizedBox(width: 20), // İkonla metin arası boşluk
@@ -71,7 +75,9 @@ class ProfileMenuWidget extends StatelessWidget {
                 height: 30,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
-                  color: Colors.grey.withOpacity(0.1), // Vurgu rengi
+                  color: isDarkMode
+                      ? Colors.grey.shade700.withOpacity(0.3) // Karanlık modda vurgu rengi
+                      : Colors.grey.withOpacity(0.1), // Açık modda vurgu rengi
                 ),
                 child: const Icon(
                   LineAwesomeIcons.angle_right_solid,

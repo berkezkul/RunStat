@@ -12,7 +12,9 @@ import 'package:runstat/view/screens/update_profile_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:runstat/viewmodels/map_viewmodel.dart';
 import 'package:runstat/viewmodels/update_profile_viewmodel.dart';
-import 'package:runstat/core/utils/theme/theme_provider.dart'; // ThemeProvider dosyasını dahil edin
+import 'package:runstat/core/utils/theme/theme_provider.dart';
+
+import 'core/utils/theme/theme.dart'; // ThemeProvider dosyasını dahil edin
 
 
 /*
@@ -50,9 +52,9 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'Run Stat',
-      themeMode: themeProvider.themeMode,
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
+      themeMode: themeProvider.themeMode, // Tema modunu buradan alıyoruz
+      theme: lightTheme,
+      darkTheme: darkTheme,
       debugShowCheckedModeBanner: false,
       //theme: RSAppTheme.lightTheme,
       /*ThemeData(
