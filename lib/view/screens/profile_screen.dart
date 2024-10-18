@@ -72,8 +72,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: isDarkMode
-                      ? [Colors.black54, darkBlue]
-                      : [Colors.white,Colors.blue.shade100, Colors.blue.shade200],
+                      ? [Colors.black54, darkBlue] // Karanlık modda gradient
+                      : [Colors.white, Colors.blue.shade100, Colors.blue.shade200], // Açık modda gradient
                 ),
               ),
               child: SingleChildScrollView(
@@ -99,7 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 3),
+                    const SizedBox(height: 10),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                       child: Column(
@@ -110,7 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
-                              color: isDarkMode ? Colors.white : darkBlue,
+                              color: isDarkMode ? Colors.white : darkBlue, // İkincil renk
                               fontFamily: 'Roboto',
                             ),
                           ),
@@ -133,7 +133,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         onPressed: () => Navigator.pushNamed(context, '/UpdateProfilePage'),
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                          backgroundColor: isDarkMode ? Colors.blue.shade900 : darkBlue,
+                          backgroundColor: isDarkMode ? Colors.blue.shade900 : darkBlue, // İkincil renk
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                           ),
@@ -143,7 +143,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Text(
                           "Edit Profile",
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.white, // Vurgu rengi
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
@@ -185,7 +185,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ProfileMenuWidget(
                       title: "Logout",
                       icon: LineAwesomeIcons.sign_out_alt_solid,
-                      textColor: Colors.red,
+                      textColor: Colors.red, // Vurgu rengi
                       endIcon: false,
                       onPress: () {
                         _showLogoutDialog(context, viewModel);
@@ -223,7 +223,7 @@ class _ProfilePageState extends State<ProfilePage> {
               },
               child: const Text(
                 "Yes",
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(color: Colors.red), // Vurgu rengi
               ),
             ),
             TextButton(

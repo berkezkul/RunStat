@@ -32,7 +32,7 @@ class ProfileMenuWidget extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 8.0),
         padding: const EdgeInsets.all(12.0),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isDarkMode ? Colors.blueGrey.shade800 : Colors.white, // Arka plan için ana renk
           borderRadius: BorderRadius.circular(12.0),
           boxShadow: [
             BoxShadow(
@@ -53,14 +53,16 @@ class ProfileMenuWidget extends StatelessWidget {
                     ? Colors.blue.shade300.withOpacity(0.1)
                     : Colors.blue.shade500.withOpacity(0.1),
               ),
-              child: Icon(icon, color: isDarkMode ? Colors.blue.shade900 : Colors.blue.shade900,
+              child: Icon(icon, color: isDarkMode ? Colors.blue.shade900 : darkBlue, // İkincil renk
               ),
             ),
             const SizedBox(width: 20), // İkonla metin arası boşluk
             Expanded(
               child: Text(
                 title,
-                style: Theme.of(context).textTheme.bodyLarge?.apply(color: isDarkMode ? Colors.black : Colors.black,),
+                style: Theme.of(context).textTheme.bodyLarge?.apply(
+                  color: textColor ?? (isDarkMode ? Colors.white : darkBlue), // İkincil renk
+                ),
               ),
             ),
             if (endIcon)
@@ -69,7 +71,7 @@ class ProfileMenuWidget extends StatelessWidget {
                 height: 30,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
-                  color: Colors.grey.withOpacity(0.1),
+                  color: Colors.grey.withOpacity(0.1), // Vurgu rengi
                 ),
                 child: const Icon(
                   LineAwesomeIcons.angle_right_solid,

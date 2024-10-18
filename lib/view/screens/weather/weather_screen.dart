@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:runstat/core/constants/api_keys.dart';
-
 import '../../../core/constants/colors.dart';
 import '../../widgets/activity_app_bar.dart';
 import '../../widgets/additional_info_item.dart';
@@ -51,7 +50,7 @@ class _WeatherPageState extends State<WeatherPage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: ActivityAppBar("Weather Page", actions: [
+      appBar: ActivityAppBar("Weather", actions: [
         IconButton(
           onPressed: () {
             setState(() {
@@ -63,7 +62,6 @@ class _WeatherPageState extends State<WeatherPage> {
       ],),
 
       body: FutureBuilder(
-
         future: weather,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -86,7 +84,6 @@ class _WeatherPageState extends State<WeatherPage> {
           final currentWindSpeed = currentWeatherData['wind']['speed'];
           final currentHumidity = currentWeatherData['main']['humidity'];
 
-
           return Container(
             width: double.infinity,
             height: double.infinity,
@@ -95,9 +92,9 @@ class _WeatherPageState extends State<WeatherPage> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Colors.white,
-                  Colors.blue.shade100,
-                  Colors.blue.shade200,
+                  Colors.white, // Ana renk (60%)
+                  Colors.blue.shade100, // İkincil renk (30%)
+                  Colors.blue.shade200, // İkincil renk
                 ],
               ),
             ),
@@ -114,8 +111,7 @@ class _WeatherPageState extends State<WeatherPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      color: whiteBlue,
-
+                      color: Colors.white, // Ana renk
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: BackdropFilter(
@@ -132,21 +128,21 @@ class _WeatherPageState extends State<WeatherPage> {
                                   style: TextStyle(
                                     fontSize: 32,
                                     fontWeight: FontWeight.bold,
-                                    color: darkBlue
+                                    color: darkBlue, // İkincil renk
                                   ),
                                 ),
                                 const SizedBox(height: 16),
                                 Icon(
                                   getWeatherIcon(currentSky),
                                   size: 64,
-                                  color: getWeatherColor(currentSky), // İkon rengi hava durumuna göre
+                                  color: getWeatherColor(currentSky), // Vurgu rengi
                                 ),
                                 const SizedBox(height: 16),
                                 Text(
                                   currentSky,
                                   style: TextStyle(
                                     fontSize: 20,
-                                    color: darkBlue,
+                                    color: darkBlue, // İkincil renk
                                   ),
                                 ),
                               ],
@@ -162,7 +158,7 @@ class _WeatherPageState extends State<WeatherPage> {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: darkBlue,
+                      color: darkBlue, // İkincil renk
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -190,7 +186,7 @@ class _WeatherPageState extends State<WeatherPage> {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: darkBlue,
+                      color: darkBlue, // İkincil renk
                     ),
                   ),
                   const SizedBox(height: 8),

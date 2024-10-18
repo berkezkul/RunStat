@@ -33,8 +33,8 @@ class DashboardPage extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.white,
-                    Colors.blue.shade100,
+                    Colors.white, // Ana renk
+                    Colors.blue.shade100, // İkincil renk
                     Colors.blue.shade200,
                   ],
                 ),
@@ -76,7 +76,7 @@ class DashboardPage extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               filled: true,
-                              fillColor: Colors.white,
+                              fillColor: Colors.white, // Ana renk
                             ),
                             onChanged: (value) {
                               viewModel.setGoalDistance(double.tryParse(value) ?? 0.0);
@@ -93,7 +93,7 @@ class DashboardPage extends StatelessWidget {
                             height: 50,
                             width: screenWidth * 0.25,
                             decoration: BoxDecoration(
-                              color: darkBlue,
+                              color: darkBlue, // İkincil renk
                               borderRadius: BorderRadius.circular(12),
                               boxShadow: [
                                 BoxShadow(
@@ -107,7 +107,7 @@ class DashboardPage extends StatelessWidget {
                             child: Text(
                               "Save",
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Colors.white, // Vurgu rengi
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -129,12 +129,12 @@ class DashboardPage extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
-                            color: darkBlue,
+                            color: darkBlue, // İkincil renk
                           ),
                         ),
                         circularStrokeCap: CircularStrokeCap.round,
-                        progressColor: darkBlue,
-                        backgroundColor: Colors.white,
+                        progressColor: darkBlue, // İkincil renk
+                        backgroundColor: Colors.white, // Ana renk
                       ),
                     ),
                     const SizedBox(height: 60),

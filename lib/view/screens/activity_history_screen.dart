@@ -21,8 +21,8 @@ class ActivityHistoryPage extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Colors.white,
-            Colors.blue.shade200,
+            Colors.white, // Ana renk
+            Colors.blue.shade100, // İkincil renk
           ],
         ),
       ),
@@ -47,13 +47,13 @@ class ActivityHistoryPage extends StatelessWidget {
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                     child: Card(
-                      color: Colors.white,
+                      color: Colors.white, // İkincil renk
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16.0), // Daha yumuşak köşeler
-                        side: BorderSide(color: darkBlue, width: 2.0), // kenarlık rengi
+                        side: BorderSide(color: darkBlue, width: 2.0), // Kenarlık rengi koyu mavi
                       ),
                       elevation: 6.0, // Hafif gölge
-                      shadowColor: Colors.black.withOpacity(0.15),
+                      shadowColor: Colors.black.withOpacity(0.1),
                       child: InkWell(
                         onTap: () {
                           Navigator.push(
@@ -70,11 +70,11 @@ class ActivityHistoryPage extends StatelessWidget {
                             children: [
                               // Icon with Circle Avatar
                               CircleAvatar(
-                                backgroundColor: Colors.blue.shade50,
+                                backgroundColor: Colors.blue.shade300, // Vurgu rengi
                                 radius: 30,
                                 child: Icon(
                                   Icons.directions_run,
-                                  color: darkBlue,
+                                  color: Colors.white, // İkonun rengi beyaz
                                   size: 30,
                                 ),
                               ),
@@ -90,7 +90,7 @@ class ActivityHistoryPage extends StatelessWidget {
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
-                                        color: darkBlue,
+                                        color: darkBlue, // Koyu mavi yazı rengi
                                       ),
                                     ),
                                     const SizedBox(height: 4),
@@ -117,7 +117,7 @@ class ActivityHistoryPage extends StatelessWidget {
                                   );
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: darkBlue,
+                                  backgroundColor: Colors.blue.shade700, // İkincil renk koyu mavi
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),

@@ -4,15 +4,15 @@ import '../../core/constants/colors.dart';
 Color getWeatherColor(String weatherCondition) {
   switch (weatherCondition) {
     case 'Clear':
-      return Colors.yellow;
+      return Colors.yellow; // Vurgu rengi
     case 'Clouds':
-      return Colors.blue;
+      return Colors.blue; // İkincil renk
     case 'Rain':
       return Colors.blueGrey;
     case 'Windy':
       return Colors.lightBlueAccent;
     default:
-      return darkBlue;  // Varsayılan renk
+      return darkBlue;  // Varsayılan renk (İkincil renk)
   }
 }
 
@@ -48,7 +48,6 @@ class HourlyForecastItem extends StatelessWidget {
     return kelvin - 273.15; // Kelvin'den Celsius'a dönüşüm
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -66,7 +65,7 @@ class HourlyForecastItem extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: darkBlue,
+                color: darkBlue, // İkincil renk
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -80,7 +79,7 @@ class HourlyForecastItem extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               '${toCelsius(temperature).toStringAsFixed(1)}°C',
-              style: TextStyle(color: darkBlue),
+              style: TextStyle(color: darkBlue), // İkincil renk
             ),
           ],
         ),
