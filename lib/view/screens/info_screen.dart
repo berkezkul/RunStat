@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../viewmodels/info_viewmodel.dart';
-import '../../core/constants/colors.dart'; // Renk dosyasını dahil ediyorum
+import '../../core/constants/colors.dart';
+import '../../core/utils/helpers/localization_helper.dart'; // Localization helper import
 
 class InformationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark; // Karanlık mod kontrolü
+    final localizations = AppLocalizations.of(context); // Localization instance
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return ChangeNotifierProvider(
       create: (_) => InformationViewModel(),
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            "Information",
+            localizations!.translate('rsInformationTitle'), // "Information"
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: isDarkMode ? Colors.white : Colors.blue.shade900, // Karanlık/Açık mod için renk
+              color: isDarkMode ? Colors.white : Colors.blue.shade900,
             ),
           ),
           backgroundColor: Colors.transparent,
@@ -32,8 +34,8 @@ class InformationPage extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: isDarkMode
-                  ? [Colors.black87, darkBlue] // Karanlık modda ana renkler
-                  : [Colors.white, Colors.blue.shade100, Colors.blue.shade200], // Açık modda renkler
+                  ? [Colors.black87, darkBlue]
+                  : [Colors.white, Colors.blue.shade100, Colors.blue.shade200],
             ),
           ),
           child: Consumer<InformationViewModel>(
@@ -45,9 +47,9 @@ class InformationPage extends StatelessWidget {
               if (viewModel.informationData == null) {
                 return Center(
                   child: Text(
-                    "No information available",
+                    localizations.translate('rsNoInfoAvailable'), // "No information available"
                     style: TextStyle(
-                      color: isDarkMode ? Colors.white : Colors.blue.shade900, // Karanlık/Açık mod
+                      color: isDarkMode ? Colors.white : Colors.blue.shade900,
                     ),
                   ),
                 );
@@ -59,11 +61,11 @@ class InformationPage extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: ListView(
                   children: [
-                    _buildInfoCard("App Version", info!['version']!, isDarkMode),
-                    _buildInfoCard("Developer", info!['developer']!, isDarkMode),
-                    _buildInfoCard("Contact Email", info!['contact']!, isDarkMode),
-                    _buildInfoCard("Privacy Policy", info!['privacyPolicy']!, isDarkMode),
-                    _buildInfoCard("Terms of Service", info!['termsOfService']!, isDarkMode),
+                    _buildInfoCard(localizations.translate('rsAppVersion'), info!['version']!, isDarkMode),
+                    _buildInfoCard(localizations.translate('rsDeveloper'), info!['developer']!, isDarkMode),
+                    _buildInfoCard(localizations.translate('rsContactEmail'), info!['contact']!, isDarkMode),
+                    _buildInfoCard(localizations.translate('rsPrivacyPolicy'), info!['privacyPolicy']!, isDarkMode),
+                    _buildInfoCard(localizations.translate('rsTermsOfService'), info!['termsOfService']!, isDarkMode),
                   ],
                 ),
               );
@@ -79,25 +81,25 @@ class InformationPage extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
-          color: isDarkMode ? Colors.blue.shade200 : Colors.blue.shade900, // Karanlık/Açık mod
+          color: isDarkMode ? Colors.blue.shade200 : Colors.blue.shade900,
           width: 2,
         ),
       ),
       elevation: 4,
-      color: isDarkMode ? Colors.blueGrey.shade900 : Colors.white, // Arka plan rengi modlara göre
+      color: isDarkMode ? Colors.blueGrey.shade900 : Colors.white,
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: ListTile(
         title: Text(
           title,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: isDarkMode ? Colors.blue.shade200 : Colors.blue.shade900, // Modlara göre başlık rengi
+            color: isDarkMode ? Colors.blue.shade200 : Colors.blue.shade900,
           ),
         ),
         subtitle: Text(
           value,
           style: TextStyle(
-            color: isDarkMode ? Colors.white70 : Colors.black87, // Modlara göre içerik rengi
+            color: isDarkMode ? Colors.white70 : Colors.black87,
           ),
         ),
       ),

@@ -1,32 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:runstat/view/screens/signup/signup_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/images.dart';
+import '../../../core/utils/helpers/localization_helper.dart';
 import '../../../data/models/onboarding_model.dart';
 import '../home_screen.dart';
 import 'onboarding_screen.dart';
 //whiteBlue  darkblue /  lightBlueAcc   darkBlue / darkBlue whiteBlue
-final pages = [
-  OnBoardingModel(
-    imagePath: rsOnBoarding_2, // Resim yolu
-    title: "Run every day for a healthier life!",
-    bgColor: whiteBlue,
-    textColor: darkBlue,
-  ),
-  OnBoardingModel(
-    imagePath: rsOnBoarding_2, // Resim yolu
-    title: "Follow your route on the map!",
-    bgColor: darkBlue,
-    textColor: whiteBlue,
-  ),
 
-  OnBoardingModel(
-    imagePath: rsOnBoarding3, // Resim yolu
-    title: "Track your running stats with ease!",
-    bgColor: whiteBlue,
-    textColor: darkBlue,
-  ),
-];
+
 
 class AppOnBoarding extends StatefulWidget {
   @override
@@ -36,6 +19,37 @@ class AppOnBoarding extends StatefulWidget {
 class _AppOnBoardingState extends State<AppOnBoarding> {
   final PageController _pageController = PageController();
   int currentIndex = 0;
+
+  late List<OnBoardingModel> pages;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Yerelleştirme çağrısı didChangeDependencies içinde yapılmalı
+    var localizations = AppLocalizations.of(context);
+
+    pages = [
+      OnBoardingModel(
+        imagePath: rsOnBoarding_2,
+        title: localizations!.translate('onBoardingTitle1'),
+        bgColor: whiteBlue,
+        textColor: darkBlue,
+      ),
+      OnBoardingModel(
+        imagePath: rsOnBoarding_2,
+        title: localizations.translate('onBoardingTitle2'),
+        bgColor: darkBlue,
+        textColor: whiteBlue,
+      ),
+      OnBoardingModel(
+        imagePath: rsOnBoarding3,
+        title: localizations.translate('onBoardingTitle3'),
+        bgColor: whiteBlue,
+        textColor: darkBlue,
+      ),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,24 +66,26 @@ class _AppOnBoardingState extends State<AppOnBoarding> {
           return OnBoardingPage(
             page: pages[index],
             isLastPage: index == pages.length - 1,
-            onDone: () {
-              // Son sayfa: Tik butonuna basıldığında HomePage'e geçiş
+            onDone: () async {
+              // Onboarding tamamlandığında kaydet
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              await prefs.setBool('onBoardingComplete', true);
+              // Kullanıcı SignupPage'e yönlendirilir
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => SignupPage()), // HomePage ile değiştirin
+                MaterialPageRoute(builder: (context) => SignupPage()),
               );
             },
             onNext: () {
-              // İlk iki sayfa: Sağ ok ikonuna basıldığında bir sonraki sayfaya geçiş
               _pageController.nextPage(
                 duration: Duration(milliseconds: 300),
                 curve: Curves.easeIn,
               );
-            }, currentIndex: index,
+            },
+            currentIndex: index,
           );
         },
       ),
-      // Sayfa Göstergesi (Indicator)
       bottomSheet: currentIndex == pages.length - 1
           ? null
           : Container(
@@ -86,7 +102,6 @@ class _AppOnBoardingState extends State<AppOnBoarding> {
     );
   }
 
-  // Sayfa göstergesi (alt noktalar)
   Widget buildDot(int index, BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(right: 5),

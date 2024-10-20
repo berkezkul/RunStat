@@ -6,10 +6,12 @@ import '../../viewmodels/activity_viewmodel.dart';
 import '../widgets/activity_app_bar.dart';
 import 'activity_detail_screen.dart';
 import 'package:intl/intl.dart';
+import '../../core/utils/helpers/localization_helper.dart'; // Localization helper import
 
 class ActivityHistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context); // Localization instance
     final user = FirebaseAuth.instance.currentUser;
     final userId = user?.uid ?? '';
     final isDarkMode = Theme.of(context).brightness == Brightness.dark; // Karanlık mod kontrolü
@@ -30,7 +32,7 @@ class ActivityHistoryPage extends StatelessWidget {
         create: (context) => ActivityViewModel(userId: userId),
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: ActivityAppBar(context, "My Activity History"),
+          appBar: ActivityAppBar(context, localizations!.translate('rsMyActivityHistory')), // "My Activity History"
           body: Consumer<ActivityViewModel>(
             builder: (context, viewModel, child) {
               if (viewModel.isLoading) {
@@ -123,7 +125,7 @@ class ActivityHistoryPage extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                                 ),
                                 child: Text(
-                                  'Details',
+                                  localizations.translate('rsDetails'), // "Details"
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),

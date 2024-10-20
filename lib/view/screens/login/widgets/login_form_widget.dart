@@ -5,6 +5,7 @@ import 'package:runstat/viewmodels/login_viewmodel.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/utils/helpers/snackbar_helper.dart';
 import '../../forget_password/forget_password_options/forget_password_modal_bottom_sheet.dart';
+import '../../../../core/utils/helpers/localization_helper.dart'; // Localization helper import
 
 class LoginFormWidget extends StatefulWidget {
   const LoginFormWidget({super.key});
@@ -21,6 +22,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context); // Localization instance
     final viewModel = Provider.of<LoginViewModel>(context, listen: true);
 
     return Form(
@@ -32,13 +34,13 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
           children: [
             TextFormField(
               controller: emailController,
-              decoration: const InputDecoration(
-                labelText: "Email",
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: localizations!.translate('rsEmail'), // "Email"
+                border: const OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your email';
+                  return localizations.translate('rsEmailError'); // "Please enter your email"
                 }
                 return null;
               },
@@ -48,7 +50,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
               controller: passwordController,
               obscureText: !showPassword, // Şifreyi gizleme/açma
               decoration: InputDecoration(
-                labelText: "Password",
+                labelText: localizations.translate('rsPassword'), // "Password"
                 border: const OutlineInputBorder(),
                 suffixIcon: IconButton(
                   icon: Icon(showPassword ? Icons.visibility : Icons.visibility_off),
@@ -61,7 +63,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your password';
+                  return localizations.translate('rsPasswordError'); // "Please enter your password"
                 }
                 return null;
               },
@@ -74,7 +76,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                   ForgetPasswordScreen.buildShowModalBottomSheet(context);
                 },
                 child: Text(
-                  "Forget Password",
+                  localizations.translate('rsForgetPassword'), // "Forget Password"
                   style: TextStyle(color: darkBlue),
                 ),
               ),
@@ -98,8 +100,8 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
 
                       if (result == true) {
                         SnackbarHelper.successSnackBar(context,
-                            title: "Success",
-                            message: "Login successful, welcome!");
+                            title: localizations.translate('rsLoginSuccessTitle'), // "Success"
+                            message: localizations.translate('rsLoginSuccessMessage')); // "Login successful, welcome!"
 
                         Navigator.pushReplacement(
                           context,
@@ -108,8 +110,8 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                         );
                       } else {
                         SnackbarHelper.errorSnackBar(context,
-                            title: "Error",
-                            message: viewModel.errorMessage ?? "Try again!");
+                            title: localizations.translate('rsLoginErrorTitle'), // "Error"
+                            message: viewModel.errorMessage ?? localizations.translate('rsLoginErrorMessage')); // "Try again!"
                       }
                     });
                   }
@@ -122,7 +124,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                   elevation: 0,
                 ),
                 child: Text(
-                  "LOGIN",
+                  localizations.translate('rsLoginButton'), // "LOGIN"
                   style: TextStyle(color: whiteBlue),
                 ),
               ),

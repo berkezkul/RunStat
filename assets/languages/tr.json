@@ -1,0 +1,143 @@
+{
+  "appName": "RunStat",
+  "appTagLine1": "Koş, Ölç, Geliştir",
+  "appTagLine2": "Hedeflerine Ulaş!",
+  "login": "Giriş Yap",
+  "signup": "Kaydol",
+  "or": "VEYA",
+  "signInWithGoogle": "Google ile Giriş Yap",
+  "termsAndConditions": "Devam ederek, RunStat'in Şartlar ve Koşullarını kabul etmiş oluyorsunuz",
+
+
+
+
+  "rsEmail": "E-posta",
+  "rsPassword": "Şifre",
+  "rsForgetPassword": "Şifremi Unuttum",
+  "rsLoginButton": "GİRİŞ YAP",
+  "rsLoginTitle": "Tekrar Hoş Geldiniz,",
+  "rsLoginSubTitle": "Doğru yap, düzgün yap, hızlı yap.",
+  "rsLoginSuccessTitle": "Başarılı",
+  "rsLoginSuccessMessage": "Giriş başarılı, hoş geldiniz!",
+  "rsLoginErrorTitle": "Hata",
+  "rsLoginErrorMessage": "Tekrar deneyin!",
+  "rsDontHaveAnAccount": "Hesabınız yok mu?",
+  "rsSignup": "Kaydol",
+  "rsEmailError": "Lütfen e-posta adresinizi girin",
+  "rsPasswordError": "Lütfen şifrenizi girin",
+
+
+  "rsFullName": "Ad Soyad",
+  "rsFullNameHint": "Adınızı ve soyadınızı girin",
+  "rsFullNameError": "Lütfen adınızı ve soyadınızı girin",
+  "rsPhoneNo": "Telefon numarası",
+  "rsPhoneNoHint": "Telefon numaranızı girin",
+  "rsPhoneNoError": "Lütfen telefon numaranızı girin",
+  "rsPasswordHint": "Şifre oluşturun (en az 6 karakter)",
+  "rsSignupSuccessTitle": "Başarılı",
+  "rsSignupSuccessMessage": "RunStat'e hoş geldiniz",
+  "rsSignupErrorTitle": "Hata",
+  "rsSignupErrorMessage": "Tekrar deneyin!",
+  "rsSignUpButton": "KAYDOL",
+  "rsAlreadyHaveAnAccount": "Zaten hesabınız var mı?",
+  "rsLogin": "Giriş yap",
+
+
+
+  "onBoardingTitle1": "Daha sağlıklı bir yaşam için her gün koş!",
+  "onBoardingTitle2": "Rotalarını haritada takip et!",
+  "onBoardingTitle3": "Koşu istatistiklerini kolayca takip et!",
+
+
+  "rsForgetPasswordSelection": "Seçim Yapın!",
+  "rsForgetPasswordTitle": "Şifrenizi Mi Unuttunuz?",
+  "rsForgetPasswordSubTitle": "Şifrenizi sıfırlamak için aşağıdaki seçeneklerden birini seçin.",
+  "rsResetViaEMail": "E-posta ile Sıfırlayın",
+  "rsResetViaPhone": "Telefon ile Sıfırlayın",
+  "rsResetViaPhoneDesc": "Telefon ile doğrulama üzerinden sıfırlayın!",
+  "rsResetViaMailDesc": "E-posta ile doğrulama üzerinden sıfırlayın!",
+  "rsForgetMailSubTitle": "Merak etmeyin! Yeni bir şifre oluşturmak için e-posta adresinizi girin.",
+  "rsForgetPhoneSubTitle": "Merak etmeyin! Yeni bir şifre oluşturmak için telefon numaranızı girin.",
+  "rsEnterEmail": "E-posta adresinizi girin",
+  "rsEnterPhone": "Telefon numaranızı girin",
+  "rsOtpTitle": "KO\nDU",
+  "rsOtpSubtitle": "Doğrulama",
+  "rsOtpMessage": "runstat@gmail.com adresine gönderilen doğrulama kodunu girin",
+
+
+
+  "rsWelcomeTitle": "Spor asistanınız RunStat'e hoş geldiniz",
+  "rsWelcomeSubTitle": "Haydi koşalım!.",
+  "rsDashboardTitle": "Gösterge Paneli",
+  "rsSetGoal": "Günlük bir hedef belirleyin!",
+  "rsCreateGoal": "Günlük adım hedefi oluşturun.",
+  "rsEnterDistance": "Mesafeyi metre cinsinden girin",
+  "rsSaveButton": "Kaydet",
+  "rsGoalDistance": "Hedef Mesafe",
+  "rsCompleted": "Tamamlandı",
+
+
+  "rsWeatherTitle": "Hava Durumu",
+  "rsHourlyForecast": "Saatlik Tahmin",
+  "rsAdditionalInfo": "Ek Bilgiler",
+  "rsHumidity": "Nem",
+  "rsWindSpeed": "Rüzgar Hızı",
+  "rsPressure": "Basınç",
+  "rsRunningActivityTitle": "Koşu Aktivitesi",
+  "rsWeather": "Hava Durumu",
+  "rsTime": "Zaman",
+  "rsDistance": "Mesafe",
+  "rsStartButton": "Başla",
+  "rsStopButton": "Durdur",
+
+
+
+  "rsMyActivityHistory": "Aktivite Geçmişim",
+  "rsDetails": "Detaylar",
+  "rsDetailsTitle": "Detaylar",
+  "rsAvgSpeed": "Ortalama Hız",
+
+
+  "rsInformationTitle": "Bilgi",
+  "rsNoInfoAvailable": "Bilgi mevcut değil",
+  "rsAppVersion": "Uygulama Sürümü",
+  "rsDeveloper": "Geliştirici",
+  "rsContactEmail": "İletişim E-Posta",
+  "rsPrivacyPolicy": "Gizlilik Politikası",
+  "rsTermsOfService": "Hizmet Koşulları",
+  "rsHome": "Ana Sayfa",
+  "rsDashboard": "Hedefler",
+  "rsMap": "Harita",
+  "rsSportsStatistics": "İstatistikler",
+  "rsStatistics": "İstatistikler",
+  "rsProfile": "Profil",
+  "rsSettings": "Ayarlar",
+  "rsDarkMode": "Karanlık Mod",
+  "rsEnableNotifications": "Bildirimleri Etkinleştir",
+  "rsLanguage": "Dil",
+  "rsSelectLanguage": "Dil Seçin",
+
+
+
+
+
+  "rsNext": "İleri",
+  "rsSignInWithGoogle": "Google ile Giriş Yap",
+
+  "rsAppName": ".appable/",
+  "rsAppTagLine": "Koş, Ölç, Geliştir \nHedeflerine Ulaş!",
+
+  "rsOnBoardingTitle1": "Harika Uygulamalar Geliştirin",
+  "rsOnBoardingTitle2": "YouTube'dan Öğrenin",
+  "rsOnBoardingTitle3": "Kod ve Kaynaklara Ulaşın",
+  "rsOnBoardingSubTitle1": "Bu harika ve kolay platformda yolculuğunuza bizimle başlayın.",
+  "rsOnBoardingSubTitle2": "Her konunun video eğitimleriyle kolayca öğrenin.",
+  "rsOnBoardingSubTitle3": "Videolardan öğrendiğiniz uygulamaları kopyala-yapıştır yaparak zaman kazanın.",
+
+
+  "rsRememberMe": "Beni Hatırla?",
+
+  "rsSignUpTitle": "Run Stat Dünyasına Katılın!",
+  "rsSignUpSubTitle": "Koşularınızı takip edin, hedeflerinize ulaşın!"
+
+}

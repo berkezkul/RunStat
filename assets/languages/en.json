@@ -1,0 +1,158 @@
+{
+
+  "appName": "RunStat",
+  "appTagLine1": "Run, Measure, Improve",
+  "appTagLine2": "Reach Your Goals!",
+  "login": "Login",
+  "signup": "Sign Up",
+  "or": "OR",
+  "signInWithGoogle": "Sign in with Google",
+  "termsAndConditions": "By continuing, you agree to RunStat's Terms & Conditions",
+
+
+
+  "rsEmail": "Email",
+  "rsPassword": "Password",
+  "rsForgetPassword": "Forget Password",
+  "rsLoginButton": "LOGIN",
+  "rsLoginTitle": "Welcome Back,",
+  "rsLoginSubTitle": "Make it work, make it right, make it fast.",
+  "rsLoginSuccessTitle": "Success",
+  "rsLoginSuccessMessage": "Login successful, welcome!",
+  "rsLoginErrorTitle": "Error",
+  "rsLoginErrorMessage": "Try again!",
+  "rsDontHaveAnAccount": "Don't have an account?",
+  "rsSignup": "Sign Up",
+  "rsEmailError": "Please enter your email",
+  "rsPasswordError": "Please enter your password",
+
+
+  "rsFullName": "Full name",
+  "rsFullNameHint": "Enter your name and surname",
+  "rsFullNameError": "Please enter your full name",
+  "rsPhoneNo": "Phone number",
+  "rsPhoneNoHint": "Enter your phone number",
+  "rsPhoneNoError": "Please enter your phone number",
+  "rsPasswordHint": "Create password (min 6 characters)",
+  "rsSignupSuccessTitle": "Success",
+  "rsSignupSuccessMessage": "Welcome to RunStat",
+  "rsSignupErrorTitle": "Error",
+  "rsSignupErrorMessage": "Try again!",
+  "rsSignUpButton": "SIGN UP",
+  "rsAlreadyHaveAnAccount": "Already have an account?",
+  "rsLogin": "Login",
+
+
+
+  "onBoardingTitle1": "Run every day for a healthier life!",
+  "onBoardingTitle2": "Follow your route on the map!",
+  "onBoardingTitle3": "Track your running stats with ease!",
+
+
+  "rsForgetPasswordSelection": "Make Selection!",
+  "rsForgetPasswordTitle": "Forget Password!",
+  "rsForgetPasswordSubTitle": "Select one of the options given below to reset your password.",
+  "rsResetViaEMail": "Reset via Mail Verification",
+  "rsResetViaPhone": "Reset via Phone Verification",
+  "rsResetViaPhoneDesc": "Reset via phone verification!",
+  "rsResetViaMailDesc": "Reset via Mail verification!",
+  "rsForgetMailSubTitle": "Don't worry! Enter your email address to create a new password.",
+  "rsForgetPhoneSubTitle": "Don't worry! Enter your phone number to create a new password.",
+  "rsEnterEmail": "Enter your email",
+  "rsEnterPhone": "Enter your phone number",
+  "rsOtpTitle": "CO\nDE",
+  "rsOtpSubtitle": "Verification",
+  "rsOtpMessage": "Enter the verification code sent at",
+
+
+
+  "rsWelcomeTitle": "Welcome to your sport assistant RunStat",
+  "rsWelcomeSubTitle": "Let's runnnn!.",
+  "rsDashboardTitle": "Dashboard",
+  "rsSetGoal": "Set a daily goal!",
+  "rsCreateGoal": "Create a daily step goal.",
+  "rsEnterDistance": "Enter distance in meters",
+  "rsSaveButton": "Save",
+  "rsGoalDistance": "Goal Distance",
+  "rsCompleted": "Completed",
+
+
+  "rsWeatherTitle": "Weather",
+  "rsHourlyForecast": "Hourly Forecast",
+  "rsAdditionalInfo": "Additional Information",
+  "rsHumidity": "Humidity",
+  "rsWindSpeed": "Wind Speed",
+  "rsPressure": "Pressure",
+  "rsRunningActivityTitle": "Running Activity",
+  "rsWeather": "Weather",
+  "rsTime": "Time",
+  "rsDistance": "Distance",
+  "rsStartButton": "Start",
+  "rsStopButton": "Stop",
+
+
+  "rsMyActivityHistory": "My Activity History",
+  "rsDetails": "Details",
+  "rsDetailsTitle": "Details",
+  "rsAvgSpeed": "Avg Speed",
+
+
+  "rsProfileTitle": "Profile",
+  "rsEditProfile": "Edit Profile",
+  "rsSaveChanges": "Save Changes",
+  "rsSettings": "Settings",
+  "rsSportsStatistics": "Sports Statistics",
+  "rsInformation": "Information",
+  "rsLogout": "Logout",
+  "rsLogoutConfirm": "Are you sure, you want to log out?",
+  "rsYes": "Yes",
+  "rsNo": "No",
+  "rsLogoutFailed": "Logout failed, please try again.",
+  "rsNoInfo": "No Information",
+
+
+
+  "rsInformationTitle": "Information",
+  "rsNoInfoAvailable": "No information available",
+  "rsAppVersion": "App Version",
+  "rsDeveloper": "Developer",
+  "rsContactEmail": "Contact Email",
+  "rsPrivacyPolicy": "Privacy Policy",
+  "rsTermsOfService": "Terms of Service",
+  "rsHome": "Home",
+  "rsDashboard": "Dashboard",
+  "rsMap": "Map",
+  "rsStatistics": "Statistics",
+  "rsProfile": "Profile",
+  "rsDarkMode": "Dark Mode",
+  "rsEnableNotifications": "Enable Notifications",
+  "rsLanguage": "Language",
+  "rsSelectLanguage": "Select Language",
+
+
+
+
+
+
+  "rsNext": "Next",
+  "rsSignInWithGoogle": "Sign-In with Google",
+
+  "rsAppName": ".appable/",
+  "rsAppTagLine": "Run, Measure, Improve \nReach Your Goals!",
+
+  "rsOnBoardingTitle1": "Build Awesome Apps",
+  "rsOnBoardingTitle2": "Learn from YouTube",
+  "rsOnBoardingTitle3": "Get Code & Resources",
+  "rsOnBoardingSubTitle1": "Let's start your journey with us on this amazing and easy platform.",
+  "rsOnBoardingSubTitle2": "Get Video Tutorials of each topic to learn things easily.",
+  "rsOnBoardingSubTitle3": "Save time by just copy pasting complete apps you learned from videos.",
+
+
+  "rsRememberMe": "Remember Me?",
+
+  "rsSignUpTitle": "Join the world of Run Stat!",
+  "rsSignUpSubTitle": "Track your runs, reach your goals!"
+
+
+
+}

@@ -5,6 +5,7 @@ import 'package:runstat/view/screens/welcome_screen.dart';
 import 'activity_history_screen.dart';
 import 'dashboard_screen.dart';
 import 'map_screen.dart';
+import '../../core/utils/helpers/localization_helper.dart'; // Localization helper import
 
 class BottomNavigationPage extends StatefulWidget {
   const BottomNavigationPage({super.key});
@@ -26,40 +27,40 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
 
   @override
   Widget build(BuildContext context) {
-    var screenInformation = MediaQuery.of(context);
+    final localizations = AppLocalizations.of(context); // Localization instance
+    final screenInformation = MediaQuery.of(context);
     final double screenWidth = screenInformation.size.width;
-
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark; // Karanlık mod kontrolü
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       body: pages[selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.analytics), label: "Dashboard"),
-          BottomNavigationBarItem(icon: Icon(Icons.sunny_snowing), label: "Weather"),
-          BottomNavigationBarItem(icon: Icon(Icons.map), label: "Map"),
-          BottomNavigationBarItem(icon: Icon(Icons.directions_run), label: "Statistics"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: localizations!.translate('rsHome')),
+          BottomNavigationBarItem(icon: Icon(Icons.analytics), label: localizations.translate('rsDashboard')),
+          BottomNavigationBarItem(icon: Icon(Icons.sunny_snowing), label: localizations.translate('rsWeather')),
+          BottomNavigationBarItem(icon: Icon(Icons.map), label: localizations.translate('rsMap')),
+          BottomNavigationBarItem(icon: Icon(Icons.directions_run), label: localizations.translate('rsStatistics')),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: localizations.translate('rsProfile')),
         ],
         currentIndex: selectedIndex,
-        backgroundColor: isDarkMode ? Colors.black : Colors.white, // Ana renk
+        backgroundColor: isDarkMode ? Colors.black : Colors.white,
         selectedItemColor: isDarkMode
-            ? Colors.lightBlueAccent // Karanlık mod için vurgu rengi
-            : const Color.fromARGB(255, 41, 16, 143), // Açık mod için vurgu rengi
+            ? Colors.lightBlueAccent
+            : const Color.fromARGB(255, 41, 16, 143),
         unselectedItemColor: isDarkMode
-            ? Colors.grey.shade500 // Karanlık mod için ikincil renk
-            : Colors.grey.shade600, // Açık mod için ikincil renk
+            ? Colors.grey.shade500
+            : Colors.grey.shade600,
         onTap: (index) {
           setState(() {
             selectedIndex = index;
           });
         },
-        type: BottomNavigationBarType.fixed, // Sabit menü tipi
-        selectedFontSize: 14, // Seçilen öğe yazı boyutu
-        unselectedFontSize: 0, // Seçilmeyen öğe yazı boyutu (görünmez yapmak için)
-        showUnselectedLabels: false, // Seçilmeyen öğelerin etiketlerini gizle
-        elevation: 10, // Hafif gölge efekti
+        type: BottomNavigationBarType.fixed,
+        selectedFontSize: 10,
+        unselectedFontSize: 0,
+        showUnselectedLabels: false,
+        elevation: 10,
       ),
     );
   }

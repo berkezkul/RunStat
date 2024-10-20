@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../core/constants/colors.dart';
 import '../../data/models/activity_model.dart';
 import '../widgets/activity_app_bar.dart';
+import '../../core/utils/helpers/localization_helper.dart'; // Localization helper import
 
 class ActivityDetailPage extends StatelessWidget {
   final Activity activityData;
@@ -14,6 +15,7 @@ class ActivityDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context); // Localization instance
     final isDarkMode = Theme.of(context).brightness == Brightness.dark; // Karanlık mod kontrolü
     final dateTime = DateTime.parse(activityData.date);
     final formattedDate = DateFormat('dd MMM yyyy').format(dateTime); // Gün, Ay, Yıl formatı
@@ -24,7 +26,7 @@ class ActivityDetailPage extends StatelessWidget {
         : defaultPosition;
 
     return Scaffold(
-      appBar: ActivityAppBar(context, "Details"),
+      appBar: ActivityAppBar(context, localizations!.translate('rsDetailsTitle')), // "Details"
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -90,21 +92,21 @@ class ActivityDetailPage extends StatelessWidget {
                     children: [
                       _buildInfoColumn(
                         icon: Icons.speed,
-                        title: 'Avg Speed',
+                        title: localizations.translate('rsAvgSpeed'), // "Avg Speed"
                         value: '${activityData.averageSpeed.toStringAsFixed(1)} m/s',
-                        color: isDarkMode ? Colors.white : blue2,
+                        color: isDarkMode ? Colors.white : Colors.blue.shade800,
                       ),
                       _buildInfoColumn(
                         icon: Icons.timer,
-                        title: 'Time',
-                        value: '${activityData.duration} sn',
-                        color: isDarkMode ? Colors.white : blue2,
+                        title: localizations.translate('rsTime'), // "Time"
+                        value: '${activityData.duration} s',
+                        color: isDarkMode ? Colors.white : Colors.blue.shade800,
                       ),
                       _buildInfoColumn(
                         icon: Icons.directions_run,
-                        title: 'Distance',
+                        title: localizations.translate('rsDistance'), // "Distance"
                         value: '${activityData.distance.toStringAsFixed(1)} m',
-                        color: isDarkMode ? Colors.white : blue2,
+                        color: isDarkMode ? Colors.white : Colors.blue.shade800,
                       ),
                     ],
                   ),
@@ -146,3 +148,4 @@ class ActivityDetailPage extends StatelessWidget {
     );
   }
 }
+

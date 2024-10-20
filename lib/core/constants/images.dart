@@ -33,3 +33,9 @@ const String rsOnBoarding3 = "assets/images/onboarding3.png";
 const String rsOnBoarding_2 = "assets/images/onBoarding_2.png";
 
 
+//Dropdown Images
+
+const String rsTurkeyFlag = "assets/images/turkey_flag.png";
+const String rsEnglishFlag = "assets/images/english_flag.png";
+
+

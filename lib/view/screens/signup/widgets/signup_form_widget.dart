@@ -5,6 +5,7 @@ import 'package:runstat/view/screens/login/login_screen.dart';
 import 'package:runstat/viewmodels/signup_viewmodel.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/utils/helpers/snackbar_helper.dart'; // Helper sınıfını içe aktarın
+import '../../../../core/utils/helpers/localization_helper.dart'; // Localization helper import
 
 class SignupFormWidget extends StatelessWidget {
   const SignupFormWidget({super.key});
@@ -12,6 +13,7 @@ class SignupFormWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<SignupViewModel>(context, listen: true);
+    final localizations = AppLocalizations.of(context); // Localization instance
     final _formKey = GlobalKey<FormState>();
 
     // Controllers for each form field
@@ -31,8 +33,8 @@ class SignupFormWidget extends StatelessWidget {
             TextFormField(
               controller: fullNameController,
               decoration: InputDecoration(
-                label: const Text("Full name"),
-                hintText: "Enter your name and surname",
+                label: Text(localizations!.translate('rsFullName')), // "Full name"
+                hintText: localizations.translate('rsFullNameHint'), // "Enter your name and surname"
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.0),
                 ),
@@ -40,7 +42,7 @@ class SignupFormWidget extends StatelessWidget {
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return "Please enter your full name";
+                  return localizations.translate('rsFullNameError'); // "Please enter your full name"
                 }
                 return null;
               },
@@ -51,8 +53,8 @@ class SignupFormWidget extends StatelessWidget {
             TextFormField(
               controller: emailController,
               decoration: InputDecoration(
-                label: const Text("Email"),
-                hintText: "Enter your email",
+                label: Text(localizations.translate('rsEmail')), // "Email"
+                hintText: localizations.translate('rsEmailHint'), // "Enter your email"
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.0),
                 ),
@@ -68,8 +70,8 @@ class SignupFormWidget extends StatelessWidget {
             TextFormField(
               controller: phoneNoController,
               decoration: InputDecoration(
-                label: const Text("Phone number"),
-                hintText: "Enter your phone number",
+                label: Text(localizations.translate('rsPhoneNo')), // "Phone number"
+                hintText: localizations.translate('rsPhoneNoHint'), // "Enter your phone number"
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.0),
                 ),
@@ -77,7 +79,7 @@ class SignupFormWidget extends StatelessWidget {
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return "Please enter your phone number";
+                  return localizations.translate('rsPhoneNoError'); // "Please enter your phone number"
                 }
                 return null;
               },
@@ -89,8 +91,8 @@ class SignupFormWidget extends StatelessWidget {
               controller: passwordController,
               obscureText: true, // Parolayı gizle
               decoration: InputDecoration(
-                label: const Text("Password"),
-                hintText: "Create password (min 6 characters)",
+                label: Text(localizations.translate('rsPassword')), // "Password"
+                hintText: localizations.translate('rsPasswordHint'), // "Create password (min 6 characters)"
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5.0),
                 ),
@@ -98,7 +100,7 @@ class SignupFormWidget extends StatelessWidget {
               ),
               validator: (value) {
                 if (value == null || value.length < 6) {
-                  return "Password must be at least 6 characters long";
+                  return localizations.translate('rsPasswordError'); // "Password must be at least 6 characters long"
                 }
                 return null;
               },
@@ -121,33 +123,25 @@ class SignupFormWidget extends StatelessWidget {
                     ).then((result) {
                       if (result == true) {
                         SnackbarHelper.successSnackBar(context,
-                            title: "Success",
-                            message: "Welcome to RunStat");
+                            title: localizations.translate('rsSignupSuccessTitle'), // "Success"
+                            message: localizations.translate('rsSignupSuccessMessage')); // "Welcome to RunStat"
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(builder: (context) => const LoginPage()),
                         );
                       } else {
                         SnackbarHelper.errorSnackBar(context,
-                            title: "Error",
-                            message: viewModel.errorMessage ?? "Try again!");
+                            title: localizations.translate('rsSignupErrorTitle'), // "Error"
+                            message: viewModel.errorMessage ?? localizations.translate('rsSignupErrorMessage')); // "Try again!"
                       }
                     });
                   }
                 },
-                style: ButtonStyle(
-
-                  backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                        (Set<WidgetState> states) {
-                      if (states.contains(WidgetState.pressed) || states.contains(WidgetState.focused)) {
-                        return blue2;  // Buton basılıyken veya odaktayken 'blue'
-                      }
-                      return darkBlue;  // Buton normal durumda 'darkBlue'
-                    },
-                  ),
-
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: darkBlue,
+                  foregroundColor: Colors.white,
                 ),
-                child: const Text("SIGN UP", style: TextStyle(color: Colors.white)),
+                child: Text(localizations.translate('rsSignUpButton')), // "SIGN UP"
               ),
             ),
           ],

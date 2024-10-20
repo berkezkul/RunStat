@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:runstat/core/constants/text.dart';
-
+import 'package:runstat/core/constants/images.dart';
 import '../../../../core/constants/colors.dart';
-import '../../../../core/constants/images.dart';
 import '../../../widgets/form_header_widget.dart';
 import '../forget_password_otp/otp_screen.dart';
+import '../../../../core/utils/helpers/localization_helper.dart'; // Localization helper import
 
 class ForgetPasswordMailScreen extends StatelessWidget {
   const ForgetPasswordMailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var localizations = AppLocalizations.of(context); // Localization instance
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -20,9 +20,9 @@ class ForgetPasswordMailScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: 120.0),
                 FormHeaderWidget(
-                  image: rsPasswordImage2,
-                  title: rsForgetPasswordTitle,
-                  subtitle: rsForgetMailSubTitle,
+                  image: rsPasswordImage2, // Resim yolu
+                  title: localizations!.translate('rsForgetPasswordTitle'), // "Forget Password!"
+                  subtitle: localizations.translate('rsForgetMailSubTitle'), // "Don't worry! Enter your email..."
                   crossAxisAlignment: CrossAxisAlignment.center,
                   imageAlign: Alignment.center,
                   heightBetween: 30.0,
@@ -36,10 +36,10 @@ class ForgetPasswordMailScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         TextFormField(
-                          decoration: const InputDecoration(
-                            label: Text("Mail"),
-                            hintText: "Enter your mail",
-                            prefixIcon: Icon(Icons.mail_outline_rounded),
+                          decoration: InputDecoration(
+                            label: Text(localizations.translate('rsEmail')), // "Mail"
+                            hintText: localizations.translate('rsEnterEmail'), // "Enter your mail"
+                            prefixIcon: const Icon(Icons.mail_outline_rounded),
                           ),
                         ),
                         const SizedBox(height: 20.0),
@@ -54,14 +54,13 @@ class ForgetPasswordMailScreen extends StatelessWidget {
                                 },
                                 style: ElevatedButton.styleFrom(
                                   shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius
-                                        .zero, // Bu satır ile köşeleri düz yapıyoruz
+                                    borderRadius: BorderRadius.zero,
                                   ),
                                   backgroundColor: blue,
-                                  elevation: 0, // Gölgeyi kapatma
+                                  elevation: 0,
                                 ),
                                 child: Text(
-                                  "NEXT",
+                                  localizations.translate('rsNext'), // "Next"
                                   style: TextStyle(color: darkBlue),
                                 ))),
                       ],

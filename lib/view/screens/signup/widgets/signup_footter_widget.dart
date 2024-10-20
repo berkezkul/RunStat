@@ -1,13 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:runstat/core/constants/images.dart';
-import 'package:runstat/core/constants/text.dart';
-
 import '../../../../core/constants/colors.dart';
-import '../../../../core/constants/images.dart';
-import '../../../../data/services/auth_service.dart';
-import '../../bottom_navigation_bar.dart';
-import '../../login/login_screen.dart';
+import '../../../../core/utils/helpers/localization_helper.dart';
+import '../../login/login_screen.dart'; // Localization helper import
 
 class SignupFootterWidget extends StatelessWidget {
   const SignupFootterWidget({
@@ -16,9 +10,7 @@ class SignupFootterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthService _authService = AuthService();
-    //var lc = AppLocalizations.of(context); // for language change (lc)
-    //final controller = Get.put(LoginController());
+    final localizations = AppLocalizations.of(context); // Localization instance
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -28,14 +20,17 @@ class SignupFootterWidget extends StatelessWidget {
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
+                MaterialPageRoute(builder: (context) => const LoginPage()),
               );
             },
             child: Text.rich(TextSpan(children: [
               TextSpan(
-                  text: "Already have an account? ",
+                  text: localizations!.translate('rsAlreadyHaveAnAccount'), // "Already have an account?"
                   style: Theme.of(context).textTheme.bodyLarge),
-              TextSpan(text: rsLogin.toUpperCase(), style: TextStyle(color: darkBlue)),
+              TextSpan(
+                text: localizations.translate('rsLogin').toUpperCase(), // "LOGIN"
+                style: TextStyle(color: darkBlue),
+              ),
             ])))
       ],
     );

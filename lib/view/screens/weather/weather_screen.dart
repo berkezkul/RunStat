@@ -8,6 +8,7 @@ import '../../../core/constants/colors.dart';
 import '../../widgets/activity_app_bar.dart';
 import '../../widgets/additional_info_item.dart';
 import '../../widgets/hourly_forecast_item.dart';
+import '../../../core/utils/helpers/localization_helper.dart'; // Localization helper import
 
 class WeatherPage extends StatefulWidget {
   const WeatherPage({super.key});
@@ -22,12 +23,10 @@ class _WeatherPageState extends State<WeatherPage> {
   Future<Map<String, dynamic>> getCurrentWeather() async {
     try {
       String cityName = 'Ankara';
-      final res = await http
-          .get(
+      final res = await http.get(
         Uri.parse(
             'https://api.openweathermap.org/data/2.5/forecast?q=$cityName&appid=$weatherApiKey'),
-      )
-          .timeout(
+      ).timeout(
         const Duration(seconds: 10),
         onTimeout: () {
           throw 'Request timed out. Please check your internet connection.';
@@ -54,12 +53,13 @@ class _WeatherPageState extends State<WeatherPage> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context); // Localization instance
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: ActivityAppBar(
         context,
-        "Weather",
+        localizations!.translate('rsWeatherTitle'), // "Weather"
         actions: [
           IconButton(
             onPressed: () {
@@ -125,9 +125,7 @@ class _WeatherPageState extends State<WeatherPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      color: isDarkMode
-                          ? Colors.blueGrey.shade900
-                          : Colors.white,
+                      color: isDarkMode ? Colors.blueGrey.shade900 : Colors.white,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: BackdropFilter(
@@ -141,9 +139,7 @@ class _WeatherPageState extends State<WeatherPage> {
                                   style: TextStyle(
                                     fontSize: 32,
                                     fontWeight: FontWeight.bold,
-                                    color: isDarkMode
-                                        ? Colors.white
-                                        : darkBlue,
+                                    color: isDarkMode ? Colors.white : darkBlue,
                                   ),
                                 ),
                                 const SizedBox(height: 16),
@@ -157,9 +153,7 @@ class _WeatherPageState extends State<WeatherPage> {
                                   currentSky,
                                   style: TextStyle(
                                     fontSize: 20,
-                                    color: isDarkMode
-                                        ? Colors.white
-                                        : darkBlue,
+                                    color: isDarkMode ? Colors.white : darkBlue,
                                   ),
                                 ),
                               ],
@@ -171,7 +165,7 @@ class _WeatherPageState extends State<WeatherPage> {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    'Hourly Forecast',
+                    localizations.translate('rsHourlyForecast'), // "Hourly Forecast"
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -201,7 +195,7 @@ class _WeatherPageState extends State<WeatherPage> {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    'Additional Information',
+                    localizations.translate('rsAdditionalInfo'), // "Additional Information"
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -214,17 +208,17 @@ class _WeatherPageState extends State<WeatherPage> {
                     children: [
                       AdditionalInfoItem(
                         icon: Icons.water_drop,
-                        label: 'Humidity',
+                        label: localizations.translate('rsHumidity'), // "Humidity"
                         value: currentHumidity.toString(),
                       ),
                       AdditionalInfoItem(
                         icon: Icons.air,
-                        label: 'Wind Speed',
+                        label: localizations.translate('rsWindSpeed'), // "Wind Speed"
                         value: currentWindSpeed.toString(),
                       ),
                       AdditionalInfoItem(
                         icon: Icons.beach_access,
-                        label: 'Pressure',
+                        label: localizations.translate('rsPressure'), // "Pressure"
                         value: currentPressure.toString(),
                       ),
                     ],

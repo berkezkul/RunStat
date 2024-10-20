@@ -4,18 +4,29 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import '../../core/constants/colors.dart';
 import '../../viewmodels/update_profile_viewmodel.dart';
 import '../widgets/activity_app_bar.dart';
+import '../../core/utils/helpers/localization_helper.dart'; // Localization helper import
 
 class UpdateProfilePage extends StatelessWidget {
   const UpdateProfilePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context); // Localization instance
     final isDarkMode = Theme.of(context).brightness == Brightness.dark; // Karanlık mod kontrolü
+
+    // Eğer localizations null dönerse, hata çıkmasın diye bir null kontrolü ekliyoruz.
+    if (localizations == null) {
+      return Scaffold(
+        body: Center(
+          child: Text("Localization Error"),
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: ActivityAppBar(
         context,
-        "Edit Profile",
+        localizations.translate('rsEditProfile'), // "Edit Profile"
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(LineAwesomeIcons.angle_left_solid),
@@ -82,7 +93,7 @@ class UpdateProfilePage extends StatelessWidget {
                         _buildInputField(
                           context: context,
                           controller: viewModel.fullNameController,
-                          labelText: "Full Name",
+                          labelText: localizations.translate('rsFullName'), // "Full Name"
                           icon: LineAwesomeIcons.user,
                           isDarkMode: isDarkMode,
                         ),
@@ -90,7 +101,7 @@ class UpdateProfilePage extends StatelessWidget {
                         _buildInputField(
                           context: context,
                           controller: viewModel.emailController,
-                          labelText: "Email",
+                          labelText: localizations.translate('rsEmail'), // "Email"
                           icon: LineAwesomeIcons.envelope_solid,
                           isDarkMode: isDarkMode,
                         ),
@@ -98,7 +109,7 @@ class UpdateProfilePage extends StatelessWidget {
                         _buildInputField(
                           context: context,
                           controller: viewModel.phoneController,
-                          labelText: "Phone No",
+                          labelText: localizations.translate('rsPhoneNo'), // "Phone No"
                           icon: LineAwesomeIcons.phone_solid,
                           isDarkMode: isDarkMode,
                         ),
@@ -120,9 +131,9 @@ class UpdateProfilePage extends StatelessWidget {
                             shadowColor: Colors.blueAccent,
                             elevation: 8,
                           ),
-                          child: const Text(
-                            "Save Changes",
-                            style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                          child: Text(
+                            localizations.translate('rsSaveChanges'), // "Save Changes"
+                            style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ],
@@ -199,7 +210,7 @@ class UpdateProfilePage extends StatelessWidget {
         controller: controller,
         obscureText: true,
         decoration: InputDecoration(
-          labelText: "Password",
+          labelText: AppLocalizations.of(context)?.translate('rsPassword') ?? 'Password', // "Password"
           labelStyle: TextStyle(color: isDarkMode ? Colors.blue.shade200 : darkBlue), // İkincil renk
           prefixIcon: Icon(Icons.fingerprint, color: isDarkMode ? Colors.blue.shade200 : darkBlue), // İkincil renk
           suffixIcon: IconButton(

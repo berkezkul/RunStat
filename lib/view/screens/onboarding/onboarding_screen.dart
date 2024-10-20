@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../core/constants/colors.dart';
 import '../../../data/models/onboarding_model.dart';
+import '../../../core/utils/helpers/localization_helper.dart'; // Localization helper import
 
 class OnBoardingPage extends StatelessWidget {
   final OnBoardingModel page;
@@ -8,7 +9,6 @@ class OnBoardingPage extends StatelessWidget {
   final VoidCallback onDone;
   final VoidCallback onNext; // İlk iki sayfa için geçiş callback'i
   final int currentIndex; // Eklenen currentIndex parametresi
-
 
   const OnBoardingPage({
     Key? key,
@@ -33,7 +33,6 @@ class OnBoardingPage extends StatelessWidget {
           // Resim kısmı
           Expanded(
             flex: 3,
-
             child: Image.asset(
               page.imagePath,
               fit: BoxFit.contain,
@@ -68,7 +67,8 @@ class OnBoardingPage extends StatelessWidget {
             padding: EdgeInsets.only(bottom: screenHeight * 0.05),
             child: isLastPage
                 ? IconButton(
-              icon: const Icon(Icons.check_circle, size: 50, color: Colors.green), // Tik işareti
+              icon: const Icon(Icons.check_circle,
+                  size: 50, color: Colors.green), // Tik işareti
               onPressed: onDone, // HomePage'e geçiş
             )
                 : IconButton(

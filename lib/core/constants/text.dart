@@ -24,9 +24,6 @@ const String rsOnBoardingTitle3 = "Get Code & Resources";
 const String rsOnBoardingSubTitle1 = "Let's start your journey with us on this amazing and easy platform.";
 const String rsOnBoardingSubTitle2 = "Get Video Tutorials of each topic to learn things easily.";
 const String rsOnBoardingSubTitle3 = "Save time by just copy pasting complete apps you learned from videos.";
-const String rsOnBoardingCounter1 = "1/3";
-const String rsOnBoardingCounter2 = "2/3";
-const String rsOnBoardingCounter3 = "3/3";
 
 
 // -- Welcome Screen Text

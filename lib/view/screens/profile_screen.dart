@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:runstat/view/screens/dashboard_screen.dart';
+import 'package:runstat/view/screens/settings_screen.dart';
+import 'package:runstat/view/screens/update_profile_screen.dart';
 import '../../core/constants/colors.dart';
 import '../../core/constants/images.dart';
 import '../../core/utils/theme/theme_provider.dart';
@@ -9,6 +11,7 @@ import '../../viewmodels/profile_viewmodel.dart';
 import '../widgets/activity_app_bar.dart';
 import '../widgets/profile_menu_widget.dart';
 import 'info_screen.dart';
+import '../../core/utils/helpers/localization_helper.dart'; // Localization helper import
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -18,9 +21,9 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context); // Localization instance
     final themeProvider = Provider.of<ThemeProvider>(context); // ThemeProvider erişimi
     bool isDarkMode = themeProvider.isDarkMode; // Karanlık mod kontrolü
 
@@ -39,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
           if (viewModel.userData == null) {
             return const Scaffold(
               body: Center(
-                child: Text('Kullanıcı bilgileri bulunamadı'),
+                child: Text('User data not found'),
               ),
             );
           }
@@ -49,7 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
           return Scaffold(
             appBar: ActivityAppBar(
-              context, "Profile",
+              context, localizations!.translate('rsProfile'), // "Profile"
               actions: [
                 IconButton(
                   icon: Icon(isDarkMode ? Icons.sunny : Icons.nights_stay),
@@ -78,8 +81,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     Stack(
                       children: [
                         SizedBox(
-                          width: 120,
-                          height: 120,
+                          width: 100,
+                          height: 100,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(150),
                             child: viewModel.userData!['profilePicture'] != null
@@ -101,9 +104,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            userData['fullName'] ?? 'No Information',
+                            userData['fullName'] ?? localizations.translate('rsNoInfo'), // "No Information"
                             style: TextStyle(
-                              fontSize: 22,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: isDarkMode ? Colors.white : darkBlue, // İkincil renk
                               fontFamily: 'Roboto',
@@ -111,9 +114,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           const SizedBox(height: 3),
                           Text(
-                            userData['email'] ?? 'No Information',
+                            userData['email'] ?? localizations.translate('rsNoInfo'), // "No Information"
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 14,
                               fontStyle: FontStyle.italic,
                               color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade700,
                             ),
@@ -121,13 +124,18 @@ class _ProfilePageState extends State<ProfilePage> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 10),
                     SizedBox(
                       width: 200,
                       child: ElevatedButton(
-                        onPressed: () => Navigator.pushNamed(context, '/UpdateProfilePage'),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => UpdateProfilePage()),
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                           backgroundColor: isDarkMode ? Colors.blue.shade900 : darkBlue, // İkincil renk
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
@@ -136,7 +144,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           elevation: 8,
                         ),
                         child: Text(
-                          "Edit Profile",
+                          localizations.translate('rsEditProfile'), // "Edit Profile"
                           style: TextStyle(
                             color: Colors.white, // Vurgu rengi
                             fontSize: 16,
@@ -149,12 +157,19 @@ class _ProfilePageState extends State<ProfilePage> {
                     const Divider(),
                     const SizedBox(height: 5),
                     ProfileMenuWidget(
-                      title: "Settings",
+                      title: localizations.translate('rsSettings'), // "Settings"
                       icon: LineAwesomeIcons.cog_solid,
-                      onPress: () {},
+                      onPress: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SettingsPage(onLocaleChange: (Locale value) {  },),
+                          ),
+                        );
+                      },
                     ),
                     ProfileMenuWidget(
-                      title: "Spor Statistics",
+                      title: localizations.translate('rsSportsStatistics'), // "Sports Statistics"
                       icon: LineAwesomeIcons.running_solid,
                       onPress: () {
                         Navigator.push(
@@ -168,7 +183,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     const Divider(),
                     const SizedBox(height: 5),
                     ProfileMenuWidget(
-                      title: "Information",
+                      title: localizations.translate('rsInformationTitle'), // "Information"
                       icon: LineAwesomeIcons.info_solid,
                       onPress: () {
                         Navigator.push(
@@ -178,12 +193,12 @@ class _ProfilePageState extends State<ProfilePage> {
                       },
                     ),
                     ProfileMenuWidget(
-                      title: "Logout",
+                      title: localizations.translate('rsLogout'), // "Logout"
                       icon: LineAwesomeIcons.sign_out_alt_solid,
                       textColor: Colors.red, // Vurgu rengi
                       endIcon: false,
                       onPress: () {
-                        _showLogoutDialog(context, viewModel);
+                        _showLogoutDialog(context, viewModel, localizations);
                       },
                     ),
                   ],
@@ -196,13 +211,13 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  void _showLogoutDialog(BuildContext context, ProfileViewModel viewModel) {
+  void _showLogoutDialog(BuildContext context, ProfileViewModel viewModel, AppLocalizations localizations) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("LOG OUT"),
-          content: const Text("Are you sure, you want to log out?"),
+          title: Text(localizations.translate('rsLogout')), // "LOG OUT"
+          content: Text(localizations.translate('rsLogoutConfirm')), // "Are you sure you want to log out?"
           actions: <Widget>[
             TextButton(
               onPressed: () async {
@@ -212,12 +227,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   Navigator.pushReplacementNamed(context, '/');
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Logout failed, please try again.')),
+                    SnackBar(content: Text(localizations.translate('rsLogoutFailed'))), // "Logout failed, please try again."
                   );
                 }
               },
-              child: const Text(
-                "Yes",
+              child: Text(
+                localizations.translate('rsYes'), // "Yes"
                 style: TextStyle(color: Colors.red), // Vurgu rengi
               ),
             ),
@@ -225,7 +240,7 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text("No"),
+              child: Text(localizations.translate('rsNo')), // "No"
             ),
           ],
         );

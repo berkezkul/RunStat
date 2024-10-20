@@ -1,6 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:runstat/core/utils/helpers/localization_helper.dart';
+import 'package:runstat/core/utils/helpers/locale_provider.dart';
+import 'package:runstat/view/screens/signup/signup_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:runstat/viewmodels/login_viewmodel.dart';
 import 'dart:math' as math;
 
@@ -19,8 +23,64 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
+  bool isOnBoardingComplete = false;
+  String? selectedLanguage;
+
+  @override
+  void initState() {
+    super.initState();
+    // Onboarding durumu başlangıçta kontrol edilir.
+    // Ancak yönlendirme işlemleri için didChangeDependencies kullanacağız.
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadLanguage();
+    _checkOnBoardingStatus();
+  }
+
+  Future<void> _loadLanguage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? languageCode = prefs.getString('languageCode');
+    setState(() {
+      selectedLanguage = languageCode ?? 'en'; // Varsayılan dil: 'en'
+    });
+  }
+
+  Future<void> _setLanguage(String languageCode) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('languageCode', languageCode);
+
+    Provider.of<LocaleProvider>(context, listen: false)
+        .setLocale(Locale(languageCode));
+  }
+
+  Future<void> _checkOnBoardingStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? onBoardingComplete = prefs.getBool('onBoardingComplete');
+    if (onBoardingComplete == null || !onBoardingComplete) {
+      // Eğer onboarding tamamlanmadıysa AppOnBoarding sayfasına yönlendir.
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => AppOnBoarding()),
+      );
+    } else {
+      setState(() {
+        isOnBoardingComplete = true; // Onboarding tamamlandı olarak işaretle.
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    var localizations = AppLocalizations.of(context); // Yerelleştirme build'da kullanılıyor.
+
+    if (!isOnBoardingComplete) {
+      // Eğer onboarding tamamlanmadıysa, boş bir ekran gösterilebilir.
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
     var screenInformation = MediaQuery.of(context);
     final double screenHeight = screenInformation.size.height;
     final double screenWidth = screenInformation.size.width;
@@ -55,7 +115,7 @@ class HomePageState extends State<HomePage> {
                     child: Column(
                       children: [
                         Text(
-                          'RunStat',
+                          localizations!.translate('appName'),
                           style: TextStyle(
                             fontSize: screenWidth / 11,
                             fontWeight: FontWeight.bold,
@@ -65,7 +125,7 @@ class HomePageState extends State<HomePage> {
                         ),
                         SizedBox(height: 10),
                         Text(
-                          'Run, Measure, Improve',
+                          localizations.translate('appTagLine1'),
                           style: TextStyle(
                             fontSize: screenWidth / 20,
                             fontStyle: FontStyle.italic,
@@ -73,7 +133,7 @@ class HomePageState extends State<HomePage> {
                           ),
                         ),
                         Text(
-                          'Reach Your Goals!',
+                          localizations.translate('appTagLine2'),
                           style: TextStyle(
                             fontSize: screenWidth / 20,
                             fontStyle: FontStyle.italic,
@@ -142,8 +202,7 @@ class HomePageState extends State<HomePage> {
 
                   // Giriş ve Kayıt Ol Butonları
                   Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: screenWidth * 0.1),
+                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
                     child: Column(
                       children: [
                         // Giriş Yap Butonu
@@ -156,7 +215,7 @@ class HomePageState extends State<HomePage> {
                           },
                           icon: Icon(Icons.login),
                           label: Text(
-                            "Login",
+                            localizations.translate('login'),
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
@@ -173,14 +232,14 @@ class HomePageState extends State<HomePage> {
                         // Kayıt Ol Butonu
                         ElevatedButton.icon(
                           onPressed: () {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => AppOnBoarding()));
+                                    builder: (context) => SignupPage()));
                           },
                           icon: Icon(Icons.app_registration),
                           label: Text(
-                            "Sign Up",
+                            localizations.translate('signup'),
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
@@ -195,7 +254,7 @@ class HomePageState extends State<HomePage> {
                         ),
                         SizedBox(height: 20),
                         Text(
-                          "OR",
+                          localizations.translate('or'),
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: darkBlue),
                         ),
@@ -221,7 +280,7 @@ class HomePageState extends State<HomePage> {
                             width: 20.0,
                           ),
                           label: Text(
-                            "Sign in with Google",
+                            localizations.translate('signInWithGoogle'),
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
@@ -234,6 +293,54 @@ class HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
+                        SizedBox(height: 15),
+
+                        DropdownButton<String>(
+                          style: TextStyle(
+                            color: darkBlue,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          value: selectedLanguage,
+                          items: [
+                            DropdownMenuItem(
+                              value: 'en',
+                              child: Row(
+                                children: [
+                                  Image.asset(
+                                    rsEnglishFlag,
+                                    width: 24, // Bayrağın genişliği
+                                    height: 24, // Bayrağın yüksekliği
+                                  ),
+                                  SizedBox(width: 8), // Bayrak ve metin arasına boşluk
+                                  Text('English'),
+                                ],
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: 'tr',
+                              child: Row(
+                                children: [
+                                  Image.asset(
+                                    rsTurkeyFlag,
+                                    width: 24,
+                                    height: 24,
+                                  ),
+                                  SizedBox(width: 8),
+                                  Text('Türkçe'),
+                                ],
+                              ),
+                            ),
+                          ],
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedLanguage = newValue!;
+                            });
+                            _setLanguage(newValue!);
+                          },
+                          hint: Text(localizations.translate('rsSelectLanguage')),
+                        ),
+
                       ],
                     ),
                   ),
@@ -241,9 +348,9 @@ class HomePageState extends State<HomePage> {
                   // Alt Bilgilendirme
                   Spacer(),
                   Padding(
-                    padding: const EdgeInsets.only(right:15, left:15,bottom: 20),
+                    padding: const EdgeInsets.only(right: 15, left: 15, bottom: 20),
                     child: Text(
-                      'By continuing, you agree to RunStat\'s Terms & Conditions',
+                      localizations.translate('termsAndConditions'),
                       style: TextStyle(
                         fontSize: 12,
                         color: darkBlue,

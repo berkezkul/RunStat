@@ -1,77 +1,89 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-//import 'package:runstat_app/firebase_options.dart';
-//import 'package:runstat_app/src/features/authentication/screens/splash_and_firstpage/home_page.dart';
-//import 'package:runstat_app/src/repository/authentication_repository/authentication_repository.dart';
-//import 'package:runstat_app/src/utils/theme/theme.dart';
-//import 'package:flutter_deneme/src/screens/login/login_page.dart';
-import 'package:runstat/view/screens/home_screen.dart';
-import 'package:runstat/view/screens/onboarding/app_onboarding.dart';
-import 'package:runstat/view/screens/signup/signup_screen.dart';
-import 'package:runstat/view/screens/update_profile_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:runstat/view/screens/signup/signup_screen.dart';
+import 'core/utils/helpers/locale_provider.dart';
+import 'core/utils/helpers/localization_helper.dart'; // Localization helper import
+import 'package:runstat/view/screens/home_screen.dart';
+import 'package:runstat/view/screens/settings_screen.dart';
+import 'package:runstat/core/utils/theme/theme_provider.dart';
 import 'package:runstat/viewmodels/map_viewmodel.dart';
 import 'package:runstat/viewmodels/update_profile_viewmodel.dart';
-import 'package:runstat/core/utils/theme/theme_provider.dart';
 
-import 'core/utils/theme/theme.dart'; // ThemeProvider dosyasını dahil edin
-
-
-/*
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
-      .then((value) => Get.put(AuthenticationRepository()));
-  runApp(const MyApp());
-}
-*/
+import 'core/utils/theme/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // SharedPreferences import
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => UpdateProfileViewModel()),
-      ChangeNotifierProvider(create: (_) => MapViewModel()),
-      ChangeNotifierProvider(
-        create: (context) => ThemeProvider(),
-        child: MyApp(),
-      ),
-      // Diğer ViewModel'ler burada sağlanabilir
-    ],
-    child: MyApp(),
-  ),);
+  await Firebase.initializeApp(); // Firebase başlatılması
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LocaleProvider()), // LocaleProvider başlatılıyor
+        ChangeNotifierProvider(create: (_) => ThemeProvider()), // Tema sağlayıcı başlatılıyor
+        ChangeNotifierProvider(create: (_) => UpdateProfileViewModel()),
+        ChangeNotifierProvider(create: (_) => MapViewModel()),
+      ],
+      child: MyApp(), // MyApp tüm Provider'ların içinde yer alıyor
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-
-    return MaterialApp(
-      title: 'Run Stat',
-      themeMode: themeProvider.themeMode, // Tema modunu buradan alıyoruz
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      debugShowCheckedModeBanner: false,
-      //theme: RSAppTheme.lightTheme,
-      /*ThemeData(
-        brightness: Brightness.light,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),*/
-      //darkTheme: RSAppTheme.darkTheme,
-      //themeMode: ThemeMode.system,
-      initialRoute: '/',
-      routes: {
-        '/': (context) => HomePage(), // Ana sayfanızın rotası
-        '/UpdateProfilePage': (context) => UpdateProfilePage(),
-        '/SignupPage': (context) => SignupPage(),
-
+    return Consumer<LocaleProvider>(
+      builder: (context, localeProvider, child) {
+        return Consumer<ThemeProvider>(
+          builder: (context, themeProvider, child) {
+            return MaterialApp(
+              title: 'Run Stat',
+              locale: localeProvider.locale ?? const Locale('en'),
+              themeMode: themeProvider.themeMode,
+              theme: lightTheme,
+              darkTheme: darkTheme,
+              debugShowCheckedModeBanner: false,
+              supportedLocales: const [
+                Locale('en', ''),
+                Locale('tr', ''),
+              ],
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              localeResolutionCallback: (locale, supportedLocales) {
+                for (var supportedLocale in supportedLocales) {
+                  if (supportedLocale.languageCode == locale?.languageCode) {
+                    return supportedLocale;
+                  }
+                }
+                return supportedLocales.first;
+              },
+              initialRoute: '/',
+              routes: {
+                '/': (context) => HomePage(),
+                '/SignupPage': (context) => SignupPage(),
+                '/SettingsPage': (context) => SettingsPage(
+                  onLocaleChange: (newLocale) {
+                    localeProvider.setLocale(newLocale); // LocaleProvider ile dil değişimi
+                  },
+                ),
+              },
+            );
+          },
+        );
       },
-      //home: const HomePage(),
     );
   }
 }

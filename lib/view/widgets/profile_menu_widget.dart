@@ -29,7 +29,7 @@ class ProfileMenuWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onPress,
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 8.0),
+        margin: const EdgeInsets.symmetric(vertical: 4.0),
         padding: const EdgeInsets.all(12.0),
         decoration: BoxDecoration(
           color: isDarkMode ? Colors.blueGrey.shade900 : Colors.white, // Arka plan için ana renk

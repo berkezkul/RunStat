@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/constants/colors.dart';
 import '../../core/constants/images.dart';
+import '../../core/utils/helpers/localization_helper.dart'; // Localization helper import
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
@@ -12,13 +13,11 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
+    var localizations = AppLocalizations.of(context); // Localization instance
     var screenInformation = MediaQuery.of(context);
     final double screenWidth = screenInformation.size.width;
     final double screenHeight = screenInformation.size.height;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-
-    debugPrint(
-        "Screen Height : ${screenInformation.size.height} /n Screen Weight: $screenWidth");
 
     return Scaffold(
       appBar: AppBar(
@@ -40,8 +39,8 @@ class _WelcomePageState extends State<WelcomePage> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: isDarkMode
-                  ? [Colors.black87, darkBlue] // Karanlık mod için ana renkler
-                  : [Colors.blue.shade900, Colors.blue.shade500], // Aydınlık mod için ana renkler
+                  ? [Colors.black87, darkBlue]
+                  : [Colors.blue.shade900, Colors.blue.shade500],
             ),
           ),
         ),
@@ -54,8 +53,8 @@ class _WelcomePageState extends State<WelcomePage> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: isDarkMode
-                ? [Colors.black87, darkBlue] // Karanlık mod için arka plan renkleri
-                : [Colors.blue.shade500, Colors.blue.shade200], // Aydınlık mod için arka plan renkleri
+                ? [Colors.black87, darkBlue]
+                : [Colors.blue.shade500, Colors.blue.shade200],
           ),
         ),
         child: Center(
@@ -66,7 +65,7 @@ class _WelcomePageState extends State<WelcomePage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: Text(
-                  "Welcome to your sport assistant RunStat",
+                  localizations!.translate('rsWelcomeTitle'), // "Welcome to your sport assistant RunStat"
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -98,15 +97,15 @@ class _WelcomePageState extends State<WelcomePage> {
                     ],
                   ),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0), // Görsel köşe yuvarlatma
+                    borderRadius: BorderRadius.circular(20.0),
                     child: Image.asset(
                       rsHomepageImage2,
                       width: screenWidth * 0.9,
                       height: screenHeight * 0.4,
                       fit: BoxFit.cover,
                       color: isDarkMode
-                          ? Colors.white.withOpacity(0.8) // Karanlık modda hafif bir beyaz katman
-                          : null, // Aydınlık modda normal gösterim
+                          ? Colors.white.withOpacity(0.8)
+                          : null,
                       colorBlendMode: isDarkMode ? BlendMode.modulate : BlendMode.srcOver,
                     ),
                   ),

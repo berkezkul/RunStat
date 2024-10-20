@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:runstat/core/constants/colors.dart';
+import '../../../../core/utils/helpers/localization_helper.dart'; // Localization helper import
 
 class SignupHeaderWidget extends StatelessWidget {
   const SignupHeaderWidget(
@@ -30,6 +31,7 @@ class SignupHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final localizations = AppLocalizations.of(context); // Localization instance
 
     return Column(
       crossAxisAlignment: crossAxisAlignment,
@@ -41,7 +43,7 @@ class SignupHeaderWidget extends StatelessWidget {
         ),
         SizedBox(height: imageDifftitle),
         Text(
-          title,
+          localizations!.translate(title), // Translated title
           textAlign: textAlign,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             color: darkBlue,
@@ -50,7 +52,7 @@ class SignupHeaderWidget extends StatelessWidget {
         ),
         SizedBox(height: titleDiffsubtitle),
         Text(
-          subtitle,
+          localizations.translate(subtitle), // Translated subtitle
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: blue2),
         ),
       ],

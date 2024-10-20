@@ -5,12 +5,14 @@ import '../../core/constants/colors.dart';
 import '../../viewmodels/dashboard_viewmodel.dart';
 import '../widgets/activity_app_bar.dart';
 import '../widgets/info_cart.dart';
+import '../../core/utils/helpers/localization_helper.dart'; // Localization helper import
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var localizations = AppLocalizations.of(context); // Localization instance
     var screenInformation = MediaQuery.of(context);
     final double screenHeight = screenInformation.size.height;
     final double screenWidth = screenInformation.size.width;
@@ -25,7 +27,7 @@ class DashboardPage extends StatelessWidget {
               : 0.0;
 
           return Scaffold(
-            appBar: ActivityAppBar(context, "Dashboard"),
+            appBar: ActivityAppBar(context, localizations!.translate('rsDashboardTitle')), // "Dashboard"
             body: Container(
               width: double.infinity,
               height: double.infinity,
@@ -34,8 +36,8 @@ class DashboardPage extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: isDarkMode
-                      ? [Colors.black87, darkBlue] // Karanlık modda renkler
-                      : [Colors.white, Colors.blue.shade100, Colors.blue.shade200], // Aydınlık modda renkler
+                      ? [Colors.black87, darkBlue]
+                      : [Colors.white, Colors.blue.shade100, Colors.blue.shade200],
                 ),
               ),
               child: Padding(
@@ -44,18 +46,18 @@ class DashboardPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Set a daily goal!",
+                      localizations.translate('rsSetGoal'), // "Set a daily goal!"
                       style: TextStyle(
-                        color: isDarkMode ? Colors.white : darkBlue, // İkincil renk
+                        color: isDarkMode ? Colors.white : darkBlue,
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "Create a daily step goal.",
+                      localizations.translate('rsCreateGoal'), // "Create a daily step goal."
                       style: TextStyle(
-                        color: isDarkMode ? Colors.grey.shade400 : darkBlue.withOpacity(0.7), // İkincil renk
+                        color: isDarkMode ? Colors.grey.shade400 : darkBlue.withOpacity(0.7),
                         fontSize: 14,
                         fontStyle: FontStyle.italic,
                       ),
@@ -65,17 +67,17 @@ class DashboardPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: screenWidth * 0.6, // Responsive genişlik
+                          width: screenWidth * 0.6,
                           height: 50,
                           child: TextField(
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                              hintText: 'Enter distance in meters',
+                              hintText: localizations.translate('rsEnterDistance'), // "Enter distance in meters"
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               filled: true,
-                              fillColor: isDarkMode ? Colors.grey.shade800 : Colors.white, // Ana renk
+                              fillColor: isDarkMode ? Colors.grey.shade800 : Colors.white,
                             ),
                             onChanged: (value) {
                               viewModel.setGoalDistance(double.tryParse(value) ?? 0.0);
@@ -92,7 +94,7 @@ class DashboardPage extends StatelessWidget {
                             height: 50,
                             width: screenWidth * 0.25,
                             decoration: BoxDecoration(
-                              color: isDarkMode ? Colors.blueGrey.shade700 : darkBlue, // İkincil renk
+                              color: isDarkMode ? Colors.blueGrey.shade700 : darkBlue,
                               borderRadius: BorderRadius.circular(12),
                               boxShadow: [
                                 BoxShadow(
@@ -104,9 +106,9 @@ class DashboardPage extends StatelessWidget {
                             ),
                             alignment: Alignment.center,
                             child: Text(
-                              "Save",
+                              localizations.translate('rsSaveButton'), // "Save"
                               style: TextStyle(
-                                color: Colors.white, // Vurgu rengi
+                                color: Colors.white,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -128,12 +130,12 @@ class DashboardPage extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
-                            color: isDarkMode ? Colors.white : darkBlue, // İkincil renk
+                            color: isDarkMode ? Colors.white : darkBlue,
                           ),
                         ),
                         circularStrokeCap: CircularStrokeCap.round,
-                        progressColor: isDarkMode ? Colors.blueGrey.shade500 : darkBlue, // İkincil renk
-                        backgroundColor: isDarkMode ? Colors.grey.shade300 : Colors.white, // Ana renk
+                        progressColor: isDarkMode ? Colors.blueGrey.shade500 : darkBlue,
+                        backgroundColor: isDarkMode ? Colors.grey.shade300 : Colors.white,
                       ),
                     ),
                     const SizedBox(height: 60),
@@ -145,14 +147,14 @@ class DashboardPage extends StatelessWidget {
                           // Goal Distance InfoCard
                           InfoCard(
                             icon: Icons.flag,
-                            title: "Goal Distance",
+                            title: localizations.translate('rsGoalDistance'), // "Goal Distance"
                             value: "${viewModel.goalDistance.toStringAsFixed(2)} meters",
                           ),
                           const SizedBox(width: 20),
                           // Completed Distance InfoCard
                           InfoCard(
                             icon: Icons.directions_walk,
-                            title: "Completed",
+                            title: localizations.translate('rsCompleted'), // "Completed"
                             value: "${viewModel.completedDistance.toStringAsFixed(2)} meters",
                           ),
                         ],
