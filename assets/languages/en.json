@@ -105,10 +105,14 @@
   "rsInformation": "Information",
   "rsLogout": "Logout",
   "rsLogoutConfirm": "Are you sure, you want to log out?",
+  "rsLogoutSuccess": "Success.",
+  "rsLogoutMessage": "Logout successful",
+  "rsLogoutErrorMessage": "An error occured",
   "rsYes": "Yes",
   "rsNo": "No",
   "rsLogoutFailed": "Logout failed, please try again.",
   "rsNoInfo": "No Information",
+
 
 
 
@@ -152,6 +156,7 @@
 
   "rsSignUpTitle": "Join the world of Run Stat!",
   "rsSignUpSubTitle": "Track your runs, reach your goals!"
+
 
 
 

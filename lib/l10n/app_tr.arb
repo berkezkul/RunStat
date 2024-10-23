@@ -95,6 +95,10 @@
   "rsSaveChanges": "Değişiklikleri Kaydet",
   "rsLogout": "Çıkış",
   "rsLogoutConfirm": "Çıkış yapmak istediğinize emin misiniz?",
+  "rsLogoutSuccess": "Başarılı.",
+  "rsLogoutMessage": "Çıkış işlemi başarıyla gerçekleştirildi",
+  "rsLogoutErrorMessage": "Bir hata oluştu",
+
   "rsYes": "Evet",
   "rsNo": "Hayır",
   "rsLogoutFailed": "Çıkış başarısız oldu, lütfen tekrar deneyin.",

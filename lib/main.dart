@@ -17,15 +17,11 @@ import 'package:shared_preferences/shared_preferences.dart'; // SharedPreference
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(); // Firebase başlatılması
-  final localeProvider = LocaleProvider();
 
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<LocaleProvider>(
-          create: (_) => localeProvider,
-          child: MyApp(),
-        ),
+        ChangeNotifierProvider(create: (_) => LocaleProvider()), // LocaleProvider başlatılıyor
         ChangeNotifierProvider(create: (_) => ThemeProvider()), // Tema sağlayıcı başlatılıyor
         ChangeNotifierProvider(create: (_) => UpdateProfileViewModel()),
         ChangeNotifierProvider(create: (_) => MapViewModel()),

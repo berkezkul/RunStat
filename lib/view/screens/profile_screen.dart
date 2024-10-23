@@ -145,7 +145,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           elevation: 8,
                         ),
                         child: Text(
-                          localizations.translate('editProfile'), // "Edit Profile"
+                          localizations.translate('rsEditProfile'), // "Edit Profile"
                           style: TextStyle(
                             color: Colors.white, // Vurgu rengi
                             fontSize: 16,
@@ -194,7 +194,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       },
                     ),
                     ProfileMenuWidget(
-                      title: localizations.translate('logout'), // "Logout"
+                      title: localizations.translate('rsLogout'), // "Logout"
                       icon: LineAwesomeIcons.sign_out_alt_solid,
                       textColor: Colors.red, // Vurgu rengi
                       endIcon: false,
@@ -213,47 +213,83 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _showLogoutDialog(BuildContext context, ProfileViewModel viewModel, AppLocalizations localizations) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false); // Tema kontrolü
+    bool isDarkMode = themeProvider.isDarkMode; // Karanlık mod kontrolü
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(localizations.translate('logout')),
-          content: Text(localizations.translate('logoutConfirm')),
+          backgroundColor: isDarkMode ? darkBlue : Colors.white, // Arka plan rengi
+          title: Text(
+            localizations.translate('rsLogout'),
+            style: TextStyle(
+              color: isDarkMode ? Colors.white : darkBlue, // Başlık rengi
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            localizations.translate('rsLogoutConfirm'),
+            style: TextStyle(
+              color: isDarkMode ? Colors.grey.shade300 : Colors.black87,
+            ),
+          ),
           actions: <Widget>[
+            // "Yes" butonu
             TextButton(
               onPressed: () async {
                 Navigator.pop(context);
                 bool success = await viewModel.logout(context);
 
-                if (!mounted) return; // Async işlem sonrası hala mounted olup olmadığını kontrol ediyoruz
+                if (!mounted) return;
 
                 if (success) {
                   SnackbarHelper.successSnackBar(
                     context,
-                    title: localizations.translate('logoutSuccess'), // "Logout Successful"
-                    message: localizations.translate('logoutMessage'), // "You have been successfully logged out."
+                    title: localizations.translate('rsLogoutSuccess'),
+                    message: localizations.translate('rsLogoutMessage'),
                   );
                   Navigator.pushReplacementNamed(context, '/');
                 } else {
                   SnackbarHelper.errorSnackBar(
                     context,
-                    title: localizations.translate('logoutFailed'), // "Logout Failed"
-                    message: localizations.translate('logoutErrorMessage'), // "Logout failed, please try again."
+                    title: localizations.translate('rsLogoutFailed'),
+                    message: localizations.translate('rsLogoutErrorMessage'),
                   );
                 }
               },
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.red,
+              ),
               child: Text(
-                localizations.translate('yes'),
-                style: TextStyle(color: Colors.red),
+                localizations.translate('rsYes'),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: isDarkMode ? Colors.redAccent : Colors.red, // Buton metin rengi
+                ),
               ),
             ),
+            // "No" butonu
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text(localizations.translate('no')),
+              style: TextButton.styleFrom(
+                foregroundColor: isDarkMode ? Colors.blue.shade300 : darkBlue,
+              ),
+              child: Text(
+                localizations.translate('rsNo'),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: isDarkMode ? Colors.blue.shade300 : darkBlue,
+                ),
+              ),
             ),
           ],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20), // Kenar yuvarlama
+          ),
+          elevation: 8, // Gölgelendirme
         );
       },
     );

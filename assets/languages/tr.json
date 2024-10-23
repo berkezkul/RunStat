@@ -111,11 +111,25 @@
   "rsSportsStatistics": "İstatistikler",
   "rsStatistics": "İstatistikler",
   "rsProfile": "Profil",
+  "rsSaveChanges": "Değişiklikleri Kaydet",
   "rsSettings": "Ayarlar",
   "rsDarkMode": "Karanlık Mod",
   "rsEnableNotifications": "Bildirimleri Etkinleştir",
   "rsLanguage": "Dil",
   "rsSelectLanguage": "Dil Seçin",
+  "rsEditProfile": "Profili Düzenle",
+
+  "rsLogout": "Çıkış",
+  "rsLogoutConfirm": "Çıkmak istediğinize emin misiniz?",
+  "rsLogoutSuccess": "Başarılı",
+  "rsLogoutMessage": "Çıkış işleminiz başarıyla gerçekleşmiştir",
+  "rsLogoutErrorMessage": "Bir hata oluştu",
+  "rsYes": "Evet",
+  "rsNo": "Hayır",
+  "rsLogoutFailed": "Çıkış işlemi başarısız, lütfen tekrar deneyiniz.",
+  "rsNoInfo": "Bilgi Yok",
+
+
 
 
 
