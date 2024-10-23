@@ -100,7 +100,19 @@
   "rsLogoutFailed": "Çıkış başarısız oldu, lütfen tekrar deneyin.",
   "rsNoInfo": "Bilgi Yok",
 
+
+  "logout": "Çıkış",
+  "logoutConfirm": "Çıkış yapmak istediğinize emin misiniz?",
+  "yes": "Evet",
+  "no": "Hayır",
+  "logoutFailed": "Çıkış başarısız oldu, lütfen tekrar deneyin.",
+  "logoutSuccess": "Çıkış başarılı oldu.",
+
+
+
   "rsInformationTitle": "Hakkımızda",
+  "editProfile": "Profili Düzenle",
+
   "rsNoInfoAvailable": "Bilgi mevcut değil",
   "rsAppVersion": "Uygulama Sürümü",
   "rsDeveloper": "Geliştirici",
@@ -134,4 +146,5 @@
 
   "rsSignUpTitle": "Run Stat Dünyasına Katılın!",
   "rsSignUpSubTitle": "Koşularınızı takip edin, hedeflerinize ulaşın!"
+
 }

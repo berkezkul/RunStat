@@ -73,7 +73,7 @@ class _AppOnBoardingState extends State<AppOnBoarding> {
               // Kullanıcı SignupPage'e yönlendirilir
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => SignupPage()),
+                MaterialPageRoute(builder: (context) => HomePage()),
               );
             },
             onNext: () {

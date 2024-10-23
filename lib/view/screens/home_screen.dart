@@ -147,7 +147,7 @@ class HomePageState extends State<HomePage> {
                   // İki resim yan yana
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 50, left: 20, right: 20, bottom: 70),
+                        top: 50, left: 20, right: 20, bottom: 45),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -168,12 +168,12 @@ class HomePageState extends State<HomePage> {
                               borderRadius: BorderRadius.circular(12),
                               child: Image.asset(
                                 'assets/images/runstat_home1.jpg',
-                                width: screenWidth * 0.4,
+                                width: screenWidth * 0.35,
                               ),
                             ),
                           ),
                         ),
-                        SizedBox(width: 10), // Resimler arası boşluk
+                        SizedBox(width: 5), // Resimler arası boşluk
                         // Sağdaki resim
                         Transform.rotate(
                           angle: math.pi / 18, // 10 derece sağa eğik
@@ -191,7 +191,7 @@ class HomePageState extends State<HomePage> {
                               borderRadius: BorderRadius.circular(12),
                               child: Image.asset(
                                 'assets/images/runstat_home.jpg',
-                                width: screenWidth * 0.4,
+                                width: screenWidth * 0.35,
                               ),
                             ),
                           ),
@@ -199,6 +199,7 @@ class HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
+
 
                   // Giriş ve Kayıt Ol Butonları
                   Padding(
@@ -222,7 +223,7 @@ class HomePageState extends State<HomePage> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             foregroundColor: Colors.blue.shade700,
-                            minimumSize: Size(screenWidth, 50),
+                            minimumSize: Size(screenWidth, 45),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
@@ -246,19 +247,19 @@ class HomePageState extends State<HomePage> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue.shade900,
                             foregroundColor: Colors.white,
-                            minimumSize: Size(screenWidth, 50),
+                            minimumSize: Size(screenWidth, 45),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 15),
                         Text(
                           localizations.translate('or'),
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: darkBlue),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 15),
 
                         // Google ile Giriş Butonu
                         ElevatedButton.icon(
@@ -287,13 +288,13 @@ class HomePageState extends State<HomePage> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             foregroundColor: Colors.blue.shade800,
-                            minimumSize: Size(screenWidth, 50),
+                            minimumSize: Size(screenWidth, 45),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
                         ),
-                        SizedBox(height: 15),
+                        SizedBox(height: 50),
 
                         DropdownButton<String>(
                           style: TextStyle(

@@ -107,12 +107,23 @@
   "rsSettings": "Settings",
   "rsSportsStatistics": "Sports Statistics",
   "rsInformation": "Information",
+  "editProfile": "Edit Profile",
   "rsLogout": "Logout",
   "rsLogoutConfirm": "Are you sure, you want to log out?",
   "rsYes": "Yes",
   "rsNo": "No",
   "rsLogoutFailed": "Logout failed, please try again.",
   "rsNoInfo": "No Information",
+
+
+  "logout": "Logout",
+  "logoutConfirm": "Are you sure, you want to log out?",
+  "yes": "Yes",
+  "no": "No",
+  "logoutFailed": "Logout failed, please try again.",
+  "logoutSuccess": "Logout successful.",
+
+
 
 
 

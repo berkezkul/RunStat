@@ -38,23 +38,38 @@ class _MapPageState extends State<MapPage> {
       return;
     }
 
-    // Konum iznini kontrol et
+    // Konum iznini kontrol etme
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
-      // Eğer izin verilmediyse, izni iste
+      // Eğer izin verilmediyse, izni isteme
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        // İzin tekrar reddedildiyse, kullanıcıya izin gerektiğini bildir
+        // İzin tekrar reddedildiyse, kullanıcıya izin gerektiğini bildirme
         print('Konum izni reddedildi.');
         return;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      // Eğer izin kalıcı olarak reddedildiyse
-      print('Konum izni kalıcı olarak reddedildi.');
+      print('Konum izni kalıcı olarak reddedildi. Lütfen cihaz ayarlarından izin verin.');
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('İzin Gerekli'),
+          content: Text('Konum izni kalıcı olarak reddedildi. Lütfen cihaz ayarlarından izin verin.'),
+          actions: [
+            TextButton(
+              child: Text('Okey'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
       return;
     }
+
 
     // Konum izni verildiyse, anlık konumu al ve haritayı güncelle
     Position position = await Geolocator.getCurrentPosition();

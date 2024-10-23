@@ -12,6 +12,7 @@ import '../widgets/activity_app_bar.dart';
 import '../widgets/profile_menu_widget.dart';
 import 'info_screen.dart';
 import '../../core/utils/helpers/localization_helper.dart'; // Localization helper import
+import '../../core/utils/helpers/snackbar_helper.dart'; // Localization helper import
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -144,7 +145,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           elevation: 8,
                         ),
                         child: Text(
-                          localizations.translate('rsEditProfile'), // "Edit Profile"
+                          localizations.translate('editProfile'), // "Edit Profile"
                           style: TextStyle(
                             color: Colors.white, // Vurgu rengi
                             fontSize: 16,
@@ -193,7 +194,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       },
                     ),
                     ProfileMenuWidget(
-                      title: localizations.translate('rsLogout'), // "Logout"
+                      title: localizations.translate('logout'), // "Logout"
                       icon: LineAwesomeIcons.sign_out_alt_solid,
                       textColor: Colors.red, // Vurgu rengi
                       endIcon: false,
@@ -216,31 +217,41 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(localizations.translate('rsLogout')), // "LOG OUT"
-          content: Text(localizations.translate('rsLogoutConfirm')), // "Are you sure you want to log out?"
+          title: Text(localizations.translate('logout')),
+          content: Text(localizations.translate('logoutConfirm')),
           actions: <Widget>[
             TextButton(
               onPressed: () async {
                 Navigator.pop(context);
                 bool success = await viewModel.logout(context);
+
+                if (!mounted) return; // Async işlem sonrası hala mounted olup olmadığını kontrol ediyoruz
+
                 if (success) {
+                  SnackbarHelper.successSnackBar(
+                    context,
+                    title: localizations.translate('logoutSuccess'), // "Logout Successful"
+                    message: localizations.translate('logoutMessage'), // "You have been successfully logged out."
+                  );
                   Navigator.pushReplacementNamed(context, '/');
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(localizations.translate('rsLogoutFailed'))), // "Logout failed, please try again."
+                  SnackbarHelper.errorSnackBar(
+                    context,
+                    title: localizations.translate('logoutFailed'), // "Logout Failed"
+                    message: localizations.translate('logoutErrorMessage'), // "Logout failed, please try again."
                   );
                 }
               },
               child: Text(
-                localizations.translate('rsYes'), // "Yes"
-                style: TextStyle(color: Colors.red), // Vurgu rengi
+                localizations.translate('yes'),
+                style: TextStyle(color: Colors.red),
               ),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text(localizations.translate('rsNo')), // "No"
+              child: Text(localizations.translate('no')),
             ),
           ],
         );
