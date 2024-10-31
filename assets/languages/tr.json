@@ -52,10 +52,10 @@
   "rsForgetPasswordSelection": "Seçim Yapın!",
   "rsForgetPasswordTitle": "Şifrenizi Mi Unuttunuz?",
   "rsForgetPasswordSubTitle": "Şifrenizi sıfırlamak için aşağıdaki seçeneklerden birini seçin.",
-  "rsResetViaEMail": "E-posta ile Sıfırlayın",
-  "rsResetViaPhone": "Telefon ile Sıfırlayın",
-  "rsResetViaPhoneDesc": "Telefon ile doğrulama üzerinden sıfırlayın!",
-  "rsResetViaMailDesc": "E-posta ile doğrulama üzerinden sıfırlayın!",
+  "rsResetViaEMail": "E-posta",
+  "rsResetViaPhone": "Telefon",
+  "rsResetViaPhoneDesc": "Telefon numaranızla sıfırlayın!",
+  "rsResetViaMailDesc": "E-posta adresinizle sıfırlayın!",
   "rsForgetMailSubTitle": "Merak etmeyin! Yeni bir şifre oluşturmak için e-posta adresinizi girin.",
   "rsForgetPhoneSubTitle": "Merak etmeyin! Yeni bir şifre oluşturmak için telefon numaranızı girin.",
   "rsEnterEmail": "E-posta adresinizi girin",
@@ -152,6 +152,19 @@
   "rsRememberMe": "Beni Hatırla?",
 
   "rsSignUpTitle": "Run Stat Dünyasına Katılın!",
-  "rsSignUpSubTitle": "Koşularınızı takip edin, hedeflerinize ulaşın!"
+  "rsSignUpSubTitle": "Koşularınızı takip edin, hedeflerinize ulaşın!",
+
+  "rsSearch": "Aktivitenizi arayabilirsiniz.",
+  "activityHistoryTitle": "Aktivite Geçmişi",
+  "searchHint": "Tarihe veya mesafeye göre ara",
+  "detailsButton": "Detaylar",
+  "meters": "metre",
+  "sortByDate": "Tarihe Göre Sırala",
+  "sortByDistance": "Mesafeye Göre Sırala",
+  "ascending": "Artan",
+  "descending": "Azalan",
+  "apply": "Uygula"
+
+
 
 }

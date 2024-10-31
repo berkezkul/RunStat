@@ -52,8 +52,8 @@
   "rsForgetPasswordSelection": "Make Selection!",
   "rsForgetPasswordTitle": "Forget Password!",
   "rsForgetPasswordSubTitle": "Select one of the options given below to reset your password.",
-  "rsResetViaEMail": "Reset via Mail Verification",
-  "rsResetViaPhone": "Reset via Phone Verification",
+  "rsResetViaEMail": "Mail Verification",
+  "rsResetViaPhone": "Phone Verification",
   "rsResetViaPhoneDesc": "Reset via phone verification!",
   "rsResetViaMailDesc": "Reset via Mail verification!",
   "rsForgetMailSubTitle": "Don't worry! Enter your email address to create a new password.",
@@ -155,7 +155,19 @@
   "rsRememberMe": "Remember Me?",
 
   "rsSignUpTitle": "Join the world of Run Stat!",
-  "rsSignUpSubTitle": "Track your runs, reach your goals!"
+  "rsSignUpSubTitle": "Track your runs, reach your goals!",
+
+  "rsSearch": "Search your activity",
+  "activityHistoryTitle": "Activity History",
+  "searchHint": "Search by date or distance",
+  "detailsButton": "Details",
+  "meters": "meters",
+  "sortByDate": "Sort by Date",
+  "sortByDistance": "Sort by Distance",
+  "ascending": "Ascending",
+  "descending": "Descending",
+  "apply": "Apply"
+
 
 
 
