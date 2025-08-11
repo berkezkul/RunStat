@@ -68,7 +68,7 @@ class MapViewModel extends ChangeNotifier {
   }
 
   // Koşuyu durdurma
-  Future<void> stopRun() async {
+  Future<void> stopRun({String? routeName}) async {
     _isRunning = false;
     _endTime = DateTime.now(); // Koşunun bitiş zamanını kaydet
 
@@ -88,6 +88,7 @@ class MapViewModel extends ChangeNotifier {
       averageSpeed: averageSpeed,
       route: _route,
       weatherInfo: _weatherInfo,
+      routeName: routeName,
     );
 
     await savedRun(runData);
@@ -170,6 +171,7 @@ class MapViewModel extends ChangeNotifier {
           'longitude': latLng.longitude,
         }).toList(),
         'weather': runData.weatherInfo,
+        'route_name': runData.routeName ?? '',
       });
       print("Koşu verileri Firestore'a kaydedildi.");
     } catch (e) {

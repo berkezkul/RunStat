@@ -15,41 +15,63 @@ class InfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
-      padding: const EdgeInsets.only(top: 8, left: 12, right: 12,bottom: 8),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDarkMode ? Colors.grey.shade800 : Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
-            offset: Offset(0, 4),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
-      width: 150,
-      height: 120,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, color: darkBlue, size: 30),
-          const SizedBox(height: 5),
+          // Modern Icon Container
+          Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: isDarkMode 
+                  ? Colors.grey.shade700 
+                  : darkBlue.withOpacity(0.1),
+            ),
+            child: Icon(
+              icon,
+              color: isDarkMode ? Colors.white : darkBlue,
+              size: 24,
+            ),
+          ),
+          const SizedBox(height: 16),
+          
+          // Title
           Text(
             title,
             style: TextStyle(
               fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: darkBlue,
+              fontWeight: FontWeight.w600,
+              color: isDarkMode ? Colors.white : darkBlue,
             ),
+            textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 8),
+          
+          // Value
           Text(
             value,
             style: TextStyle(
-              fontSize: 14,
-              color: darkBlue,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: isDarkMode ? Colors.white : darkBlue,
             ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),

@@ -9,6 +9,7 @@ class Activity {
   final double averageSpeed;
   final List<LatLng> route;
   final String weatherInfo;
+  final String? routeName;
 
   Activity({
     required this.date,
@@ -16,7 +17,8 @@ class Activity {
     required this.duration,
     required this.averageSpeed,
     required this.route,
-    required this.weatherInfo
+    required this.weatherInfo,
+    this.routeName,
   });
 
   factory Activity.fromFirestore(Map<String, dynamic> data) {
@@ -33,6 +35,7 @@ class Activity {
     }
 
     String weatherInfo = data['weatherInfo'] ?? "Unknown Weather";
+    String? routeName = data['route_name'] as String? ?? data['routeName'] as String?;
     print('Weather Info: $weatherInfo'); // Debug için
 
     return Activity(
@@ -45,7 +48,8 @@ class Activity {
           : (data['distance'] as double),
       duration: (data['duration'] as num).toInt(),  // Güvenli dönüşüm
       route: parsedRoute,
-      weatherInfo: weatherInfo//data['weatherInfo'] ?? "Unknown Weather"
+      weatherInfo: weatherInfo,//data['weatherInfo'] ?? "Unknown Weather"
+      routeName: routeName,
     );
   }
 }

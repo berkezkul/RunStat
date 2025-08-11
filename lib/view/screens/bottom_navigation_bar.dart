@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:runstat/view/screens/profile_screen.dart';
+import 'package:runstat/view/screens/profile/profile_screen.dart';
 import 'package:runstat/view/screens/weather/weather_screen.dart';
 import 'package:runstat/view/screens/welcome_screen.dart';
-import 'activity_history_screen.dart';
-import 'dashboard_screen.dart';
+import 'activity/activity_history_screen.dart';
+import 'dashboard/dashboard_screen.dart';
 import 'map_screen.dart';
 import '../../core/utils/helpers/localization_helper.dart'; // Localization helper import
 
@@ -19,7 +19,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
   var pages = [
     const WelcomePage(),
     const DashboardPage(),
-    WeatherPage(),
+    //WeatherPage(),
     MapPage(),
     ActivityHistoryPage(),
     const ProfilePage()
@@ -38,7 +38,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: localizations!.translate('rsHome')),
           BottomNavigationBarItem(icon: Icon(Icons.analytics), label: localizations.translate('rsDashboard')),
-          BottomNavigationBarItem(icon: Icon(Icons.sunny_snowing), label: localizations.translate('rsWeather')),
+          //BottomNavigationBarItem(icon: Icon(Icons.sunny_snowing), label: localizations.translate('rsWeather')),
           BottomNavigationBarItem(icon: Icon(Icons.map), label: localizations.translate('rsMap')),
           BottomNavigationBarItem(icon: Icon(Icons.directions_run), label: localizations.translate('rsStatistics')),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: localizations.translate('rsProfile')),

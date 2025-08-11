@@ -6,6 +6,6 @@ var primaryColor = const Color(
 var whiteBlue = const Color(0xFFEBF5FC);
 var blue = const Color(0xFFC9E9FD);
 var blue2 = const Color(0xFF57B7F2);
-var darkBlue = const Color(0xFF063475);
+var darkBlue = const Color(0xFF0047AB);//Color(0xFF063475); 2024 RUNSTAT LACİVERTİ
 var textDarkColor = const Color(0xFF565659);
 var white = const Color(0xFFFFFFFF);

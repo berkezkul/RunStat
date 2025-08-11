@@ -19,24 +19,58 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool showPassword = false;
+  final isDarkMode = false; // Bu değer build metodunda güncellenecek
 
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context); // Localization instance
     final viewModel = Provider.of<LoginViewModel>(context, listen: true);
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Form(
       key: _formKey,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextFormField(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Modern Email Field
+          Container(
+            decoration: BoxDecoration(
+              color: isDarkMode ? Colors.grey.shade800 : Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: TextFormField(
               controller: emailController,
+              style: TextStyle(
+                color: isDarkMode ? Colors.white : darkBlue,
+                fontSize: 16,
+              ),
               decoration: InputDecoration(
                 labelText: localizations!.translate('rsEmail'), // "Email"
-                border: const OutlineInputBorder(),
+                labelStyle: TextStyle(
+                  color: isDarkMode ? Colors.grey.shade400 : darkBlue, // Koyu mavi hint
+                  fontSize: 16,
+                ),
+                prefixIcon: Icon(
+                  Icons.email_outlined,
+                  color: isDarkMode ? Colors.grey.shade400 : darkBlue, // Koyu mavi icon
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide.none,
+                ),
+                filled: true,
+                fillColor: Colors.transparent,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
+                ),
               ),
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -45,20 +79,59 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                 return null;
               },
             ),
-            const SizedBox(height: 15),
-            TextFormField(
+          ),
+          const SizedBox(height: 20),
+          
+          // Modern Password Field
+          Container(
+            decoration: BoxDecoration(
+              color: isDarkMode ? Colors.grey.shade800 : Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: TextFormField(
               controller: passwordController,
-              obscureText: !showPassword, // Şifreyi gizleme/açma
+              obscureText: !showPassword,
+              style: TextStyle(
+                color: isDarkMode ? Colors.white : darkBlue,
+                fontSize: 16,
+              ),
               decoration: InputDecoration(
                 labelText: localizations.translate('rsPassword'), // "Password"
-                border: const OutlineInputBorder(),
+                labelStyle: TextStyle(
+                  color: isDarkMode ? Colors.grey.shade400 : darkBlue, // Koyu mavi hint
+                  fontSize: 16,
+                ),
+                prefixIcon: Icon(
+                  Icons.lock_outlined,
+                  color: isDarkMode ? Colors.grey.shade400 : darkBlue, // Koyu mavi icon
+                ),
                 suffixIcon: IconButton(
-                  icon: Icon(showPassword ? Icons.visibility : Icons.visibility_off),
+                  icon: Icon(
+                    showPassword ? Icons.visibility : Icons.visibility_off,
+                    color: isDarkMode ? Colors.grey.shade400 : darkBlue, // Koyu mavi icon
+                  ),
                   onPressed: () {
                     setState(() {
                       showPassword = !showPassword;
                     });
                   },
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide.none,
+                ),
+                filled: true,
+                fillColor: Colors.transparent,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
                 ),
               ),
               validator: (value) {
@@ -68,69 +141,111 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                 return null;
               },
             ),
-            const SizedBox(height: 10),
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: () {
-                  ForgetPasswordScreen.buildShowModalBottomSheet(context);
-                },
-                child: Text(
-                  localizations.translate('rsForgetPassword'), // "Forget Password"
-                  style: TextStyle(color: darkBlue),
+          ),
+          
+          // Modern Forget Password Link
+          const SizedBox(height: 16),
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: () {
+                ForgetPasswordScreen.buildShowModalBottomSheet(context);
+              },
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              ),
+              child: Text(
+                localizations.translate('rsForgetPassword'), // "Forget Password"
+                style: TextStyle(
+                  color: darkBlue, // Koyu mavi link
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
-            const SizedBox(height: 10),
-            viewModel.isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : SizedBox(
-              width: double.infinity,
-              height: 40,
-              child: ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    viewModel
-                        .login(
-                      emailController.text.trim(),
-                      passwordController.text.trim(),
-                    )
-                        .then((result) {
-                      if (!context.mounted) return;
-
-                      if (result == true) {
-                        SnackbarHelper.successSnackBar(context,
-                            title: localizations.translate('rsLoginSuccessTitle'), // "Success"
-                            message: localizations.translate('rsLoginSuccessMessage')); // "Login successful, welcome!"
-
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const BottomNavigationPage()),
-                        );
-                      } else {
-                        SnackbarHelper.errorSnackBar(context,
-                            title: localizations.translate('rsLoginErrorTitle'), // "Error"
-                            message: viewModel.errorMessage ?? localizations.translate('rsLoginErrorMessage')); // "Try again!"
-                      }
-                    });
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero,
+          ),
+          
+          const SizedBox(height: 32),
+          
+          // Modern Login Button
+          viewModel.isLoading
+              ? Center(
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: darkBlue, // Gradient yerine düz renk
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 3,
+                      ),
+                    ),
                   ),
-                  backgroundColor: darkBlue,
-                  elevation: 0,
+                )
+              : Container(
+                  width: double.infinity,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    color: darkBlue, // Gradient yerine düz renk
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: darkBlue.withOpacity(0.3),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        viewModel
+                            .login(
+                          emailController.text.trim(),
+                          passwordController.text.trim(),
+                        )
+                            .then((result) {
+                          if (!context.mounted) return;
+
+                          if (result == true) {
+                            SnackbarHelper.successSnackBar(context,
+                                title: localizations.translate('rsLoginSuccessTitle'), // "Success"
+                                message: localizations.translate('rsLoginSuccessMessage')); // "Login successful, welcome!"
+
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const BottomNavigationPage()),
+                            );
+                          } else {
+                            SnackbarHelper.errorSnackBar(context,
+                                title: localizations.translate('rsLoginErrorTitle'), // "Error"
+                                message: viewModel.errorMessage ?? localizations.translate('rsLoginErrorMessage')); // "Try again!"
+                          }
+                        });
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    child: Text(
+                      localizations.translate('rsLoginButton'), // "LOGIN"
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
-                child: Text(
-                  localizations.translate('rsLoginButton'), // "LOGIN"
-                  style: TextStyle(color: whiteBlue),
-                ),
-              ),
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }

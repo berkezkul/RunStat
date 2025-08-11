@@ -26,64 +26,49 @@ class ProfileMenuWidget extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
     bool isDarkMode = themeProvider.isDarkMode;
 
-    return GestureDetector(
+    return InkWell(
       onTap: onPress,
+      borderRadius: BorderRadius.circular(16),
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 4.0),
-        padding: const EdgeInsets.all(12.0),
-        decoration: BoxDecoration(
-          color: isDarkMode ? Colors.blueGrey.shade900 : Colors.white, // Arka plan için ana renk
-          borderRadius: BorderRadius.circular(12.0),
-          boxShadow: [
-            BoxShadow(
-              color: isDarkMode
-                  ? Colors.black.withOpacity(0.7) // Karanlık modda daha belirgin gölge
-                  : Colors.black.withOpacity(0.05), // Açık modda hafif gölge
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         child: Row(
           children: [
+            // Modern Icon Container
             Container(
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: isDarkMode
-                    ? Colors.blue.shade800.withOpacity(0.2) // Karanlık modda ikon arka planı
-                    : Colors.blue.shade600.withOpacity(0.1), // Açık modda ikon arka planı
+                borderRadius: BorderRadius.circular(12),
+                color: isDarkMode 
+                    ? Colors.grey.shade700 
+                    : darkBlue.withOpacity(0.1),
               ),
               child: Icon(
                 icon,
-                color: isDarkMode ? Colors.blue.shade200 : darkBlue, // İkincil renk
+                color: textColor ?? (isDarkMode ? Colors.white : darkBlue),
+                size: 20,
               ),
             ),
-            const SizedBox(width: 20), // İkonla metin arası boşluk
+            const SizedBox(width: 16),
+            
+            // Title
             Expanded(
               child: Text(
                 title,
-                style: Theme.of(context).textTheme.bodyLarge?.apply(
-                  color: textColor ?? (isDarkMode ? Colors.white : darkBlue), // İkincil renk
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: textColor ?? (isDarkMode ? Colors.white : darkBlue),
                 ),
               ),
             ),
+            
+            // End Icon (if enabled)
             if (endIcon)
-              Container(
-                width: 30,
-                height: 30,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  color: isDarkMode
-                      ? Colors.grey.shade700.withOpacity(0.3) // Karanlık modda vurgu rengi
-                      : Colors.grey.withOpacity(0.1), // Açık modda vurgu rengi
-                ),
-                child: const Icon(
-                  LineAwesomeIcons.angle_right_solid,
-                  size: 18.0,
-                  color: Colors.grey,
-                ),
+              Icon(
+                Icons.arrow_forward_ios,
+                size: 16,
+                color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
               ),
           ],
         ),

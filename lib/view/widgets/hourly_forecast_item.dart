@@ -46,7 +46,6 @@ IconData getWeatherIcon(String weatherCondition) {
   }
 }
 
-
 class HourlyForecastItem extends StatelessWidget {
   final String time;
   final String temperature;
@@ -68,42 +67,49 @@ class HourlyForecastItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 6,
-      color: isDarkMode ? Colors.blueGrey.shade900 : Colors.white, // Ana renk
-      child: Container(
-        width: 100,
-        padding: const EdgeInsets.all(8.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          children: [
-            Text(
-              time,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: isDarkMode ? Colors.white : darkBlue, // İkincil renk karanlık modda beyaz
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+    return Container(
+      width: 90, // 100'den 90'a düşürdüm
+      decoration: BoxDecoration(
+        color: isDarkMode ? Colors.grey.shade800 : Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(12), // 16'dan 12'ye düşürdüm
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            time,
+            style: TextStyle(
+              fontSize: 12, // 14'ten 12'ye düşürdüm
+              fontWeight: FontWeight.w600,
+              color: isDarkMode ? Colors.white : darkBlue,
             ),
-            const SizedBox(height: 8),
-            Icon(
-              getWeatherIcon(weatherCondition),
-              size: 32,
-              color: getWeatherColor(weatherCondition, isDarkMode), // İkon rengi hava durumuna göre
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8), // 12'den 8'e düşürdüm
+          Icon(
+            getWeatherIcon(weatherCondition),
+            size: 28, // 32'den 28'e düşürdüm
+            color: getWeatherColor(weatherCondition, isDarkMode),
+          ),
+          const SizedBox(height: 6), // 8'den 6'ya düşürdüm
+          Text(
+            '${toCelsius(temperature).toStringAsFixed(1)}°C',
+            style: TextStyle(
+              fontSize: 14, // 16'dan 14'e düşürdüm
+              fontWeight: FontWeight.bold,
+              color: isDarkMode ? Colors.white : darkBlue,
             ),
-            const SizedBox(height: 8),
-            Text(
-              '${toCelsius(temperature).toStringAsFixed(1)}°C',
-              style: TextStyle(
-                color: isDarkMode ? Colors.white : darkBlue, // Karanlık modda beyaz, açık modda mavi
-              ),
-            ),
-          ],
-        ),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }

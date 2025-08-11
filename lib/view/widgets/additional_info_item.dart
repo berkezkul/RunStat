@@ -19,27 +19,45 @@ class AdditionalInfoItem extends StatelessWidget {
 
     return Column(
       children: [
-        Icon(
-          icon,
-          size: 32,
-          color: isDarkMode ? Colors.blue.shade300 : Colors.blue.shade600,
+        // Modern Icon Container - Daha küçük
+        Container(
+          width: 40, // 50'den 40'a düşürdüm
+          height: 40, // 50'den 40'a düşürdüm
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10), // 12'den 10'a düşürdüm
+            color: isDarkMode 
+                ? Colors.grey.shade700 
+                : darkBlue.withOpacity(0.1),
+          ),
+          child: Icon(
+            icon,
+            color: isDarkMode ? Colors.white : darkBlue,
+            size: 20, // 24'ten 20'ye düşürdüm
+          ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 8), // 12'den 8'e düşürdüm
+        
+        // Label - Daha küçük font
         Text(
           label,
           style: TextStyle(
+            fontSize: 10, // 12'den 10'a düşürdüm
+            fontWeight: FontWeight.w600,
             color: isDarkMode ? Colors.white : darkBlue,
-            fontWeight: FontWeight.bold,
           ),
+          textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 2), // 4'ten 2'ye düşürdüm
+        
+        // Value - Daha küçük font
         Text(
           value,
           style: TextStyle(
-            fontSize: 16,
+            fontSize: 14, // 16'dan 14'e düşürdüm
             fontWeight: FontWeight.bold,
-            color: isDarkMode ? Colors.white : Colors.blue.shade900,
+            color: isDarkMode ? Colors.white : darkBlue,
           ),
+          textAlign: TextAlign.center,
         ),
       ],
     );

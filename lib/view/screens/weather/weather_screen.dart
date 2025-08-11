@@ -57,9 +57,19 @@ class _WeatherPageState extends State<WeatherPage> {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: ActivityAppBar(
-        context,
-        localizations!.translate('rsWeatherTitle'), // "Weather"
+      // AppBar'ı daha az baskın yapmak için minimal tasarım
+      appBar: AppBar(
+        backgroundColor: isDarkMode ? Colors.black87 : Color(0xFFF0F8FF),
+        elevation: 0,
+        title: Text(
+          localizations!.translate('rsWeatherTitle'), // "Weather"
+          style: TextStyle(
+            color: isDarkMode ? Colors.white : darkBlue,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {
@@ -67,167 +77,186 @@ class _WeatherPageState extends State<WeatherPage> {
                 weather = getCurrentWeather();
               });
             },
-            icon: const Icon(Icons.refresh),
+            icon: Icon(
+              Icons.refresh,
+              color: isDarkMode ? Colors.white : darkBlue,
+            ),
           ),
         ],
       ),
-      body: FutureBuilder(
-        future: weather,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
-          }
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: isDarkMode ? Colors.black87 : Color(0xFFF0F8FF), // Açık mavi arka plan
+        child: FutureBuilder(
+          future: weather,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator.adaptive(),
+              );
+            }
 
-          if (snapshot.hasError) {
-            return Center(
-              child: Text(
-                snapshot.error.toString(),
-                style: TextStyle(
-                  color: isDarkMode ? Colors.white : darkBlue,
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(
+                  snapshot.error.toString(),
+                  style: TextStyle(
+                    color: isDarkMode ? Colors.white : darkBlue,
+                  ),
+                ),
+              );
+            }
+
+            final data = snapshot.data!;
+            final currentWeatherData = data['list'][0];
+            final currentTemp =
+            (currentWeatherData['main']['temp'] - 273.15).toStringAsFixed(1);
+            final currentSky = currentWeatherData['weather'][0]['main'];
+            final currentPressure = currentWeatherData['main']['pressure'];
+            final currentWindSpeed = currentWeatherData['wind']['speed'];
+            final currentHumidity = currentWeatherData['main']['humidity'];
+
+            return SafeArea(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(20), // 24'ten 20'ye düşürdüm
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 16), // 20'den 16'ya düşürdüm
+                    
+                    // Modern Main Weather Card - Daha kompakt
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: isDarkMode ? Colors.grey.shade800 : Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 10,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.all(24), // 30'dan 24'e düşürdüm
+                      child: Column(
+                        children: [
+                          Text(
+                            '$currentTemp °C',
+                            style: TextStyle(
+                              fontSize: 36, // 48'den 36'ya düşürdüm
+                              fontWeight: FontWeight.bold,
+                              color: isDarkMode ? Colors.white : darkBlue,
+                            ),
+                          ),
+                          const SizedBox(height: 16), // 20'den 16'ya düşürdüm
+                          Icon(
+                            getWeatherIcon(currentSky),
+                            size: 60, // 80'den 60'a düşürdüm
+                            color: getWeatherColor(currentSky, isDarkMode),
+                          ),
+                          const SizedBox(height: 12), // 16'dan 12'ye düşürdüm
+                          Text(
+                            currentSky,
+                            style: TextStyle(
+                              fontSize: 20, // 24'ten 20'ye düşürdüm
+                              fontWeight: FontWeight.w600,
+                              color: isDarkMode ? Colors.white : darkBlue,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    
+                    const SizedBox(height: 24), // 32'den 24'e düşürdüm
+                    
+                    // Modern Hourly Forecast Section - Daha kompakt
+                    Text(
+                      localizations.translate('rsHourlyForecast'), // "Hourly Forecast"
+                      style: TextStyle(
+                        fontSize: 20, // 24'ten 20'ye düşürdüm
+                        fontWeight: FontWeight.bold,
+                        color: isDarkMode ? Colors.white : darkBlue,
+                      ),
+                    ),
+                    const SizedBox(height: 12), // 16'dan 12'ye düşürdüm
+                    SizedBox(
+                      height: 120, // 140'tan 120'ye düşürdüm
+                      child: ListView.builder(
+                        itemCount: 5,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          final hourlyForecast = data['list'][index + 1];
+                          final hourlySky = hourlyForecast['weather'][0]['main'];
+                          final hourlyTemp =
+                          hourlyForecast['main']['temp'].toString();
+                          final time = DateTime.parse(hourlyForecast['dt_txt']);
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 10), // 12'den 10'a düşürdüm
+                            child: HourlyForecastItem(
+                              time: DateFormat.j().format(time),
+                              temperature: hourlyTemp,
+                              weatherCondition: hourlySky,
+                              isDarkMode: isDarkMode,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    
+                    const SizedBox(height: 24), // 32'den 24'e düşürdüm
+                    
+                    // Modern Additional Information Section - Daha kompakt
+                    Text(
+                      localizations.translate('rsAdditionalInfo'), // "Additional Information"
+                      style: TextStyle(
+                        fontSize: 20, // 24'ten 20'ye düşürdüm
+                        fontWeight: FontWeight.bold,
+                        color: isDarkMode ? Colors.white : darkBlue,
+                      ),
+                    ),
+                    const SizedBox(height: 12), // 16'dan 12'ye düşürdüm
+                    Container(
+                      decoration: BoxDecoration(
+                        color: isDarkMode ? Colors.grey.shade800 : Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 10,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.all(20), // 24'ten 20'ye düşürdüm
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          AdditionalInfoItem(
+                            icon: Icons.water_drop,
+                            label: localizations.translate('rsHumidity'), // "Humidity"
+                            value: currentHumidity.toString(),
+                          ),
+                          AdditionalInfoItem(
+                            icon: Icons.air,
+                            label: localizations.translate('rsWindSpeed'), // "Wind Speed"
+                            value: currentWindSpeed.toString(),
+                          ),
+                          AdditionalInfoItem(
+                            icon: Icons.beach_access,
+                            label: localizations.translate('rsPressure'), // "Pressure"
+                            value: currentPressure.toString(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             );
-          }
-
-          final data = snapshot.data!;
-          final currentWeatherData = data['list'][0];
-          final currentTemp =
-          (currentWeatherData['main']['temp'] - 273.15).toStringAsFixed(1);
-          final currentSky = currentWeatherData['weather'][0]['main'];
-          final currentPressure = currentWeatherData['main']['pressure'];
-          final currentWindSpeed = currentWeatherData['wind']['speed'];
-          final currentHumidity = currentWeatherData['main']['humidity'];
-
-          return Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: isDarkMode
-                    ? [Colors.black87, Colors.blueGrey.shade800]
-                    : [Colors.white, Colors.blue.shade100, Colors.blue.shade200],
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Main Weather Card
-                  SizedBox(
-                    width: double.infinity,
-                    child: Card(
-                      elevation: 10,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      color: isDarkMode ? Colors.blueGrey.shade900 : Colors.white,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              children: [
-                                Text(
-                                  '$currentTemp °C',
-                                  style: TextStyle(
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold,
-                                    color: isDarkMode ? Colors.white : darkBlue,
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                Icon(
-                                  getWeatherIcon(currentSky),
-                                  size: 64,
-                                  color: getWeatherColor(currentSky, isDarkMode),
-                                ),
-                                const SizedBox(height: 16),
-                                Text(
-                                  currentSky,
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: isDarkMode ? Colors.white : darkBlue,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    localizations.translate('rsHourlyForecast'), // "Hourly Forecast"
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: isDarkMode ? Colors.white : darkBlue,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  SizedBox(
-                    height: 120,
-                    child: ListView.builder(
-                      itemCount: 5,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        final hourlyForecast = data['list'][index + 1];
-                        final hourlySky = hourlyForecast['weather'][0]['main'];
-                        final hourlyTemp =
-                        hourlyForecast['main']['temp'].toString();
-                        final time = DateTime.parse(hourlyForecast['dt_txt']);
-                        return HourlyForecastItem(
-                          time: DateFormat.j().format(time),
-                          temperature: hourlyTemp,
-                          weatherCondition: hourlySky,
-                          isDarkMode: isDarkMode,
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    localizations.translate('rsAdditionalInfo'), // "Additional Information"
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: isDarkMode ? Colors.white : darkBlue,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      AdditionalInfoItem(
-                        icon: Icons.water_drop,
-                        label: localizations.translate('rsHumidity'), // "Humidity"
-                        value: currentHumidity.toString(),
-                      ),
-                      AdditionalInfoItem(
-                        icon: Icons.air,
-                        label: localizations.translate('rsWindSpeed'), // "Wind Speed"
-                        value: currentWindSpeed.toString(),
-                      ),
-                      AdditionalInfoItem(
-                        icon: Icons.beach_access,
-                        label: localizations.translate('rsPressure'), // "Pressure"
-                        value: currentPressure.toString(),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
+          },
+        ),
       ),
     );
   }

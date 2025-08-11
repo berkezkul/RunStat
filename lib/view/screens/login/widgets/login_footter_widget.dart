@@ -9,31 +9,75 @@ class LoginFootterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context); // Localization instance
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    return Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(height: 10),
-          TextButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/SignupPage');
-            },
-            child: Text.rich(
-              TextSpan(
-                text: localizations!.translate('rsDontHaveAnAccount'), // "Don't have an account?"
-                style: TextStyle(color: darkBlue, fontSize: 16),
-                children: [
-                  TextSpan(
-                    text: localizations.translate('rsSignup'), // "Sign Up"
-                    style: const TextStyle(color: Colors.blue),
-                  ),
-                ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const SizedBox(height: 20),
+        
+        // Modern separator
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                height: 1,
+                color: isDarkMode ? Colors.grey.shade700 : Colors.grey.shade300,
               ),
             ),
-          ),
-        ],
-      ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                'or',
+                style: TextStyle(
+                  color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            Expanded(
+              child: Container(
+                height: 1,
+                color: isDarkMode ? Colors.grey.shade700 : Colors.grey.shade300,
+              ),
+            ),
+          ],
+        ),
+        
+        const SizedBox(height: 24),
+        
+        // Modern Sign Up Link
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              localizations!.translate('rsDontHaveAnAccount'), // "Don't have an account?"
+              style: TextStyle(
+                color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(width: 4),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/SignupPage');
+              },
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              ),
+              child: Text(
+                localizations.translate('rsSignup'), // "Sign Up"
+                style: TextStyle(
+                  color: darkBlue, // Koyu mavi link
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

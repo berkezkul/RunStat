@@ -7,49 +7,88 @@ class ForgetPasswordButton extends StatelessWidget {
     required this.title,
     required this.subtitle,
     required this.onTap,
+    required this.isDarkMode,
     super.key,
   });
 
   final IconData btnIcon;
   final String title, subtitle;
   final VoidCallback onTap;
+  final bool isDarkMode;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: darkBlue, // Sınırın rengi
-            width: 2, // Sınırın kalınlığı
+    return Container(
+      decoration: BoxDecoration(
+        color: isDarkMode ? Colors.grey.shade800 : Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 2),
           ),
-          color: whiteBlue,
-        ),
-        child: Row(
-          children: [
-            Icon(
-              btnIcon,
-              size: 50.0,
-              color: darkBlue,
-            ),
-            const SizedBox(width: 30),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(16),
+          onTap: onTap,
+          child: Padding(
+            padding: EdgeInsets.all(20),
+            child: Row(
               children: [
-                Text(
-                  title,
-                  style: TextStyle(color: darkBlue, fontWeight: FontWeight.bold),
+                // Icon Container
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: darkBlue.withOpacity(0.1),
+                  ),
+                  child: Icon(
+                    btnIcon,
+                    size: 24,
+                    color: darkBlue,
+                  ),
                 ),
-                Text(
-                  subtitle,
-                  style: TextStyle(color: darkBlue, fontStyle: FontStyle.italic),
-                )
+                SizedBox(width: 16),
+                
+                // Text Content
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          color: isDarkMode ? Colors.white : darkBlue,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        subtitle,
+                        style: TextStyle(
+                          color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                // Arrow Icon
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: isDarkMode ? Colors.grey.shade400 : darkBlue,
+                  size: 16,
+                ),
               ],
-            )
-          ],
+            ),
+          ),
         ),
       ),
     );

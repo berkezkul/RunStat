@@ -7,6 +7,7 @@ class RunData {
   final double averageSpeed;
   final List<LatLng> route;
   final String weatherInfo;
+  final String? routeName;
 
   RunData({
     required this.date,
@@ -15,5 +16,6 @@ class RunData {
     required this.averageSpeed,
     required this.route,
     required this.weatherInfo,
+    this.routeName,
   });
 }

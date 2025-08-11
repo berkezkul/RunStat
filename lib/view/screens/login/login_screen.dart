@@ -14,30 +14,31 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var localizations = AppLocalizations.of(context);
     var screenInformation = MediaQuery.of(context).size;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return ChangeNotifierProvider(
       create: (context) => LoginViewModel(),
       child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            localizations!.translate('appName'), // "RunStat"
-            style: TextStyle(
-                color: darkBlue,
-                fontFamily: "Roboto Bold",
-                fontSize: screenInformation.width / 16),
-          ),
-          backgroundColor: blue,
-          centerTitle: true,
-        ),
-        body: const SingleChildScrollView(
-          padding: EdgeInsets.all(12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              LoginHeaderWidget(),
-              LoginFormWidget(),
-              LoginFootterWidget(),
-            ],
+        // AppBar'ı kaldırdık - modern tasarım için
+        body: Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: isDarkMode ? Colors.black87 : Color(0xFFF0F8FF), // Sadece açık mavi arka plan
+          child: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 40),
+                  LoginHeaderWidget(),
+                  const SizedBox(height: 40),
+                  LoginFormWidget(),
+                  const SizedBox(height: 30),
+                  LoginFootterWidget(),
+                ],
+              ),
+            ),
           ),
         ),
       ),
