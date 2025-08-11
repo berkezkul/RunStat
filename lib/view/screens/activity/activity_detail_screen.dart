@@ -58,7 +58,7 @@ class ActivityDetailPage extends StatelessWidget {
               margin: EdgeInsets.all(16),
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: isDarkMode ? Colors.grey.shade800 : Colors.white,
+                color: isDarkMode ? Colors.blueGrey : Colors.white,
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
@@ -75,7 +75,7 @@ class ActivityDetailPage extends StatelessWidget {
                     height: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: darkBlue.withOpacity(0.1),
+                      color: isDarkMode ? Colors.white : darkBlue.withOpacity(0.1),
                     ),
                     child: Icon(
                       Icons.calendar_today,
@@ -172,7 +172,7 @@ class ActivityDetailPage extends StatelessWidget {
               margin: EdgeInsets.all(16),
               padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: isDarkMode ? Colors.grey.shade800 : Colors.white,
+                color: isDarkMode ? Colors.blueGrey : Colors.white,
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
@@ -225,7 +225,7 @@ class ActivityDetailPage extends StatelessWidget {
           height: 50,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: darkBlue.withOpacity(0.1),
+            color: isDarkMode ? Colors.white : darkBlue.withOpacity(0.1),
           ),
           child: Icon(
             icon,
@@ -239,7 +239,7 @@ class ActivityDetailPage extends StatelessWidget {
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,
-            color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
+            color: isDarkMode ? Colors.grey.shade50 : Colors.grey.shade600,
           ),
         ),
         SizedBox(height: 4),

@@ -9,7 +9,13 @@ import 'activity/activity_detail_screen.dart';
 import '../../data/models/activity_model.dart';
 import '../../core/utils/helpers/localization_helper.dart'; // Localization helper import
 import 'dashboard/dashboard_screen.dart';
+import 'map_screen.dart';
 import 'weather/weather_screen.dart';
+import 'package:provider/provider.dart';
+import '../../viewmodels/home_viewmodel.dart';
+import '../widgets/feature_card.dart';
+import '../widgets/last_route_card.dart';
+import '../widgets/mini_stat.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
@@ -213,7 +219,9 @@ class _WelcomePageState extends State<WelcomePage> {
     final double screenHeight = screenInformation.size.height;
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    return Scaffold(
+    return ChangeNotifierProvider(
+      create: (_) => HomeViewModel()..init(),
+      child: Scaffold(
       // Modern minimal AppBar
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -257,7 +265,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: isDarkMode ? Colors.grey.shade800 : Colors.white,
+                    color: isDarkMode ? Colors.blueGrey : Colors.white,
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
@@ -298,7 +306,7 @@ class _WelcomePageState extends State<WelcomePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Hoşgeldin $_userName! 👋",
+                                  "${AppLocalizations.of(context)!.translate('rsHello')} $_userName! 👋",
                                   style: TextStyle(
                                     fontSize: 22, // 24'ten 22'ye düşürdüm
                                     fontWeight: FontWeight.bold,
@@ -307,10 +315,10 @@ class _WelcomePageState extends State<WelcomePage> {
                                 ),
                                 const SizedBox(height: 3), // 4'ten 3'e düşürdüm
                                 Text(
-                                  "RunStat ile koşu deneyimini keşfet",
+                                  AppLocalizations.of(context)!.translate('rsWelcomeExplore'),
                                   style: TextStyle(
                                     fontSize: 14, // 16'dan 14'e düşürdüm
-                                    color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
+                                    color: isDarkMode ? Colors.grey.shade50 : Colors.grey.shade600,
                                   ),
                                 ),
                               ],
@@ -326,7 +334,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 
                 // 🏃‍♂️ Ana Özellikler
                 Text(
-                  "RunStat ile Neler Yapabilirsin?",
+                  localizations!.translate('rsWhatYouCanDo'),
                   style: TextStyle(
                     fontSize: 18, // 20'den 18'e düşürdüm
                     fontWeight: FontWeight.bold,
@@ -344,17 +352,17 @@ class _WelcomePageState extends State<WelcomePage> {
                   mainAxisSpacing: 10, // 12'den 10'a düşürdüm
                   childAspectRatio: 1.3, // 1.2'den 1.3'e çıkardım
                   children: [
-                    _buildFeatureCard(
+                    FeatureCard(
                       icon: Icons.gps_fixed,
-                      title: "Rota Takibi",
-                      subtitle: "Rotalarını kaydet",
+                      title: localizations.translate('rsFeatureRouteTrackingTitle'),
+                      subtitle: localizations.translate('rsFeatureRouteTrackingSubtitle'),
                       isDarkMode: isDarkMode,
                       onTap: null,
                     ),
-                    _buildFeatureCard(
+                    FeatureCard(
                       icon: Icons.analytics,
-                      title: "İstatistikler",
-                      subtitle: "Detaylı performans analizi",
+                      title: localizations.translate('rsFeatureStatsTitle'),
+                      subtitle: localizations.translate('rsFeatureStatsSubtitle'),
                       isDarkMode: isDarkMode,
                       onTap: () {
                         Navigator.push(
@@ -363,10 +371,10 @@ class _WelcomePageState extends State<WelcomePage> {
                         );
                       },
                     ),
-                    _buildFeatureCard(
+                    FeatureCard(
                       icon: Icons.wb_sunny,
-                      title: "Hava Durumu",
-                      subtitle: "İdeal hava kontrolü",
+                      title: localizations.translate('rsFeatureWeatherTitle'),
+                      subtitle: localizations.translate('rsFeatureWeatherSubtitle'),
                       isDarkMode: isDarkMode,
                       onTap: () {
                         Navigator.push(
@@ -375,10 +383,10 @@ class _WelcomePageState extends State<WelcomePage> {
                         );
                       },
                     ),
-                    _buildFeatureCard(
+                    FeatureCard(
                       icon: Icons.flag,
-                      title: "Hedefler",
-                      subtitle: "Kişisel hedeflerini belirle",
+                      title: localizations.translate('rsFeatureGoalsTitle'),
+                      subtitle: localizations.translate('rsFeatureGoalsSubtitle'),
                       isDarkMode: isDarkMode,
                       onTap: null,
                     ),
@@ -389,7 +397,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 
                 // 🗺️ Son Gidilen Rota
                 Text(
-                  "Son Rota",
+                  localizations.translate('rsLastRoute'),
                   style: TextStyle(
                     fontSize: 18, // 20'den 18'e düşürdüm
                     fontWeight: FontWeight.bold,
@@ -430,7 +438,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   },
                   child: Container(
                   decoration: BoxDecoration(
-                    color: isDarkMode ? Colors.grey.shade800 : Colors.white,
+                    color: isDarkMode ? Colors.blueGrey : Colors.white,
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
@@ -449,11 +457,11 @@ class _WelcomePageState extends State<WelcomePage> {
                         height: 50,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color: darkBlue.withOpacity(0.1),
+                          color: isDarkMode ? Colors.white : darkBlue.withOpacity(0.1),
                         ),
                         child: Icon(
                           Icons.map,
-                          color: darkBlue,
+                          color: isDarkMode ? darkBlue : darkBlue,
                           size: 24,
                         ),
                       ),
@@ -463,7 +471,7 @@ class _WelcomePageState extends State<WelcomePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              _isLoadingLastRun ? 'Yükleniyor...' : _formatLastRunTitle(),
+                              _isLoadingLastRun ? localizations.translate('rsLoading') : _formatLastRunTitle(),
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -475,7 +483,7 @@ class _WelcomePageState extends State<WelcomePage> {
                               _isLoadingLastRun ? '' : _formatLastRunSubtitle(),
                               style: TextStyle(
                                 fontSize: 14,
-                                color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
+                                color: isDarkMode ? Colors.grey.shade50 : Colors.grey.shade600,
                               ),
                             ),
                           ],
@@ -487,7 +495,7 @@ class _WelcomePageState extends State<WelcomePage> {
                         },
                         icon: Icon(
                           Icons.play_arrow,
-                          color: darkBlue,
+                          color: isDarkMode ? Colors.white : darkBlue,
                           size: 24,
                         ),
                       ),
@@ -499,7 +507,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 
                 // 📊 Hızlı İstatistikler
                 Text(
-                  "Bu Hafta",
+                  localizations.translate('rsThisWeekTitle'),
                   style: TextStyle(
                     fontSize: 18, // 20'den 18'e düşürdüm
                     fontWeight: FontWeight.bold,
@@ -510,7 +518,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 
                 Container(
                   decoration: BoxDecoration(
-                    color: isDarkMode ? Colors.grey.shade800 : Colors.white,
+                    color: isDarkMode ? Colors.blueGrey : Colors.white,
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
@@ -527,7 +535,7 @@ class _WelcomePageState extends State<WelcomePage> {
                         child: _buildStatItem(
                           icon: Icons.directions_run,
                           value: _isLoadingWeek ? '...' : '${_weekDistanceKm.toStringAsFixed(1)} km',
-                          label: "Toplam Mesafe",
+                          label: localizations.translate('rsWeeklyDistance'),
                           isDarkMode: isDarkMode,
                         ),
                       ),
@@ -535,7 +543,7 @@ class _WelcomePageState extends State<WelcomePage> {
                         child: _buildStatItem(
                           icon: Icons.timer,
                           value: _isLoadingWeek ? '...' : _formatDuration(_weekDurationSec),
-                          label: "Toplam Süre",
+                          label: localizations.translate('rsWeeklyDuration'),
                           isDarkMode: isDarkMode,
                         ),
                       ),
@@ -543,7 +551,7 @@ class _WelcomePageState extends State<WelcomePage> {
                         child: _buildStatItem(
                           icon: Icons.speed,
                           value: _isLoadingWeek ? '...' : '${_weekAvgSpeedKmh.toStringAsFixed(1)} km/h',
-                          label: "Ortalama Hız",
+                          label: localizations.translate('rsWeeklyAvgSpeed'),
                           isDarkMode: isDarkMode,
                         ),
                       ),
@@ -555,7 +563,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 
                 // 🚀 Hızlı Aksiyonlar
                 Text(
-                  "Hızlı Başlangıç",
+                  localizations.translate('rsQuickStart'),
                   style: TextStyle(
                     fontSize: 18, // 20'den 18'e düşürdüm
                     fontWeight: FontWeight.bold,
@@ -583,7 +591,10 @@ class _WelcomePageState extends State<WelcomePage> {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(16),
                       onTap: () {
-                        // Yeni koşu başlat
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MapPage()),
+                        );
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(18), // 20'den 18'e düşürdüm
@@ -597,7 +608,7 @@ class _WelcomePageState extends State<WelcomePage> {
                             ),
                             const SizedBox(width: 10), // 12'den 10'a düşürdüm
                             Text(
-                              "Yeni Koşu Başlat",
+                              localizations.translate('rsStartNewRun'),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16, // 18'den 16'ya düşürdüm
@@ -618,8 +629,8 @@ class _WelcomePageState extends State<WelcomePage> {
                   children: [
                     Expanded(
                       child: _buildSecondaryButton(
-                        icon: Icons.analytics,
-                        text: "İstatistikler",
+                        icon: Icons.auto_graph,
+                        text: localizations.translate('rsMyPastRuns'),
                         isDarkMode: isDarkMode,
                       ),
                     ),
@@ -627,7 +638,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     Expanded(
                       child: _buildSecondaryButton(
                         icon: Icons.flag,
-                        text: "Hedefler",
+                        text: localizations.translate('rsGoals'),
                         isDarkMode: isDarkMode,
                       ),
                     ),
@@ -641,6 +652,7 @@ class _WelcomePageState extends State<WelcomePage> {
           ),
         ),
       ),
+    ),
     );
   }
 
@@ -656,7 +668,7 @@ class _WelcomePageState extends State<WelcomePage> {
       onTap: onTap,
       child: Container(
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey.shade800 : Colors.white,
+        color: isDarkMode ? Colors.blueGrey : Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -675,11 +687,11 @@ class _WelcomePageState extends State<WelcomePage> {
             height: 40, // 50'den 40'a düşürdüm
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10), // 12'den 10'a düşürdüm
-              color: darkBlue.withOpacity(0.1),
+              color: isDarkMode ? Colors.white : darkBlue.withOpacity(0.1),
             ),
             child: Icon(
               icon,
-              color: darkBlue,
+              color: isDarkMode ? darkBlue : darkBlue,
               size: 20, // 24'ten 20'ye düşürdüm
             ),
           ),
@@ -698,7 +710,7 @@ class _WelcomePageState extends State<WelcomePage> {
             subtitle,
             style: TextStyle(
               fontSize: 12, // 10'dan 12'ye çıkardım - okunabilir
-              color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
+              color: isDarkMode ? Colors.grey.shade50 : Colors.grey.shade600,
             ),
             textAlign: TextAlign.center,
             maxLines: 2,
@@ -720,7 +732,7 @@ class _WelcomePageState extends State<WelcomePage> {
       children: [
         Icon(
           icon,
-          color: darkBlue,
+          color: isDarkMode ? Colors.white : darkBlue,
           size: 24,
         ),
         const SizedBox(height: 8),
@@ -738,7 +750,7 @@ class _WelcomePageState extends State<WelcomePage> {
           label,
           style: TextStyle(
             fontSize: 12,
-            color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
+            color: isDarkMode ? Colors.grey.shade50 : Colors.grey.shade600,
           ),
           textAlign: TextAlign.center,
         ),
@@ -753,7 +765,7 @@ class _WelcomePageState extends State<WelcomePage> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey.shade800 : Colors.white,
+        color: isDarkMode ? Colors.blueGrey : Colors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -776,7 +788,7 @@ class _WelcomePageState extends State<WelcomePage> {
               children: [
                 Icon(
                   icon,
-                  color: darkBlue,
+                  color: isDarkMode ? Colors.white : darkBlue,
                   size: 20, // 24'ten 20'ye düşürdüm
                 ),
                 const SizedBox(height: 6), // 8'den 6'ya düşürdüm

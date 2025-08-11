@@ -203,7 +203,7 @@ class ActivityHistoryPage extends StatelessWidget {
   ) {
     return Container(
       decoration: BoxDecoration(
-        color: isDarkMode ? Colors.grey.shade800 : Colors.white,
+        color: isDarkMode ? Colors.blueGrey : Colors.white,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -236,7 +236,7 @@ class ActivityHistoryPage extends StatelessWidget {
                   height: 60,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    color: darkBlue.withOpacity(0.1),
+                    color: isDarkMode ? Colors.white : darkBlue.withOpacity(0.1),
                   ),
                   child: Icon(
                     Icons.directions_run,
@@ -266,7 +266,7 @@ class ActivityHistoryPage extends StatelessWidget {
                         '${activity.distance.toStringAsFixed(1)} ${localizations.translate('meters')}',
                         style: TextStyle(
                           fontSize: 14,
-                          color: isDarkMode ? Colors.grey.shade400 : Colors.grey.shade600,
+                          color: isDarkMode ? Colors.grey.shade50 : Colors.grey.shade600,
                         ),
                       ),
                     ],
